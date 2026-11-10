@@ -7,7 +7,8 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 ## Current implementation status
 
 - Birth details API with coordinate and IANA timezone validation.
-- Explicit birthplace search with coordinate selection and offline IANA timezone detection.\n- Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
+- Explicit birthplace search with coordinate selection and offline IANA timezone detection.
+- Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
 - Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
 - BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.
@@ -68,7 +69,11 @@ pip install -r requirements.txt
 pytest -q
 ~~~
 
-## Birthplace search\n\nThe form uses a one-shot OpenStreetMap Nominatim search (not autocomplete), caches results and displays attribution. Timezones are detected offline from coordinates. Read [docs/PLACE_SEARCH.md](docs/PLACE_SEARCH.md) before changing the geocoder or scaling the service.\n\n## Astronomy and licensing
+## Birthplace search
+
+The form uses a one-shot OpenStreetMap Nominatim search (not autocomplete), caches results and displays attribution. Timezones are detected offline from coordinates. Read [docs/PLACE_SEARCH.md](docs/PLACE_SEARCH.md) before changing the geocoder or scaling the service.
+
+## Astronomy and licensing
 
 See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) before selecting an ephemeris dependency. Swiss Ephemeris has a dual-licensing requirement; it is not added until the project makes an explicit licence decision. The Lagna-based house-year rotation is documented in Saptarishis BCP-1; the nine cycle-lord sequence has secondary corroboration only. See [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md) and [research/BCP_TRIGGER_POINTS.md](research/BCP_TRIGGER_POINTS.md).
 
