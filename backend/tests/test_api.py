@@ -45,3 +45,10 @@ def test_analysis_date_before_birth_is_rejected():
         "as_of_date": "2000-01-01",
     })
     assert response.status_code == 422
+
+def test_rule_status_endpoint_reports_empty_verified_catalog():
+    response = client.get("/api/rules/status")
+    assert response.status_code == 200
+    assert response.json()["total_rules"] == 0
+    assert response.json()["enabled_rules"] == 0
+    assert response.json()["status"] == "research_pending"
