@@ -29,14 +29,14 @@ The public Nominatim service has limited donated capacity and no availability gu
 
 ## Timezone detection
 
-The selected coordinates are passed to `timezonefinder`'s offline `timezone_at_land` lookup. The package version and its separate `timezonefinder-data` dataset are pinned in `backend/requirements.txt` so timezone polygon changes do not silently alter results between deployments.
+The selected coordinates are passed to `timezonefinder`'s offline `timezones_at` polygon lookup. A single land-zone match is selected automatically; multiple overlapping boundary candidates are returned without guessing and the user must choose one. The package version and its separate `timezonefinder-data` dataset are pinned in `backend/requirements.txt` so timezone polygon changes do not silently alter results between deployments.
 
 - Package: MIT licence.
 - Boundary dataset: ODbL licence.
 - Package docs: https://timezonefinder.readthedocs.io/
 - Data attribution/licensing details: https://pypi.org/project/timezonefinder/
 
-Timezone lookup is based on current geographic boundaries. Historical timezone rules are then applied to the selected birth date/time by Python's IANA `zoneinfo` database. The fallback `tzdata` package is pinned to 2026.6 for reproducibility on Windows hosts. If a birthplace is close to a timezone boundary, verify the timezone manually.
+Timezone lookup is based on current geographic boundaries. The library documents that a small share of land coordinates can fall in overlapping zones; those candidates are shown for explicit user choice. Historical timezone rules are then applied to the selected birth date/time by Python's IANA `zoneinfo` database. The fallback `tzdata` package is pinned to 2026.6 for reproducibility on Windows hosts. If the polygon dataset returns more than one timezone for a point, the form asks the user to select one. If no land zone is returned, enter the timezone manually.
 
 ## Operational limitations
 
