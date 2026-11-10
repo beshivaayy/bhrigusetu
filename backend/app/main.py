@@ -8,7 +8,7 @@ from .models import BirthDetails
 from .bcp.engine import calculate_running_year, analyze_bcp
 from .bsp.engine import analyze_bsp
 from .rules import load_catalog, enabled_rules
-from .places import search_places
+from .places import InvalidPlaceQuery, search_places
 
 app = FastAPI(
     title="BhriguSetu API",
@@ -33,9 +33,9 @@ def health():
 async def place_search(q: str = Query(min_length=3, max_length=120)):
     try:
         results = await search_places(q)
-    except ValueError as exc:
+    except InvalidPlaceQuery as exc:
         raise HTTPException(status_code=422, detail=str(exc))
-    except httpx.HTTPError:
+    except (httpx.HTTPError, ValueError):
         raise HTTPException(status_code=503, detail="Birthplace search is temporarily unavailable. You can enter coordinates manually.")
     return {
         "provider": "OpenStreetMap Nominatim",
