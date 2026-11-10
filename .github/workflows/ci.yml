@@ -41,5 +41,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build backend image
         run: docker build -t bhrigusetu-api:ci ./backend
+      - name: Smoke-test backend with Render PORT
+        run: |
+          docker run -d --name bhrigusetu-api-ci -e PORT=10000 -p 10000:10000 bhrigusetu-api:ci
+          for attempt in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:10000/health; then exit 0; fi
+            sleep 1
+          done
+          docker logs bhrigusetu-api-ci
+          exit 1
+      - name: Clean up backend container
+        if: always()
+        run: docker rm -f bhrigusetu-api-ci || true
       - name: Build frontend image
         run: docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.example.invalid -t bhrigusetu-web:ci ./frontend
