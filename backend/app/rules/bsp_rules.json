@@ -2,5 +2,65 @@
   "schema_version": 1,
   "method": "Bhrigu Saral Paddhati",
   "policy": "Only source-verified rules with passing validation cases may be enabled.",
-  "rules": []
+  "rules": [
+    {
+      "id": "BSP-MARS-10TH-27",
+      "statement": "The article states that wherever natal Mars is placed, it implements/activates the 10th house from itself in the native's 27th year.",
+      "source_author": "Saptarishis Astrology article page: byline metadata credits Vinayak Bhatt; article title attributes the piece to Venkat Ramana",
+      "source_title": "Bhrighu Saral Paddathi – 6 (BSP-6: Mars Tenth house rule)",
+      "source_url": "https://saptarishisastrology.com/bhrighu-saral-paddathi-6-by-venkat-ramana/",
+      "source_location": "Article opening, paragraphs beginning 'One of such techniques...' and 'BSP -6...' (page lines 42-50); worked examples lines 53-89",
+      "preconditions": {
+        "natal_planet": "Mars",
+        "running_year": 27
+      },
+      "trigger": {
+        "target": "10th house from natal Mars",
+        "counting": "inclusive house counting; natal Mars house is counted as 1"
+      },
+      "calculation": {
+        "house_offset_from_planet": 9,
+        "derive_target_sign_or_house_from_natal_mars": true
+      },
+      "confidence": "Medium-low: direct Saptarishis publication with multiple worked examples; byline/title attribution is inconsistent and examples are not independently chart-recomputed here.",
+      "validation_case": {
+        "source_examples": [
+          {
+            "birth_date": "1948-12-13",
+            "mars_house_from_lagna": 10,
+            "target_house_from_lagna": 7,
+            "event": "Marriage",
+            "event_date": "1975-01-06"
+          },
+          {
+            "birth_date": "1946-03-28",
+            "mars_house_from_lagna": 8,
+            "target_house_from_lagna": 5,
+            "event": "Marriage",
+            "event_date": "1973-03-21"
+          },
+          {
+            "birth_date": "1968-08-26",
+            "mars_house_from_lagna": 10,
+            "target_house_from_lagna": 7,
+            "event": "Promotion and marriage",
+            "event_dates": [
+              "1994-10-24",
+              "1995-04-27"
+            ]
+          },
+          {
+            "birth_date": "1969-06-02",
+            "mars_house_from_lagna": 5,
+            "target_house_from_lagna": 2,
+            "event": "Promotion and financial gain",
+            "event_period": "September 1995"
+          }
+        ],
+        "limitation": "Source examples provide natal house placements and claimed events, but no machine-readable chart longitudes or independent ephemeris validation."
+      },
+      "verified": false,
+      "enabled": false
+    }
+  ]
 }
