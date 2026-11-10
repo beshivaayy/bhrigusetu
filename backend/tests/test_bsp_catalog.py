@@ -4,7 +4,10 @@ from app.rules.catalog import enabled_rules, load_catalog, validate_catalog
 def test_catalog_is_valid_and_empty_until_sources_are_verified():
     catalog = load_catalog()
     assert catalog["method"] == "Bhrigu Saral Paddhati"
-    assert catalog["rules"] == []
+    assert len(catalog["rules"]) == 1
+    assert catalog["rules"][0]["id"] == "BSP-MARS-10TH-27"
+    assert catalog["rules"][0]["verified"] is False
+    assert catalog["rules"][0]["enabled"] is False
     assert enabled_rules() == []
 
 def test_unverified_rule_cannot_be_enabled():
