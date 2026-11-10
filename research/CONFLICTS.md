@@ -16,7 +16,7 @@ This file records unresolved method choices and source variations. It is not a l
 - **Current implementation:** running year = completed calendar years + 1; 29-February birthdays use 1 March in non-leap years.
 - **Impact:** event-year classification near birthdays and for leap-day births can differ by convention.
 - **Decision:** expose the date convention in documentation; do not call the leap-day rule canonical until an original BCP source confirms it.
-- **Source:** https://saptarishisastrology.com/bhrighu-saral-paddathi-13-by-saptarishisastrology/
+- **Source:** https://saptarishisastrology.com/bhrighu-saral-paddathi-13-by-saptarishis-astrology/
 
 ## 3. BSP-7 same-degree matching
 
