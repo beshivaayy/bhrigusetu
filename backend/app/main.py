@@ -41,14 +41,14 @@ def rule_status():
 def analyze(birth: BirthDetails):
     local_today = datetime.now(ZoneInfo(birth.timezone)).date()
     analysis_date = birth.as_of_date or local_today
-    running_year = calculate_running_year(birth.date_of_birth, analysis_date)
+    running_year = calculate_running_year(birth.date_of_birth, analysis_date)\n    birth_local = birth.resolved_birth_datetime()\n    birth_utc = birth_local.astimezone(ZoneInfo("UTC"))
     return {
         "status": "partial_calculation",
         "methodology_status": "research_pending",
         "analysis_date": analysis_date.isoformat(),
         "birth_details": {
             "date_of_birth": birth.date_of_birth.isoformat(),
-            "time_of_birth": birth.time_of_birth.isoformat(),
+            "time_of_birth": birth.time_of_birth.isoformat(),\n            "birth_datetime_local": birth_local.isoformat(),\n            "birth_datetime_utc": birth_utc.isoformat(),\n            "utc_offset": birth_local.strftime("%z"),\n            "time_fold": birth_local.fold,
             "place_name": birth.place_name,
             "latitude": birth.latitude,
             "longitude": birth.longitude,
