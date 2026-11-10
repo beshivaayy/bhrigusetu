@@ -35,3 +35,18 @@ def calculate_kakshya(degree_in_sign: float) -> dict:
         "boundary_policy": "start_inclusive_end_exclusive",
         "status": "source_transcribed_lookup",
     }
+
+
+def same_degree_number(first_degree: float, second_degree: float) -> bool:
+    """Compare whole degrees within two signs, as illustrated in BSP-7.
+
+    The BSP-7 example treats Mars at 27°14′ and Venus at 27°50′ as the
+    same degree. Therefore this helper compares integer degree numbers,
+    not exact decimal longitudes. It does not calculate house placement.
+    """
+    for value in (first_degree, second_degree):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            raise TypeError("degree values must be numeric.")
+        if not math.isfinite(value) or not 0 <= value < 30:
+            raise ValueError("degree values must be in the range 0 <= degree < 30.")
+    return int(first_degree) == int(second_degree)
