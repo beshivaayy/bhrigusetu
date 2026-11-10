@@ -6,7 +6,7 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 
 ## Current implementation status
 
-- Birth details API with coordinate and IANA timezone validation.
+- Birth details API with coordinate and IANA timezone validation.\n- Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.\n- Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
 - BCP 12-house activation arithmetic and cycle index.
 - Chakra-swami labels are exposed as provisional pending primary-source verification.
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 pytest -q
 ~~~
 
-## Research and accuracy policy
+## Astronomy and licensing\n\nSee [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) before selecting an ephemeris dependency. Swiss Ephemeris has a dual-licensing requirement; it is not added until the project makes an explicit licence decision. The BCP cycle-lord sequence has secondary corroboration only; see [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md).\n\n## Research and accuracy policy
 
 1. Sunil John / original Saptarishis BSP and BCP material receives highest priority for system-specific rules.
 2. Deepanshu Giri is used for cross-checking and practical teaching context.
