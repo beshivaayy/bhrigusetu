@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 
-type PlaceResult = { place_id: number; display_name: string; latitude: number; longitude: number; timezone: string | null };
+type PlaceResult = { place_id: number; display_name: string; latitude: number; longitude: number; timezone: string | null; timezone_candidates: string[] };
 
 type Analysis = {
   status: string;
@@ -39,6 +39,7 @@ export default function Home() {
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [tz, setTz] = useState("Asia/Kolkata");
+  const [timezoneOptions, setTimezoneOptions] = useState<string[]>([]);
   const [timeFold, setTimeFold] = useState("");
   const [asOf, setAsOf] = useState("");
   const [result, setResult] = useState<Analysis | null>(null);
@@ -74,6 +75,7 @@ export default function Home() {
     setPlace(selected.display_name);
     setLat(String(selected.latitude));
     setLon(String(selected.longitude));
+    setTimezoneOptions(selected.timezone_candidates || []);
     setTz(selected.timezone || "");
   }
 
@@ -136,12 +138,13 @@ export default function Home() {
         <form onSubmit={submit}>
           <label>Date of birth *<input type="date" value={dob} onChange={e => setDob(e.target.value)} required /></label>
           <label>Time of birth *<input type="time" step="1" value={tob} onChange={e => setTob(e.target.value)} required /></label>
-          <label className="full">Birthplace name *<div className="place-search"><input type="text" value={place} onChange={e => { setPlace(e.target.value); setPlaceResults([]); setSelectedPlaceId(""); setLat(""); setLon(""); setTz(""); setPlaceSearchError(""); }} placeholder="e.g. Maheshwar, Madhya Pradesh" required /><button type="button" className="search-button" onClick={searchPlace} disabled={placeSearchLoading}>{placeSearchLoading ? "Searching…" : "Find birthplace"}</button></div></label>
+          <label className="full">Birthplace name *<div className="place-search"><input type="text" value={place} onChange={e => { setPlace(e.target.value); setPlaceResults([]); setSelectedPlaceId(""); setLat(""); setLon(""); setTz(""); setTimezoneOptions([]); setPlaceSearchError(""); }} placeholder="e.g. Maheshwar, Madhya Pradesh" required /><button type="button" className="search-button" onClick={searchPlace} disabled={placeSearchLoading}>{placeSearchLoading ? "Searching…" : "Find birthplace"}</button></div></label>
           {placeResults.length > 0 && <label className="full">Select matching location<select value={selectedPlaceId} onChange={e => choosePlace(e.target.value)}><option value="">Choose a result</option>{placeResults.map(item => <option key={item.place_id} value={String(item.place_id)}>{item.display_name} — {item.timezone || "Timezone not found"}</option>)}</select></label>}
           {placeSearchError && <p className="form-hint full" role="status">{placeSearchError}</p>}
           <p className="attribution full">Your place query is sent to OpenStreetMap Nominatim. Results © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. One-shot search only; no autocomplete.</p>
           <label>Latitude *<input type="number" step="any" min="-90" max="90" value={lat} onChange={e => setLat(e.target.value)} placeholder="e.g. 22.17" required /></label>
           <label>Longitude *<input type="number" step="any" min="-180" max="180" value={lon} onChange={e => setLon(e.target.value)} placeholder="e.g. 75.58" required /></label>
+          {timezoneOptions.length > 1 && <label>Choose timezone at this border *<select value={tz} onChange={e => setTz(e.target.value)} required><option value="">Select timezone</option>{timezoneOptions.map(zone => <option key={zone} value={zone}>{zone}</option>)}</select></label>}
           <label>Timezone (IANA) *<input value={tz} onChange={e => setTz(e.target.value)} placeholder="Asia/Kolkata" required /></label>
           <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Analyse for date<input type="date" value={asOf} onChange={e => setAsOf(e.target.value)} /></label>
