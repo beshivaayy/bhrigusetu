@@ -10,7 +10,9 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 - Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
 - Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
-- BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.\n- BCP cycle-swami labels are secondary-source corroborated; cycle-ruler parallel reference houses remain unimplemented.\n- BCP Bhrighu Chakra Bindu trigger-point dates remain disabled because the source's degree-to-day arithmetic needs clarification.
+- BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.
+- BCP cycle-swami labels are secondary-source corroborated; cycle-ruler parallel reference houses remain unimplemented.
+- BCP Bhrighu Chakra Bindu trigger-point dates remain disabled because the source's degree-to-day arithmetic needs clarification.
 - Chakra-swami labels are exposed as provisional pending primary-source verification.
 - BSP rule evaluator exposes five source-linked research candidates, all disabled pending verification.
 - BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
