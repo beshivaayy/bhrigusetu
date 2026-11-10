@@ -22,6 +22,8 @@ def test_analysis_returns_partial_result_without_fake_chart():
     assert payload["running_year"] == 27
     assert payload["bcp"]["activated_house"] == 3
     assert payload["bcp"]["cycle"] == 3
+    assert payload["bcp"]["reference_basis"] == "natal_lagna_only"
+    assert payload["bcp"]["cycle_ruler_reference_status"] == "not_calculated_chart_data_required"
     assert payload["bsp"]["triggered_rules"] == []
     assert payload["bsp"]["research_candidate_count"] == 5
     assert {rule["id"] for rule in payload["bsp"]["research_candidates"]} == {
