@@ -7,3 +7,7 @@ __pycache__/
 *.py[cod]
 .vscode/
 .idea/
+
+# Keep safe environment templates in version control
+!.env.example
+!**/.env.example
