@@ -7,6 +7,7 @@ def test_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+    assert response.json()["version"] == "0.3.0"
 
 def test_analysis_returns_partial_result_without_fake_chart():
     response = client.post("/api/analyze", json={
