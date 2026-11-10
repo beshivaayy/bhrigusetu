@@ -4,7 +4,7 @@ This register separates a source's stated technique from the implementation's co
 
 ## BSP-MARS-10TH-27 — Mars tenth-from-itself rule
 
-<badge>Research candidate · disabled</badge>
+**Research candidate · disabled**
 
 - **Source title:** *Bhrighu Saral Paddathi – 6 by Venkat Ramana*.
 - **Publication page metadata:** Saptarishis Astrology shows a byline credit to Vinayak Bhatt dated 25 January 2023, while the page title attributes the article to Venkat Ramana. Preserve this attribution ambiguity rather than guessing.
