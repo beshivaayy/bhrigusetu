@@ -73,3 +73,19 @@ pytest -q
 6. Conflicts are documented, not silently averaged.
 
 See research/BCP_SPECIFICATION.md, research/BSP_SPECIFICATION.md, research/SOURCE_MATRIX.md and research/CONFLICTS.md before enabling predictive logic.
+
+## Run full stack with Docker
+
+From the repository root:
+
+~~~powershell
+docker compose up --build
+~~~
+
+Open http://localhost:3000. Stop with Ctrl+C; remove the containers with:
+
+~~~powershell
+docker compose down
+~~~
+
+The frontend and API are separate services. The Docker setup is intended for local evaluation; production deployment still requires public HTTPS origins and explicit CORS configuration.
