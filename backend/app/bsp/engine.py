@@ -1,5 +1,5 @@
 """BSP rule evaluation boundary."""
-from .rules import enabled_rules
+from ..rules import enabled_rules
 
 def analyze_bsp(running_year: int, chart_data: dict | None = None) -> dict:
     rules = enabled_rules()
