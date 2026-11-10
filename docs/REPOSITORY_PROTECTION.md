@@ -49,8 +49,8 @@ Under Settings → Code security and analysis:
 
 ## 3. Checks implemented in this repository
 
-- CI: backend tests, frontend production build, npm high-severity audit, Docker image builds and backend runtime smoke test.
-- CodeQL: Python and JavaScript/TypeScript static analysis.
+- CI: backend tests, Python dependency audit (`pip-audit`), frontend production build, npm high-severity audit, Docker image builds and backend runtime smoke test.
+- CodeQL v4: Python and JavaScript/TypeScript static analysis.
 - Dependency Review: blocks pull requests that introduce high-severity vulnerable dependencies and denies GPL-3.0/AGPL-3.0 dependencies pending an explicit project licensing decision.
 - Gitleaks: scans repository history for accidentally committed secrets.
 - Dependabot: monthly grouped minor/patch updates; major upgrades remain manual.
