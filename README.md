@@ -1,5 +1,7 @@
 # BhriguSetu
 
+**Current API release:** 0.3.0
+
 **Bhrigu Chakra Paddhati (BCP) · Bhrigu Saral Paddhati (BSP)**
 
 BhriguSetu is a research-first application for source-traceable BCP and BSP calculations. The project deliberately separates astronomical calculations, BCP logic, BSP rules, interpretation and presentation.
