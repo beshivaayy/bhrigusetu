@@ -12,7 +12,7 @@ from .places import InvalidPlaceQuery, search_places
 
 app = FastAPI(
     title="BhriguSetu API",
-    version="0.2.0",
+    version="0.3.0",
     description="Research-first BCP and BSP application. Unverified predictive rules are disabled.",
 )
 _default_origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
