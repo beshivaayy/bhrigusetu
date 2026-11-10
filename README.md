@@ -10,7 +10,7 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 - Running-year calculation based on the birthday and the selected timezone's local date.
 - BCP 12-house activation arithmetic and cycle index.
 - Chakra-swami labels are exposed as provisional pending primary-source verification.
-- BSP rule evaluator is present, but no unverified BSP rules are enabled.
+- BSP rule evaluator exposes five source-linked research candidates, all disabled pending verification.\n- BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
 - Frontend is connected to the FastAPI analysis endpoint.
 - Astronomical chart calculation (planetary positions, ascendant and houses) is not yet enabled.
 - This release is a partial calculation foundation, not a complete horoscope or prediction service.
