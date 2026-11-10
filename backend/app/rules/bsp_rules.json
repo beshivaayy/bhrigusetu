@@ -2,5 +2,180 @@
   "schema_version": 1,
   "method": "Bhrigu Saral Paddhati",
   "policy": "Only source-verified rules with passing validation cases may be enabled.",
-  "rules": []
+  "rules": [
+    {
+      "id": "BSP-MARS-10TH-27",
+      "statement": "The article states that wherever natal Mars is placed, it implements/activates the 10th house from itself in the native's 27th year.",
+      "source_author": "Venkat Ramana, Saptarishis Astrology Re-Search Team",
+      "source_title": "Bhrighu Saral Paddathi – 6, Sage Bhrighu’s Blessings, Vol. 6",
+      "source_url": "https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf",
+      "source_location": "PDF printed pages 368–374; BSP-6 statement at printed page 368; worked examples and publisher caution at printed page 369 onward",
+      "preconditions": {
+        "natal_planet": "Mars",
+        "running_year": 27
+      },
+      "trigger": {
+        "target": "10th house from natal Mars",
+        "counting": "inclusive house counting; natal Mars house is counted as 1"
+      },
+      "calculation": {
+        "house_offset_from_planet": 9,
+        "derive_target_sign_or_house_from_natal_mars": true
+      },
+      "confidence": "Medium: primary Saptarishis magazine PDF, named author and multiple chart examples; publisher explicitly says it worked on approximately 25 charts and asks readers to test it, cautioning that success on 100 charts does not establish a siddhanta.",
+      "validation_case": {
+        "source_examples": [
+          {
+            "birth_date": "1948-12-13",
+            "mars_house_from_lagna": 10,
+            "target_house_from_lagna": 7,
+            "event": "Marriage",
+            "event_date": "1975-01-06"
+          },
+          {
+            "birth_date": "1946-03-28",
+            "mars_house_from_lagna": 8,
+            "target_house_from_lagna": 5,
+            "event": "Marriage",
+            "event_date": "1973-03-21"
+          },
+          {
+            "birth_date": "1968-08-26",
+            "mars_house_from_lagna": 10,
+            "target_house_from_lagna": 7,
+            "event": "Promotion and marriage",
+            "event_dates": [
+              "1994-10-24",
+              "1995-04-27"
+            ]
+          },
+          {
+            "birth_date": "1969-06-02",
+            "mars_house_from_lagna": 5,
+            "target_house_from_lagna": 2,
+            "event": "Promotion and financial gain",
+            "event_period": "September 1995"
+          }
+        ],
+        "limitation": "The publisher explicitly warns that the technique is not a siddhanta merely because it works on many charts; charts and events still require independent recomputation."
+      },
+      "verified": false,
+      "enabled": false
+    },
+    {
+      "id": "BSP-MARS-KAKSHYA-27",
+      "statement": "In the 27th year, if a planet occupies the 10th-from-Mars house at exactly the same degree as natal Mars, that planet is influenced; if no such planet exists, Mars activates its Kakshya lord and that lord's significations.",
+      "source_author": "Venkat Ramana, Saptarishis Astrology Re-Search Team",
+      "source_title": "Bhrighu Saral Paddathi – 7, Sage Bhrighu’s Blessings, Vol. 6",
+      "source_url": "https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf",
+      "source_location": "PDF printed pages 375–377; Kakshya table at printed page 376; same-degree rule and examples at printed pages 376–377",
+      "preconditions": {
+        "natal_planet": "Mars",
+        "running_year": 27
+      },
+      "trigger": {
+        "first": "Search 10th-from-Mars house for a planet at exactly the same within-sign degree as Mars",
+        "fallback": "If no same-degree planet exists, use natal Mars Kakshya lord"
+      },
+      "calculation": {
+        "same_degree_match": "Same integer degree within the sign (e.g. Mars 27°14′ and Venus 27°50′ are treated as matching in the worked example); minute-level tolerance is not separately specified.",
+        "fallback": "Kakshya lord from eight equal 3°45′ slots; include lord's significations and owned houses"
+      },
+      "confidence": "Medium: primary Saptarishis magazine PDF, named author, explicit eight-slot table and multiple worked examples; the same-degree convention is inferred from the 27°14′/27°50′ example and needs a precise implementation note.",
+      "validation_case": {
+        "source_examples": [
+          "BSP-7 examples 1–10 on the linked page"
+        ],
+        "limitation": "The source's worked example shows 27°14′ Mars and 27°50′ Venus treated as the same degree number. The integer-degree interpretation is a source-based reading, not exact longitude equality; verify all chart examples before enabling."
+      },
+      "verified": false,
+      "enabled": false
+    },
+    {
+      "id": "BSP-SATURN-3RD-ASPECT-20",
+      "statement": "Saturn's 3rd aspect implements in the native's 20th running year; the article defines this as after completing 19 years and before completing 20.",
+      "source_author": "Saptarishis Astrology page; byline metadata credits Vinayak Bhatt",
+      "source_title": "Bhrighu Saral Paddathi – 13 by Saptarishis Astrology",
+      "source_url": "https://saptarishisastrology.com/bhrighu-saral-paddathi-13-by-saptarishis-astrology/",
+      "source_location": "Opening rule statement and running-year explanation; worked examples follow",
+      "preconditions": {
+        "natal_planet": "Saturn",
+        "running_year": 20
+      },
+      "trigger": {
+        "aspect": "3rd special aspect from natal Saturn"
+      },
+      "calculation": {
+        "target": "3rd-aspect house from natal Saturn",
+        "timing": "completed 19th year; currently in 20th year"
+      },
+      "confidence": "Medium-low: direct Saptarishis technique page; article notes results may shift plus/minus 1–2 years based on planetary strength and benefic/malefic aspects.",
+      "validation_case": {
+        "source_examples": [
+          "Elizabeth Taylor example: article states 20th year Feb 1951–Feb 1952 and marriage 21 Feb 1952"
+        ],
+        "limitation": "Strength/aspect timing modifiers are qualitative and need formal specification."
+      },
+      "verified": false,
+      "enabled": false
+    },
+    {
+      "id": "BSP-JUPITER-5TH-ASPECT-32",
+      "statement": "In the 32nd year, Jupiter implements its 5th aspect in the 5th house from its natal position; sometimes the same natal house is also implemented, and the 7th-from-Jupiter house may control or influence the result.",
+      "source_author": "Saptarishis Astrology; PDF metadata says data assistance by Venkat Ramana",
+      "source_title": "Bhrighu Saral Paddathi – 11",
+      "source_url": "https://saptarishisastrology.com/wp-content/uploads/2023/01/Bhrighu-Saral-Paddathi-11-by-Venkat-Ramana-Saptarishis-Astrology-Research-Team.pdf",
+      "source_location": "PDF page 1, rule BSP-11 and first two worked examples",
+      "preconditions": {
+        "natal_planet": "Jupiter",
+        "running_year": 32
+      },
+      "trigger": {
+        "aspect": "5th aspect from natal Jupiter"
+      },
+      "calculation": {
+        "primary_target": "5th house from natal Jupiter",
+        "possible_secondary_target": "Jupiter's natal house",
+        "modifier": "7th house from Jupiter may control/influence"
+      },
+      "confidence": "Medium-low: direct technique PDF with worked cases; the source itself describes a conditional secondary activation and requires contextual interpretation.",
+      "validation_case": {
+        "source_examples": [
+          "29 Aug 1969 native: 32nd year Aug 2000–Aug 2001; marriage Oct 2000",
+          "9 Sep 1963 native: 32nd year Sep 1994–Sep 1995; child birth 8 Oct 1994"
+        ],
+        "limitation": "House-signification and modifier semantics need separate formalization."
+      },
+      "verified": false,
+      "enabled": false
+    },
+    {
+      "id": "BSP-JUPITER-9TH-ASPECT-40",
+      "statement": "In the 40th year, Jupiter implements its 9th aspect in the 9th house from its natal position and also implements the house in which Jupiter itself is located.",
+      "source_author": "Saptarishis Astrology Research Team; page byline metadata credits Vinayak Bhatt",
+      "source_title": "Bhrighu Saral Paddathi – 10",
+      "source_url": "https://saptarishisastrology.com/bhrighu-saral-paddathi-10-by-saptarishis-astrology-re-search-team/",
+      "source_location": "BSP-10 rule statement and worked examples",
+      "preconditions": {
+        "natal_planet": "Jupiter",
+        "running_year": 40
+      },
+      "trigger": {
+        "aspect": "9th aspect from natal Jupiter"
+      },
+      "calculation": {
+        "primary_target": "9th house from natal Jupiter",
+        "secondary_target": "Jupiter's natal house"
+      },
+      "confidence": "Medium-low: direct Saptarishis technique page; two activations are stated, but detailed precedence and interpretation need further examples.",
+      "validation_case": {
+        "source_examples": [
+          "23 Aug 1964 native: Jupiter natal 10th; 40th-year promotion on 1 Apr 2004"
+        ],
+        "limitation": "Source chart and event chronology need independent ephemeris verification."
+      },
+      "verified": false,
+      "enabled": false
+    }
+  ]
 }

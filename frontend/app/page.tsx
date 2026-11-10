@@ -6,6 +6,7 @@ type Analysis = {
   status: string;
   analysis_date: string;
   running_year: number;
+  birth_details: { birth_datetime_local: string; birth_datetime_utc: string; utc_offset: string; timezone: string; latitude: number; longitude: number; place_name: string | null };
   bcp: {
     status: string;
     activated_house: number;
@@ -13,9 +14,12 @@ type Analysis = {
     chakra_swami: string | null;
     chakra_swami_status: string;
     interpretation_status: string;
+    reference_basis: string;
+    cycle_ruler_reference_status: string;
+    cycle_ruler_reference_note: string;
     message: string;
   };
-  bsp: { status: string; triggered_rules: unknown[]; enabled_rule_count: number; message: string };
+  bsp: { status: string; triggered_rules: unknown[]; enabled_rule_count: number; research_candidate_count: number; research_candidates: { id: string; statement: string; source_title: string; source_url: string; confidence: string; status: string }[]; message: string };
   chart: { status: string; reason: string };
   warnings: string[];
 };
@@ -29,6 +33,7 @@ export default function Home() {
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [tz, setTz] = useState("Asia/Kolkata");
+  const [timeFold, setTimeFold] = useState("");
   const [asOf, setAsOf] = useState("");
   const [result, setResult] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
@@ -46,6 +51,7 @@ export default function Home() {
         body: JSON.stringify({
           date_of_birth: dob,
           time_of_birth: tob,
+          time_fold: timeFold === "" ? null : Number(timeFold),
           place_name: place || null,
           latitude: Number(lat),
           longitude: Number(lon),
@@ -91,13 +97,14 @@ export default function Home() {
         </div>
         <form onSubmit={submit}>
           <label>Date of birth *<input type="date" value={dob} onChange={e => setDob(e.target.value)} required /></label>
-          <label>Time of birth *<input type="time" value={tob} onChange={e => setTob(e.target.value)} required /></label>
+          <label>Time of birth *<input type="time" step="1" value={tob} onChange={e => setTob(e.target.value)} required /></label>
           <label className="full">Birthplace name<input type="text" value={place} onChange={e => setPlace(e.target.value)} placeholder="e.g. Maheshwar, Madhya Pradesh" /></label>
           <label>Latitude *<input type="number" step="any" min="-90" max="90" value={lat} onChange={e => setLat(e.target.value)} placeholder="e.g. 22.17" required /></label>
           <label>Longitude *<input type="number" step="any" min="-180" max="180" value={lon} onChange={e => setLon(e.target.value)} placeholder="e.g. 75.58" required /></label>
           <label>Timezone (IANA) *<input value={tz} onChange={e => setTz(e.target.value)} placeholder="Asia/Kolkata" required /></label>
+          <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Analyse for date<input type="date" value={asOf} onChange={e => setAsOf(e.target.value)} /></label>
-          <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations.</p>
+          <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence.</p>
           <button className="submit full" disabled={loading}>{loading ? "Calculating…" : "Calculate BCP activation + BSP status"} <span>→</span></button>
         </form>
         {error && <div className="error" role="alert">{error}</div>}
@@ -105,13 +112,14 @@ export default function Home() {
 
       {result && <section className="results" aria-live="polite">
         <div className="section-heading"><div><p className="eyebrow">02 / ENGINE OUTPUT</p><h2>Calculation report</h2></div><span className="status-pill">Partial calculation</span></div>
+        <div className="notice"><strong>Resolved birth instant</strong><p>Local: {result.birth_details.birth_datetime_local} ({result.birth_details.timezone})</p><p>UTC: {result.birth_details.birth_datetime_utc}</p><p>Coordinates: {result.birth_details.latitude}, {result.birth_details.longitude}</p></div>
         <div className="metric-grid">
           <article className="metric"><span>Running year</span><strong>{result.running_year}</strong><small>As of {result.analysis_date}</small></article>
           <article className="metric"><span>BCP activated house</span><strong>{result.bcp.activated_house}</strong><small>House activation only</small></article>
           <article className="metric"><span>BCP cycle</span><strong>{result.bcp.cycle}</strong><small>{result.bcp.chakra_swami ? `Provisional swami: ${result.bcp.chakra_swami}` : "Swami not defined"}</small></article>
         </div>
-        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small></div><span className="status-pill">Provisional</span></div>
-        <div className="report-row"><div><p className="eyebrow">BSP</p><h3>Rule evaluation not enabled</h3><p>{result.bsp.message}</p><small>Enabled rules: {result.bsp.enabled_rule_count}</small></div><span className="status-pill muted">Research pending</span></div>
+        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small><small>Reference basis: Lagna only. Cycle-ruler reference point: pending chart calculation and source verification.</small></div><span className="status-pill">Provisional</span></div>
+        <div className="report-row"><div><p className="eyebrow">BSP</p><h3>Rule evaluation not enabled</h3><p>{result.bsp.message}</p><small>Enabled rules: {result.bsp.enabled_rule_count} · Research candidates: {result.bsp.research_candidate_count}</small>{result.bsp.research_candidates.map(rule => <div className="candidate" key={rule.id}><strong>{rule.id}</strong><p>{rule.statement}</p><small>{rule.confidence}</small><p><a href={rule.source_url} target="_blank" rel="noreferrer">{rule.source_title}</a></p><small>Disabled pending verification</small></div>)}</div><span className="status-pill muted">Research pending</span></div>
         <div className="notice"><strong>Why no horoscope is shown yet</strong><p>{result.chart.reason}</p></div>
         <div className="warnings"><strong>Methodology and accuracy notes</strong><ul>{result.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></div>
       </section>}

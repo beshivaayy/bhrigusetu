@@ -4,7 +4,16 @@ from app.rules.catalog import enabled_rules, load_catalog, validate_catalog
 def test_catalog_is_valid_and_empty_until_sources_are_verified():
     catalog = load_catalog()
     assert catalog["method"] == "Bhrigu Saral Paddhati"
-    assert catalog["rules"] == []
+    assert len(catalog["rules"]) == 5
+    assert {rule["id"] for rule in catalog["rules"]} == {
+        "BSP-MARS-10TH-27",
+        "BSP-MARS-KAKSHYA-27",
+        "BSP-SATURN-3RD-ASPECT-20",
+        "BSP-JUPITER-5TH-ASPECT-32",
+        "BSP-JUPITER-9TH-ASPECT-40",
+    }
+    assert all(rule["verified"] is False for rule in catalog["rules"])
+    assert all(rule["enabled"] is False for rule in catalog["rules"])
     assert enabled_rules() == []
 
 def test_unverified_rule_cannot_be_enabled():

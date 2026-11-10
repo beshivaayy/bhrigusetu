@@ -47,5 +47,8 @@ def analyze_bcp(running_year: int) -> dict:
             "cycle": "((running_year - 1) // 12) + 1",
         },
         "interpretation_status": "not_enabled_pending_rule_verification",
+        "reference_basis": "natal_lagna_only",
+        "cycle_ruler_reference_status": "not_calculated_chart_data_required",
+        "cycle_ruler_reference_note": "A secondary BCP cycle-ruler article describes parallel year counting from the natal sign of the cycle lord. This additional reference point is not calculated until primary-source confirmation and chart data are available.",
         "message": "House activation is calculated; predictive interpretation remains disabled pending source verification.",
     }
