@@ -31,7 +31,6 @@ export default function Home() {
   const [lon, setLon] = useState("");
   const [tz, setTz] = useState("Asia/Kolkata");
   const [timeFold, setTimeFold] = useState("");
-  const [timeFold, setTimeFold] = useState("");
   const [asOf, setAsOf] = useState("");
   const [result, setResult] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
@@ -49,7 +48,6 @@ export default function Home() {
         body: JSON.stringify({
           date_of_birth: dob,
           time_of_birth: tob,
-          time_fold: timeFold === "" ? null : Number(timeFold),
           time_fold: timeFold === "" ? null : Number(timeFold),
           place_name: place || null,
           latitude: Number(lat),
@@ -101,7 +99,6 @@ export default function Home() {
           <label>Latitude *<input type="number" step="any" min="-90" max="90" value={lat} onChange={e => setLat(e.target.value)} placeholder="e.g. 22.17" required /></label>
           <label>Longitude *<input type="number" step="any" min="-180" max="180" value={lon} onChange={e => setLon(e.target.value)} placeholder="e.g. 75.58" required /></label>
           <label>Timezone (IANA) *<input value={tz} onChange={e => setTz(e.target.value)} placeholder="Asia/Kolkata" required /></label>
-          <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Analyse for date<input type="date" value={asOf} onChange={e => setAsOf(e.target.value)} /></label>
           <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence.</p>
