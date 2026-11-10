@@ -12,10 +12,10 @@ This file records unresolved method choices and source variations. It is not a l
 
 ## 2. BCP running-year and leap-day convention
 
-- **Published corroboration:** BSP-13 defines the 20th year as after completing 19 years and before completing 20.
+- **Direct BCP source:** Saptarishis BCP-1 uses the birthday to distinguish the current running year from the completed year. BSP-13 independently defines the 20th year as after completing 19 years and before completing 20.
 - **Current implementation:** running year = completed calendar years + 1; 29-February birthdays use 1 March in non-leap years.
 - **Impact:** event-year classification near birthdays and for leap-day births can differ by convention.
-- **Decision:** expose the date convention in documentation; do not call the leap-day rule canonical until an original BCP source confirms it.
+- **Decision:** birthday-based running-year boundary is supported by BCP-1; the 29-February fallback remains a software convention, not a source-confirmed rule.
 - **Source:** https://saptarishisastrology.com/bhrighu-saral-paddathi-13-by-saptarishis-astrology/
 
 ## 3. BSP-7 same-degree matching
@@ -33,7 +33,13 @@ This file records unresolved method choices and source variations. It is not a l
 - **Impact:** the Mars tenth-from-itself rule remains a research candidate, not an enabled prediction rule.
 - **Source:** https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf
 
-## 5. Astronomy dependency and licensing
+## 5. BCP-2 trigger-point degree arithmetic
+
+- **Source:** Saptarishis BCP-2 describes converting degrees to days at approximately 12.17 days per degree and adding the offset to the last birthday.
+- **Issue:** worked notation such as 24Ar32 and displayed multiplication do not consistently reconcile as decimal degrees or sexagesimal degrees/minutes; at least one displayed multiplication is arithmetically inconsistent.
+- **Decision:** do not calculate trigger dates until the degree notation, year-length constant, retrograde handling and multiple-trigger precedence are clarified. See `BCP_TRIGGER_POINTS.md`.
+
+## 6. Astronomy dependency and licensing
 
 - Swiss Ephemeris has an AGPL / professional dual-licensing model.
 - The repository is public and may become a hosted product; selecting AGPL or a paid licence has business consequences.
@@ -47,6 +53,6 @@ This file records unresolved method choices and source variations. It is not a l
 4. Recompute the source charts for BSP-6 and BSP-7 independently.
 5. Formalize BSP-10, BSP-11 and BSP-13 modifiers from their source examples.
 6. Confirm the house-counting convention for every BSP rule; do not assume one universal convention without evidence.
-7. Obtain a source-approved ephemeris, ayanamsha, node and house-system specification before enabling chart-derived predictions.
+7. Resolve the BCP-2 degree-to-day arithmetic and trigger-point conventions.\n8. Obtain a source-approved ephemeris, ayanamsha, node and house-system specification before enabling chart-derived predictions.
 
 When a conflict is found, record both source statements, publication context, practical implementation impact and the reason for any selected interpretation. Never silently average conflicting rules.
