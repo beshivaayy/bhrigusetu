@@ -1,33 +1,75 @@
 # BhriguSetu
 
-**BCP • BSP — Research-Based Vedic Prediction Engine**
+**Bhrigu Chakra Paddhati (BCP) · Bhrigu Saral Paddhati (BSP)**
 
-A research-first application foundation for Bhrigu Chakra Paddhati (BCP) and Bhrigu Saral Paddhati (BSP).
+BhriguSetu is a research-first application for source-traceable BCP and BSP calculations. The project deliberately separates astronomical calculations, BCP logic, BSP rules, interpretation and presentation.
 
-This is intentionally a foundation: no unverified astrological rules are presented as production truth. The calculation layer is isolated so the verified research engine can be integrated later.
+## Current implementation status
 
-## Structure
-- `frontend/` — Next.js + TypeScript UI
-- `backend/` — FastAPI calculation API
-- `research/` — methodology/source audit documents
-- `docs/` — architecture/product notes
+- Birth details API with coordinate and IANA timezone validation.
+- Running-year calculation based on the birthday and the selected timezone's local date.
+- BCP 12-house activation arithmetic and cycle index.
+- Chakra-swami labels are exposed as provisional pending primary-source verification.
+- BSP rule evaluator is present, but no unverified BSP rules are enabled.
+- Frontend is connected to the FastAPI analysis endpoint.
+- Astronomical chart calculation (planetary positions, ascendant and houses) is not yet enabled.
+- This release is a partial calculation foundation, not a complete horoscope or prediction service.
 
-## Run
+## Repository structure
 
-### Backend
-```bash
+- frontend/ — Next.js + TypeScript user interface
+- backend/ — FastAPI API and calculation modules
+- research/ — methodology, source matrix and conflicts
+- docs/ — architecture and implementation notes
+
+## Local development
+
+### Backend (Windows PowerShell)
+
+~~~powershell
 cd backend
-python -m venv .venv
-.venv\\Scripts\\activate
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
-```
+~~~
 
-### Frontend
-```bash
+### Frontend (new terminal)
+
+~~~powershell
 cd frontend
 npm install
+$env:NEXT_PUBLIC_API_BASE_URL="http://localhost:8000"
 npm run dev
-```
+~~~
 
-Open `http://localhost:3000`.
+Open http://localhost:3000. API health: http://localhost:8000/health. Interactive API docs: http://localhost:8000/docs.
+
+## Configuration
+
+Backend:
+- CORS_ORIGINS — comma-separated allowed frontend origins. Defaults to localhost:3000 and 127.0.0.1:3000.
+
+Frontend:
+- NEXT_PUBLIC_API_BASE_URL — public API base URL. Defaults to http://localhost:8000.
+
+Do not commit secrets or private credentials. Use HTTPS for deployed API origins.
+
+## Test backend
+
+~~~powershell
+cd backend
+pip install -r requirements.txt
+pytest -q
+~~~
+
+## Research and accuracy policy
+
+1. Sunil John / original Saptarishis BSP and BCP material receives highest priority for system-specific rules.
+2. Deepanshu Giri is used for cross-checking and practical teaching context.
+3. Sanjay Rath is used for foundational Jyotish corroboration where applicable.
+4. Generic Parashari rules are not automatically treated as BSP rules.
+5. Every production rule must have an exact source location, explicit preconditions, deterministic calculation, confidence rationale and reproducible test case.
+6. Conflicts are documented, not silently averaged.
+
+See research/BCP_SPECIFICATION.md, research/BSP_SPECIFICATION.md, research/SOURCE_MATRIX.md and research/CONFLICTS.md before enabling predictive logic.
