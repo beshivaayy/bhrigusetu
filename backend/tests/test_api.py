@@ -23,9 +23,13 @@ def test_analysis_returns_partial_result_without_fake_chart():
     assert payload["bcp"]["activated_house"] == 3
     assert payload["bcp"]["cycle"] == 3
     assert payload["bsp"]["triggered_rules"] == []
-    assert payload["bsp"]["research_candidate_count"] == 1
-    assert payload["bsp"]["research_candidates"][0]["id"] == "BSP-MARS-10TH-27"
-    assert payload["bsp"]["research_candidates"][0]["status"] == "disabled_pending_verification"
+    assert payload["bsp"]["research_candidate_count"] == 5
+    assert {rule["id"] for rule in payload["bsp"]["research_candidates"]} == {
+        "BSP-MARS-10TH-27", "BSP-MARS-KAKSHYA-27",
+        "BSP-SATURN-3RD-ASPECT-20", "BSP-JUPITER-5TH-ASPECT-32",
+        "BSP-JUPITER-9TH-ASPECT-40",
+    }
+    assert all(rule["status"] == "disabled_pending_verification" for rule in payload["bsp"]["research_candidates"])
     assert payload["chart"]["status"] == "not_calculated"
     assert payload["birth_details"]["birth_datetime_local"] == "2000-01-01T09:40:00+05:30"
     assert payload["birth_details"]["birth_datetime_utc"] == "2000-01-01T04:10:00+00:00"
