@@ -20,6 +20,8 @@ class FakeResponse:
         }]
 
 class FakeAsyncClient:
+    calls = 0
+
     def __init__(self, *args, **kwargs):
         self.headers = kwargs.get("headers", {})
 
@@ -30,6 +32,7 @@ class FakeAsyncClient:
         return None
 
     async def get(self, url, params):
+        type(self).calls += 1
         assert "BhriguSetu/" in self.headers["User-Agent"]
         assert params["format"] == "jsonv2"
         assert params["limit"] == 5
@@ -47,6 +50,9 @@ def test_place_search_returns_coordinates_and_timezone(monkeypatch):
     assert payload["results"][0]["longitude"] == 75.587
     assert payload["results"][0]["timezone"] == "Asia/Kolkata"
     assert "OpenStreetMap" in payload["attribution"]
+    again = client.get("/api/places/search", params={"q": "  Maheshwar,   Madhya Pradesh "})
+    assert again.status_code == 200
+    assert FakeAsyncClient.calls == 1
 
 def test_place_search_rejects_short_query():
     response = client.get("/api/places/search", params={"q": "MP"})
