@@ -16,6 +16,13 @@
 
 The code groups life years into twelve-year blocks and maps blocks 1–9 to the sequence above. This mapping remains provisional pending direct confirmation from the original Sunil John BCP teaching material.
 
+## Direct source for the 12-house year rotation
+
+- **Source:** Saptarishis Astrology, *Bhrighu Chakra Paddathi – 1*, page metadata credits Vinayak Bhatt, 24 January 2023: https://saptarishisastrology.com/bhrighu-chakra-paddathi-1-by-saptarishis-astrology/
+- **Exact location:** method steps 1–4 and running-year example (article lines 62–78).
+- **Directly stated:** 1st house corresponds to 1st year, 2nd to 2nd year, through 12th; the cycle repeats with 1st house in year 13. The worked example distinguishes the running year from the completed year and uses the birthday as the boundary.
+- **Evidence grade:** B for the Lagna-based 12-house rotation and running-year convention as described by this Saptarishis publication. This does not verify the cycle-swami sequence or every predictive interpretation.
+
 ## Sources located
 
 ### Published BCP interpretation — M. Imran
@@ -51,6 +58,10 @@ The current engine calculates the Lagna-based activated house only:
 `activated_house = ((running_year - 1) % 12) + 1`
 
 It returns the cycle-lord label provisionally, but does not calculate the second reference house from the natal cycle ruler. That requires chart placements and primary-source confirmation. The API and UI explicitly expose this limitation.
+
+## Additional BCP source: Bhrighu Chakra Bindu
+
+Saptarishis Astrology, *Bhrighu Chakra Paddathi – 2*, page metadata credits Vinayak Bhatt, 24 January 2023: https://saptarishisastrology.com/bhrighu-chakra-paddathi-2-by-saptarishis-astrology/. It describes trigger-point inputs and a degree-to-day calculation, but the arithmetic/degree notation is unresolved. See `BCP_TRIGGER_POINTS.md`; no date calculation is enabled.
 
 ## Still required
 
