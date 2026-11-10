@@ -92,4 +92,7 @@ async def search_places(query: str) -> list[dict[str, Any]]:
             for key in list(_cache):
                 if _cache[key][0] < cutoff:
                     _cache.pop(key, None)
+            while len(_cache) > 1000:
+                oldest_key = min(_cache, key=lambda key: _cache[key][0])
+                _cache.pop(oldest_key, None)
         return results
