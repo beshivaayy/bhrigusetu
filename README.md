@@ -10,7 +10,7 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 - Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
 - Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
-- BCP 12-house activation arithmetic and cycle index.
+- BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.\n- BCP cycle-swami labels are secondary-source corroborated; cycle-ruler parallel reference houses remain unimplemented.\n- BCP Bhrighu Chakra Bindu trigger-point dates remain disabled because the source's degree-to-day arithmetic needs clarification.
 - Chakra-swami labels are exposed as provisional pending primary-source verification.
 - BSP rule evaluator exposes five source-linked research candidates, all disabled pending verification.
 - BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
@@ -68,7 +68,7 @@ pytest -q
 
 ## Astronomy and licensing
 
-See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) before selecting an ephemeris dependency. Swiss Ephemeris has a dual-licensing requirement; it is not added until the project makes an explicit licence decision. The BCP cycle-lord sequence has secondary corroboration only; see [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md).
+See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) before selecting an ephemeris dependency. Swiss Ephemeris has a dual-licensing requirement; it is not added until the project makes an explicit licence decision. The Lagna-based house-year rotation is documented in Saptarishis BCP-1; the nine cycle-lord sequence has secondary corroboration only. See [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md) and [research/BCP_TRIGGER_POINTS.md](research/BCP_TRIGGER_POINTS.md).
 
 ## Research and accuracy policy
 
