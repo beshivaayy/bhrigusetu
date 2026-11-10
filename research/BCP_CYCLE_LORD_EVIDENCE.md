@@ -18,6 +18,9 @@ The implementation groups life years into twelve-year blocks and maps blocks 1â€
 
 ## Evidence found in this audit
 
+- A primary BCP teaching video by Sunil John, published by Saptarishis Astrology on 22 January 2017, is located: https://www.youtube.com/watch?v=5q5aTQIBnjk. Its public description confirms a BCP methodology lecture and live reading demonstration, but does not expose the cycle-lord sequence in the description. The sequence must be extracted from the lecture itself with exact timestamps before this counts as direct confirmation.
+- An additional advanced BCP lecture by Sunil John is listed here: https://www.youtube.com/watch?v=tVpyuo-cxzI (15 April 2023). Exact statements and timestamps remain to be transcribed.
+
 - A publicly accessible 17-page document titled *Bhrigu Chakra Paddhati Overview* reproduces the nine 12-year blocks and includes worked examples. It is hosted on Scribd by a third-party uploader, not a primary publication: https://www.scribd.com/document/549460315/BCP-CycleLords
 - A commercial software methodology page independently displays the same nine blocks and twelve house-year divisions: https://mkundali.com/bcp-astrology-software/
 
