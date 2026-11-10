@@ -6,6 +6,7 @@ type Analysis = {
   status: string;
   analysis_date: string;
   running_year: number;
+  birth_details: { birth_datetime_local: string; birth_datetime_utc: string; utc_offset: string; timezone: string; latitude: number; longitude: number; place_name: string | null };
   bcp: {
     status: string;
     activated_house: number;
@@ -108,6 +109,7 @@ export default function Home() {
 
       {result && <section className="results" aria-live="polite">
         <div className="section-heading"><div><p className="eyebrow">02 / ENGINE OUTPUT</p><h2>Calculation report</h2></div><span className="status-pill">Partial calculation</span></div>
+        <div className="notice"><strong>Resolved birth instant</strong><p>Local: {result.birth_details.birth_datetime_local} ({result.birth_details.timezone})</p><p>UTC: {result.birth_details.birth_datetime_utc}</p><p>Coordinates: {result.birth_details.latitude}, {result.birth_details.longitude}</p></div>
         <div className="metric-grid">
           <article className="metric"><span>Running year</span><strong>{result.running_year}</strong><small>As of {result.analysis_date}</small></article>
           <article className="metric"><span>BCP activated house</span><strong>{result.bcp.activated_house}</strong><small>House activation only</small></article>
