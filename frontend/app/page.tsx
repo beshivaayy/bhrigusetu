@@ -2,6 +2,8 @@
 
 import { FormEvent, useState } from "react";
 
+type PlaceResult = { place_id: number; display_name: string; latitude: number; longitude: number; timezone: string | null };
+
 type Analysis = {
   status: string;
   analysis_date: string;
@@ -30,6 +32,10 @@ export default function Home() {
   const [dob, setDob] = useState("");
   const [tob, setTob] = useState("");
   const [place, setPlace] = useState("");
+  const [placeResults, setPlaceResults] = useState<PlaceResult[]>([]);
+  const [selectedPlaceId, setSelectedPlaceId] = useState("");
+  const [placeSearchLoading, setPlaceSearchLoading] = useState(false);
+  const [placeSearchError, setPlaceSearchError] = useState("");
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [tz, setTz] = useState("Asia/Kolkata");
@@ -38,6 +44,38 @@ export default function Home() {
   const [result, setResult] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  async function searchPlace() {
+    if (place.trim().length < 3) {
+      setPlaceSearchError("Enter at least 3 characters.");
+      return;
+    }
+    setPlaceSearchLoading(true);
+    setPlaceSearchError("");
+    setPlaceResults([]);
+    setSelectedPlaceId("");
+    try {
+      const response = await fetch(`${API_BASE}/api/places/search?q=${encodeURIComponent(place.trim())}`);
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.detail || "Birthplace search is temporarily unavailable.");
+      setPlaceResults(payload.results as PlaceResult[]);
+      if (!payload.results?.length) setPlaceSearchError("No matching places found. Try adding the district, state or country.");
+    } catch (err) {
+      setPlaceSearchError(err instanceof Error ? err.message : "Unable to search for this birthplace.");
+    } finally {
+      setPlaceSearchLoading(false);
+    }
+  }
+
+  function choosePlace(placeId: string) {
+    setSelectedPlaceId(placeId);
+    const selected = placeResults.find(item => String(item.place_id) === placeId);
+    if (!selected) return;
+    setPlace(selected.display_name);
+    setLat(String(selected.latitude));
+    setLon(String(selected.longitude));
+    setTz(selected.timezone || "");
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -98,13 +136,16 @@ export default function Home() {
         <form onSubmit={submit}>
           <label>Date of birth *<input type="date" value={dob} onChange={e => setDob(e.target.value)} required /></label>
           <label>Time of birth *<input type="time" step="1" value={tob} onChange={e => setTob(e.target.value)} required /></label>
-          <label className="full">Birthplace name<input type="text" value={place} onChange={e => setPlace(e.target.value)} placeholder="e.g. Maheshwar, Madhya Pradesh" /></label>
+          <label className="full">Birthplace name<div className="place-search"><input type="text" value={place} onChange={e => { setPlace(e.target.value); setPlaceResults([]); setSelectedPlaceId(""); setLat(""); setLon(""); setTz(""); setPlaceSearchError(""); }} placeholder="e.g. Maheshwar, Madhya Pradesh" /><button type="button" className="search-button" onClick={searchPlace} disabled={placeSearchLoading}>{placeSearchLoading ? "Searching…" : "Find birthplace"}</button></div></label>
+          {placeResults.length > 0 && <label className="full">Select matching location<select value={selectedPlaceId} onChange={e => choosePlace(e.target.value)}><option value="">Choose a result</option>{placeResults.map(item => <option key={item.place_id} value={String(item.place_id)}>{item.display_name} — {item.timezone || "Timezone not found"}</option>)}</select></label>}
+          {placeSearchError && <p className="form-hint full" role="status">{placeSearchError}</p>}
+          <p className="attribution full">Location results © OpenStreetMap contributors. This is a one-shot search, not autocomplete.</p>
           <label>Latitude *<input type="number" step="any" min="-90" max="90" value={lat} onChange={e => setLat(e.target.value)} placeholder="e.g. 22.17" required /></label>
           <label>Longitude *<input type="number" step="any" min="-180" max="180" value={lon} onChange={e => setLon(e.target.value)} placeholder="e.g. 75.58" required /></label>
           <label>Timezone (IANA) *<input value={tz} onChange={e => setTz(e.target.value)} placeholder="Asia/Kolkata" required /></label>
           <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Analyse for date<input type="date" value={asOf} onChange={e => setAsOf(e.target.value)} /></label>
-          <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence.</p>
+          <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence. The detected timezone can be edited if needed.</p>
           <button className="submit full" disabled={loading}>{loading ? "Calculating…" : "Calculate BCP activation + BSP status"} <span>→</span></button>
         </form>
         {error && <div className="error" role="alert">{error}</div>}
