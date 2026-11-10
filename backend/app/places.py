@@ -6,7 +6,7 @@ import time
 from typing import Any
 
 import httpx
-from timezonefinder import timezone_at_land
+from timezonefinder import timezones_at
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 USER_AGENT = "BhriguSetu/0.3 (+https://github.com/beshivaayy/bhrigusetu)"
@@ -19,6 +19,15 @@ class InvalidPlaceQuery(ValueError):
 _cache: dict[str, tuple[float, list[dict[str, Any]]]] = {}
 _request_lock = asyncio.Lock()
 _last_request_at = 0.0
+
+def _land_timezone_candidates(longitude: float, latitude: float) -> list[str]:
+    """Return polygon-matched land zones; multiple results require user choice."""
+    zones = timezones_at(lng=longitude, lat=latitude)
+    return [zone for zone in zones if not zone.startswith("Etc/GMT")]
+
+def _single_land_timezone(longitude: float, latitude: float) -> str | None:
+    zones = _land_timezone_candidates(longitude, latitude)
+    return zones[0] if len(zones) == 1 else None
 
 def _normalise_query(query: str) -> str:
     return " ".join(query.strip().split())
@@ -80,7 +89,8 @@ async def search_places(query: str) -> list[dict[str, Any]]:
                 "display_name": str(item.get("display_name") or "Unnamed location"),
                 "latitude": latitude,
                 "longitude": longitude,
-                "timezone": timezone_at_land(lng=longitude, lat=latitude),
+                "timezone": _single_land_timezone(longitude, latitude),
+                "timezone_candidates": _land_timezone_candidates(longitude, latitude),
                 "osm_type": item.get("osm_type"),
                 "osm_id": item.get("osm_id"),
             })
