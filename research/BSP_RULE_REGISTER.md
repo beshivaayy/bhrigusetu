@@ -6,7 +6,8 @@ This register separates a source's stated technique from the implementation's co
 
 **Research candidate · disabled**
 
-- **Source title:** *Bhrighu Saral Paddathi – 6 by Venkat Ramana*.
+- **Source title:** *Bhrighu Saral Paddathi – 6*, *Sage Bhrighu’s Blessings*, Vol. 6, by Venkat Ramana, Saptarishis Astrology Re-Search Team.
+- **Original magazine PDF:** https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf (printed pages 368–374).
 - **Publication page metadata:** Saptarishis Astrology shows a byline credit to Vinayak Bhatt dated 25 January 2023, while the page title attributes the article to Venkat Ramana. Preserve this attribution ambiguity rather than guessing.
 - **Source:** https://saptarishisastrology.com/bhrighu-saral-paddathi-6-by-venkat-ramana/
 - **Exact location:** opening description and BSP-6 statement; worked examples and conclusion.
@@ -43,7 +44,7 @@ All entries below are registered in `backend/app/rules/bsp_rules.json` as `verif
 
 ### BSP-MARS-KAKSHYA-27 — same-degree planet / Kakshya fallback
 
-- **Source:** *Bhrighu Saral Paddathi – 7 by Venkat Ramana* — https://saptarishisastrology.com/bhrighu-saral-paddathi-7-by-venkat-ramana/
+- **Source:** *Bhrighu Saral Paddathi – 7*, *Sage Bhrighu’s Blessings*, Vol. 6, by Venkat Ramana — https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf (printed pages 375–377).
 - **Exact location:** steps 1–3 and worked examples.
 - The article defines eight equal Kakshya slots of 3°45′ each, with lords Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon and Ascendant.
 - It states that a planet in the 10th from Mars at exactly the same degree is influenced by Mars in the 27th year; if no such planet is present, the Kakshya lord and its significations are activated.
