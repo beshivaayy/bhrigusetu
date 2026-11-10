@@ -36,7 +36,7 @@ The selected coordinates are passed to `timezonefinder`'s offline `timezone_at_l
 - Package docs: https://timezonefinder.readthedocs.io/
 - Data attribution/licensing details: https://pypi.org/project/timezonefinder/
 
-Timezone lookup is based on current geographic boundaries. Historical timezone rules are then applied to the selected birth date/time by Python's IANA `zoneinfo` database (provided on Windows by `tzdata`). If a birthplace is close to a timezone boundary, verify the timezone manually.
+Timezone lookup is based on current geographic boundaries. Historical timezone rules are then applied to the selected birth date/time by Python's IANA `zoneinfo` database. The fallback `tzdata` package is pinned to 2026.6 for reproducibility on Windows hosts. If a birthplace is close to a timezone boundary, verify the timezone manually.
 
 ## Operational limitations
 
