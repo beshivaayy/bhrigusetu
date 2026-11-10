@@ -40,3 +40,8 @@ def test_cycle_beyond_documented_sequence_does_not_wrap():
 def test_running_year_must_be_positive():
     with pytest.raises(ValueError):
         analyze_bcp(0)
+
+def test_bcp_reference_point_is_explicitly_lagna_only():
+    result = analyze_bcp(27)
+    assert result["reference_basis"] == "natal_lagna_only"
+    assert result["cycle_ruler_reference_status"] == "not_calculated_chart_data_required"
