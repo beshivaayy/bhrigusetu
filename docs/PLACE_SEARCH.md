@@ -34,7 +34,8 @@ The selected coordinates are passed to `timezonefinder`'s offline `timezones_at`
 - Package: MIT licence.
 - Boundary dataset: ODbL licence.
 - Package docs: https://timezonefinder.readthedocs.io/
-- Timezonefinder code package (MIT): https://pypi.org/project/timezonefinder/\n- Separate boundary-data package (ODbL): https://pypi.org/project/timezonefinder-data/4.2026.6/
+- Timezonefinder code package (MIT): https://pypi.org/project/timezonefinder/
+- Separate boundary-data package (ODbL): https://pypi.org/project/timezonefinder-data/4.2026.6/
 
 Timezone lookup is based on current geographic boundaries. The library documents that a small share of land coordinates can fall in overlapping zones; those candidates are shown for explicit user choice. Historical timezone rules are then applied to the selected birth date/time by Python's IANA `zoneinfo` database. The fallback `tzdata` package is pinned to 2026.6 for reproducibility on Windows hosts. If the polygon dataset returns more than one timezone for a point, the form asks the user to select one. If no land zone is returned, enter the timezone manually.
 
