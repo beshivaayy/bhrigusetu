@@ -1,12 +1,14 @@
 import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Query
+import httpx
 from fastapi.middleware.cors import CORSMiddleware
 from .models import BirthDetails
 from .bcp.engine import calculate_running_year, analyze_bcp
 from .bsp.engine import analyze_bsp
 from .rules import load_catalog, enabled_rules
+from .places import search_places
 
 app = FastAPI(
     title="BhriguSetu API",
@@ -26,6 +28,20 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "bhrigusetu-api", "version": app.version}
+
+@app.get("/api/places/search")
+async def place_search(q: str = Query(min_length=3, max_length=120)):
+    try:
+        results = await search_places(q)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    except httpx.HTTPError:
+        raise HTTPException(status_code=503, detail="Birthplace search is temporarily unavailable. You can enter coordinates manually.")
+    return {
+        "provider": "OpenStreetMap Nominatim",
+        "attribution": "© OpenStreetMap contributors",
+        "results": results,
+    }
 
 @app.get("/api/rules/status")
 def rule_status():
