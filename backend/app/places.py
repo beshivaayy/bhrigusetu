@@ -13,6 +13,9 @@ USER_AGENT = "BhriguSetu/0.3 (+https://github.com/beshivaayy/bhrigusetu)"
 MIN_REQUEST_INTERVAL_SECONDS = 1.1
 CACHE_TTL_SECONDS = 30 * 24 * 60 * 60
 
+class InvalidPlaceQuery(ValueError):
+    """Raised when the user's explicit place query is too short."""
+
 _cache: dict[str, tuple[float, list[dict[str, Any]]]] = {}
 _request_lock = asyncio.Lock()
 _last_request_at = 0.0
@@ -25,7 +28,7 @@ async def search_places(query: str) -> list[dict[str, Any]]:
     global _last_request_at
     normalised = _normalise_query(query)
     if len(normalised) < 3:
-        raise ValueError("Enter at least 3 characters to search for a birthplace.")
+        raise InvalidPlaceQuery("Enter at least 3 characters to search for a birthplace.")
 
     now = time.monotonic()
     cached = _cache.get(normalised.casefold())
