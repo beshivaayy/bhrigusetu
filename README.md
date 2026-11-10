@@ -1,5 +1,7 @@
 # BhriguSetu
 
+**Current API release:** 0.3.0
+
 **Bhrigu Chakra Paddhati (BCP) · Bhrigu Saral Paddhati (BSP)**
 
 BhriguSetu is a research-first application for source-traceable BCP and BSP calculations. The project deliberately separates astronomical calculations, BCP logic, BSP rules, interpretation and presentation.
@@ -7,6 +9,7 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 ## Current implementation status
 
 - Birth details API with coordinate and IANA timezone validation.
+- Explicit birthplace search with coordinate selection and offline IANA timezone detection.
 - Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
 - Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
@@ -67,6 +70,10 @@ cd backend
 pip install -r requirements.txt
 pytest -q
 ~~~
+
+## Birthplace search
+
+The form uses a one-shot OpenStreetMap Nominatim search (not autocomplete), caches results and displays attribution. Timezones are detected offline from coordinates. Read [docs/PLACE_SEARCH.md](docs/PLACE_SEARCH.md) before changing the geocoder or scaling the service.
 
 ## Astronomy and licensing
 
