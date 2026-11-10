@@ -3,9 +3,9 @@
 ## Direct source
 
 - Article: *Bhrighu Saral Paddathi – 7 by Venkat Ramana*
-- Saptarishis Astrology page: https://saptarishisastrology.com/bhrighu-saral-paddathi-7-by-venkat-ramana/
+- Saptarishis Astrology page: https://saptarishisastrology.com/wp-content/uploads/2023/01/SA-Vol-6-Part-2.pdf (printed pages 375–377)
 - Exact section: article steps 1–3 and Table 1 (Kakshya-Slot Degrees / Lord of Kakshya).
-- The article defines eight equal slots of 3°45′ each and names the lords in order: Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon, Ascendant.
+- The original magazine PDF identifies Venkat Ramana as author and defines eight equal slots of 3°45′ each, with lords Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon and Ascendant (printed page 376).
 - The article then uses natal Mars's Kakshya lord when no same-degree planet is present in the tenth from Mars, within the BSP-6 27th-year technique.
 
 ## Transcribed intervals
@@ -28,5 +28,5 @@
 ## Limitations
 
 - The source table is legible and directly transcribed, but no prediction is made by this utility.
-- The same-degree comparison rule in BSP-7 still needs an explicit numeric tolerance policy and chart-engine validation. The source says "exactly the same degree"; do not silently substitute a broad orb.
+- BSP-7 chart 2 gives Mars at 27°14′ and Venus at 27°50′ in the 10th-from-Mars house and treats them as matching. This supports comparison by whole-degree number, not exact minute/second equality. The source does not state a wider orb. The helper same_degree_number implements only this integer-degree interpretation.
 - The source's Kakshya lord sequence must not be confused with BCP cycle swamis or the seven-planet Vimshottari sequence.
