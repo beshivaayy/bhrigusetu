@@ -58,7 +58,7 @@ def test_analysis_date_before_birth_is_rejected():
 def test_rule_status_endpoint_reports_empty_verified_catalog():
     response = client.get("/api/rules/status")
     assert response.status_code == 200
-    assert response.json()["total_rules"] == 1
+    assert response.json()["total_rules"] == 5
     assert response.json()["enabled_rules"] == 0
     assert response.json()["status"] == "research_pending"
 
