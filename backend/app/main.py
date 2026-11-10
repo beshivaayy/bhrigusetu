@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .models import BirthDetails
 from .bcp.engine import calculate_running_year, analyze_bcp
 from .bsp.engine import analyze_bsp
+from .rules import load_catalog, enabled_rules
 
 app = FastAPI(
     title="BhriguSetu API",
@@ -25,6 +26,16 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "bhrigusetu-api", "version": app.version}
+
+@app.get("/api/rules/status")
+def rule_status():
+    catalog = load_catalog()
+    return {
+        "method": catalog["method"],
+        "total_rules": len(catalog["rules"]),
+        "enabled_rules": len(enabled_rules()),
+        "status": "research_pending" if not enabled_rules() else "rules_available",
+    }
 
 @app.post("/api/analyze")
 def analyze(birth: BirthDetails):
