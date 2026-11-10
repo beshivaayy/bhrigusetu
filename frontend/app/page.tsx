@@ -14,6 +14,9 @@ type Analysis = {
     chakra_swami: string | null;
     chakra_swami_status: string;
     interpretation_status: string;
+    reference_basis: string;
+    cycle_ruler_reference_status: string;
+    cycle_ruler_reference_note: string;
     message: string;
   };
   bsp: { status: string; triggered_rules: unknown[]; enabled_rule_count: number; research_candidate_count: number; research_candidates: { id: string; statement: string; source_title: string; source_url: string; confidence: string; status: string }[]; message: string };
@@ -115,7 +118,7 @@ export default function Home() {
           <article className="metric"><span>BCP activated house</span><strong>{result.bcp.activated_house}</strong><small>House activation only</small></article>
           <article className="metric"><span>BCP cycle</span><strong>{result.bcp.cycle}</strong><small>{result.bcp.chakra_swami ? `Provisional swami: ${result.bcp.chakra_swami}` : "Swami not defined"}</small></article>
         </div>
-        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small></div><span className="status-pill">Provisional</span></div>
+        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small><small>Reference basis: Lagna only. Cycle-ruler reference point: pending chart calculation and source verification.</small></div><span className="status-pill">Provisional</span></div>
         <div className="report-row"><div><p className="eyebrow">BSP</p><h3>Rule evaluation not enabled</h3><p>{result.bsp.message}</p><small>Enabled rules: {result.bsp.enabled_rule_count} · Research candidates: {result.bsp.research_candidate_count}</small>{result.bsp.research_candidates.map(rule => <div className="candidate" key={rule.id}><strong>{rule.id}</strong><p>{rule.statement}</p><small>{rule.confidence}</small><p><a href={rule.source_url} target="_blank" rel="noreferrer">{rule.source_title}</a></p><small>Disabled pending verification</small></div>)}</div><span className="status-pill muted">Research pending</span></div>
         <div className="notice"><strong>Why no horoscope is shown yet</strong><p>{result.chart.reason}</p></div>
         <div className="warnings"><strong>Methodology and accuracy notes</strong><ul>{result.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></div>
