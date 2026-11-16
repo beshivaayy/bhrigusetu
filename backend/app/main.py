@@ -1,20 +1,41 @@
 import os
+from contextlib import asynccontextmanager
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from fastapi import FastAPI, HTTPException, Query
+
 import httpx
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+
 from .models import BirthDetails
 from .bcp.engine import calculate_running_year, analyze_bcp
 from .bsp.engine import analyze_bsp
 from .rules import load_catalog, enabled_rules
 from .places import InvalidPlaceQuery, search_places
 from .chart.manual import SuppliedChartInput, analyze_supplied_chart
+from .mcp_server.server import mcp as bhrigusetu_mcp
+
+# Mount the same MCP tool registry under /mcp on the existing API service.
+# Local stdio clients continue to use: python -m app.mcp_server
+mcp_http_app = bhrigusetu_mcp.streamable_http_app(
+    json_response=True,
+    stateless_http=True,
+    host="0.0.0.0",
+)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # A mounted ASGI sub-app does not own the parent FastAPI lifespan.
+    async with bhrigusetu_mcp.session_manager.run():
+        yield
+
 
 app = FastAPI(
     title="BhriguSetu API",
     version="0.3.0",
     description="Research-first BCP and BSP application. Unverified predictive rules are disabled.",
+    lifespan=lifespan,
 )
 _default_origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
 _configured_origins = [item.strip() for item in os.getenv("CORS_ORIGINS", "").split(",") if item.strip()]
@@ -23,12 +44,14 @@ app.add_middleware(
     allow_origins=_configured_origins or _default_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "Accept", "MCP-Protocol-Version", "Mcp-Session-Id"],
 )
+
 
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "bhrigusetu-api", "version": app.version}
+
 
 @app.get("/api/places/search")
 async def place_search(q: str = Query(min_length=3, max_length=120)):
@@ -44,6 +67,7 @@ async def place_search(q: str = Query(min_length=3, max_length=120)):
         "results": results,
     }
 
+
 @app.get("/api/rules/status")
 def rule_status():
     catalog = load_catalog()
@@ -53,6 +77,7 @@ def rule_status():
         "enabled_rules": len(enabled_rules()),
         "status": "research_pending" if not enabled_rules() else "rules_available",
     }
+
 
 @app.post("/api/analyze")
 def analyze(birth: BirthDetails):
@@ -97,3 +122,7 @@ def analyze(birth: BirthDetails):
 def manual_chart_analysis(chart: SuppliedChartInput):
     """Map externally supplied sidereal longitudes; does not calculate an ephemeris."""
     return analyze_supplied_chart(chart)
+
+
+# Mount last so existing FastAPI routes keep precedence.
+app.mount("/", mcp_http_app)

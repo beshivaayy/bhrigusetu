@@ -10,6 +10,7 @@ from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
 from mcp.server import MCPServer
+from mcp.types import ToolAnnotations
 
 from app.astronomy.time import resolve_local_datetime
 from app.bcp.engine import analyze_bcp, calculate_running_year
@@ -31,7 +32,11 @@ mcp = MCPServer(
 )
 
 
-@mcp.tool()
+_READ_ONLY = ToolAnnotations(read_only_hint=True, open_world_hint=False)
+_EXTERNAL_READ_ONLY = ToolAnnotations(read_only_hint=True, open_world_hint=True)
+
+
+@mcp.tool(annotations=_READ_ONLY)
 def calculate_running_year_tool(date_of_birth: str, as_of_date: str) -> dict:
     """Calculate BhriguSetu running year from YYYY-MM-DD dates."""
     dob = date.fromisoformat(date_of_birth)
@@ -44,19 +49,19 @@ def calculate_running_year_tool(date_of_birth: str, as_of_date: str) -> dict:
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def analyze_bcp_tool(running_year: int) -> dict:
     """Calculate BCP 12-house activation and expose provisional cycle metadata."""
     return analyze_bcp(running_year)
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def analyze_bsp_tool(running_year: int) -> dict:
     """Inspect BSP research candidates; unverified predictive rules stay disabled."""
     return analyze_bsp(running_year)
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def get_bsp_rules_tool() -> dict:
     """Return the source-controlled BSP rule catalog and enabled-rule status."""
     catalog = load_catalog()
@@ -70,13 +75,13 @@ def get_bsp_rules_tool() -> dict:
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def calculate_kakshya_tool(degree_in_sign: float) -> dict:
     """Look up the BSP-7 3°45′ Kakshya slot for a degree within one sign."""
     return calculate_kakshya(degree_in_sign)
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def compare_same_degree_tool(first_degree: float, second_degree: float) -> dict:
     """Compare whole-degree numbers within two signs using the BSP-7 convention."""
     return {
@@ -87,7 +92,7 @@ def compare_same_degree_tool(first_degree: float, second_degree: float) -> dict:
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_EXTERNAL_READ_ONLY)
 async def search_birthplace_tool(query: str) -> dict:
     """Search a birthplace through the existing OSM Nominatim integration."""
     results = await search_places(query)
@@ -98,7 +103,7 @@ async def search_birthplace_tool(query: str) -> dict:
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def resolve_birth_timezone_tool(
     birth_date: str,
     time_of_birth: str,
@@ -122,7 +127,7 @@ def resolve_birth_timezone_tool(
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def analyze_birth_details_tool(
     date_of_birth: str,
     time_of_birth: str,
@@ -182,7 +187,7 @@ def analyze_birth_details_tool(
     }
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def analyze_supplied_chart_tool(
     running_year: int,
     lagna_longitude: float,
@@ -199,7 +204,7 @@ def analyze_supplied_chart_tool(
     return analyze_supplied_chart(chart)
 
 
-@mcp.tool()
+@mcp.tool(annotations=_READ_ONLY)
 def get_system_status_tool() -> dict:
     """Report the calculation and methodology capabilities currently available."""
     catalog = load_catalog()

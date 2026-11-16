@@ -1,11 +1,11 @@
 # BhriguSetu MCP Server
 
-The MCP adapter exposes existing BhriguSetu capabilities to MCP-compatible clients. It does not replace the FastAPI API, frontend, or calculation engines.
+BhriguSetu exposes its existing calculation and research capabilities through the Model Context Protocol. The same tool registry is available to local stdio clients and remotely over Streamable HTTP at `/mcp` on the existing FastAPI service. The MCP adapter does not replace the frontend or calculation engines.
 
 ## Current tools
 
 - `analyze_birth_details_tool` — validated partial birth analysis (running year, BCP, BSP status).
-- `analyze_supplied_chart_tool` ? maps caller-supplied sidereal longitudes to signs and whole-sign houses; no ephemeris calculation.
+- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; no ephemeris calculation.
 - `calculate_running_year_tool` — running-year arithmetic.
 - `analyze_bcp_tool` — BCP house activation and provisional cycle metadata.
 - `analyze_bsp_tool` / `get_bsp_rules_tool` — research candidates and evidence status.
@@ -14,10 +14,9 @@ The MCP adapter exposes existing BhriguSetu capabilities to MCP-compatible clien
 - `resolve_birth_timezone_tool` — existing DST-safe local birth-time resolution.
 - `get_system_status_tool` — capability and methodology status.
 
-
 ### Manual chart tool example
 
-Call analyze_supplied_chart_tool with:
+Call `analyze_supplied_chart_tool` with:
 
 ~~~json
 {
@@ -40,18 +39,36 @@ Resource: `bhrigusetu://methodology`
 
 Prompt: `jyotish_research_analysis`
 
-## Local setup (Windows PowerShell)
+## Local setup — stdio (Windows PowerShell)
 
 Run from the repository's `backend` directory:
 
-```powershell
+~~~powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python -m app.mcp_server
-```
+~~~
 
-The server uses stdio. Do not type into its terminal while an MCP client is connected; stdout is reserved for protocol messages.
+The stdio transport is for local MCP clients such as Claude Code. Do not type into its terminal while an MCP client is connected; stdout is reserved for protocol messages.
+
+## Remote setup — Streamable HTTP
+
+The existing FastAPI service also exposes the same MCP tool registry at:
+
+~~~text
+https://<existing-bhrigusetu-api-host>/mcp
+~~~
+
+There is no second Render service: MCP is mounted inside the existing API process and uses the same Render-assigned public HTTPS hostname. This avoids consuming another free instance. The mounted endpoint uses stateless HTTP requests and JSON responses. Local stdio remains unchanged.
+
+**Exposure and privacy:** this remote endpoint has no sign-in/OAuth layer and is publicly reachable. The registered tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Add OAuth before exposing any future write-capable or private-data tools.
+
+### Add to ChatGPT
+
+ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. On an eligible ChatGPT web account, open the custom MCP server connection flow, use the existing API host with the `/mcp` path, choose **No authentication** for this read-only public endpoint, review the tool list and risk notice, then create the connection.
+
+Plan availability is controlled by ChatGPT: OpenAI currently lists Pro for read/fetch-only custom MCP connections and Business/Enterprise/Edu for broader MCP access. Free is not listed as eligible. If the account is on Free, the server can still be used from local MCP clients (including the already configured Claude Code connection), but ChatGPT will not offer the custom-server connection until the account/workspace is eligible. Setup is web-only.
 
 ## Claude Code (Windows PowerShell)
 
@@ -68,7 +85,7 @@ If the project server is already registered, do not add it again. The Python exe
 
 Replace the path with your actual absolute backend path. Use the same Python environment where requirements were installed.
 
-```json
+~~~json
 {
   "mcpServers": {
     "bhrigusetu": {
@@ -78,7 +95,7 @@ Replace the path with your actual absolute backend path. Use the same Python env
     }
   }
 }
-```
+~~~
 
 Restart Claude Desktop after saving the configuration.
 
@@ -89,15 +106,14 @@ Restart Claude Desktop after saving the configuration.
 - BSP predictive candidates remain disabled until source verification and validation.
 - Birth-data ephemeris calculation is not implemented. Caller-supplied sidereal positions can be mapped to signs and whole-sign houses without validating their astronomical source. A complete horoscope is not implemented.
 - Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
-- No API key, paid model, cloud service, or new hosting is required for local stdio use.
+- Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
 
 ## Tests
 
 From `backend`:
 
-```powershell
+~~~powershell
 python -m pytest
-```
+~~~
 
-
-For the manual-position input contract and limitations, see MANUAL_CHART_IMPORT.md.
+For the manual-position input contract and limitations, see `MANUAL_CHART_IMPORT.md`.
