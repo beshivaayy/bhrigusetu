@@ -1,7 +1,7 @@
 """BhriguSetu MCP server.
 
 The existing application engines remain the only calculation source.
-No planetary chart calculation or predictive BSP rules are added here.
+No ephemeris calculation or predictive BSP rules are added here. Caller-supplied positions can be mapped.
 Run from the backend directory: python -m app.mcp_server
 """
 from __future__ import annotations
@@ -16,6 +16,7 @@ from app.bcp.engine import analyze_bcp, calculate_running_year
 from app.bsp.engine import analyze_bsp
 from app.bsp.kakshya import calculate_kakshya, same_degree_number
 from app.models import BirthDetails
+from app.chart.manual import SuppliedChartInput, analyze_supplied_chart
 from app.places import search_places
 from app.rules import enabled_rules, load_catalog
 
@@ -25,7 +26,7 @@ mcp = MCPServer(
         "Research-first Jyotish calculation server. Use the existing BhriguSetu "
         "engines as the source of truth. Clearly preserve provisional and "
         "research-pending statuses. Never claim a complete horoscope: planetary "
-        "positions, ascendant and houses are not currently calculated."
+        "positions are not calculated from birth details; caller-supplied positions can be mapped to whole-sign houses."
     ),
 )
 
@@ -182,6 +183,23 @@ def analyze_birth_details_tool(
 
 
 @mcp.tool()
+def analyze_supplied_chart_tool(
+    running_year: int,
+    lagna_longitude: float,
+    planetary_longitudes: dict[str, float],
+    ayanamsha: str = "unspecified",
+) -> dict:
+    """Map caller-supplied sidereal longitudes to signs and whole-sign houses; no ephemeris."""
+    chart = SuppliedChartInput(
+        running_year=running_year,
+        lagna_longitude=lagna_longitude,
+        planetary_longitudes=planetary_longitudes,
+        ayanamsha=ayanamsha,
+    )
+    return analyze_supplied_chart(chart)
+
+
+@mcp.tool()
 def get_system_status_tool() -> dict:
     """Report the calculation and methodology capabilities currently available."""
     catalog = load_catalog()
@@ -193,6 +211,8 @@ def get_system_status_tool() -> dict:
         "kakshya": "3°45′ lookup and same-degree comparison available",
         "birthplace": "OSM Nominatim search and timezone candidate lookup available",
         "chart_calculation": "not_implemented",
+        "chart_calculation_scope": "birth_details_ephemeris_not_implemented",
+        "manual_chart_mapping": "available_for_caller_supplied_sidereal_positions; no_ephemeris",
         "enabled_bsp_rules": len(enabled_rules()),
         "research_candidates": len(catalog["rules"]),
     }
