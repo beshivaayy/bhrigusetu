@@ -9,3 +9,13 @@ services:
     envVars:
       - key: CORS_ORIGINS
         sync: false
+
+  # Separate remote MCP endpoint; keeps the existing FastAPI service and local stdio MCP intact.
+  - type: web
+    name: bhrigusetu-mcp
+    runtime: docker
+    plan: free
+    numInstances: 1
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    dockerCommand: python -m app.mcp_server.http_server
