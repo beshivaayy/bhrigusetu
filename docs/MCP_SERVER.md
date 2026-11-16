@@ -1,6 +1,6 @@
 # BhriguSetu MCP Server
 
-BhriguSetu exposes the existing calculation and research capabilities through the Model Context Protocol. The same tool registry supports local stdio clients and a separate remote Streamable HTTP service. The MCP adapter does not replace the FastAPI API, frontend, or calculation engines.
+BhriguSetu exposes its existing calculation and research capabilities through the Model Context Protocol. The same tool registry is available to local stdio clients and remotely over Streamable HTTP at `/mcp` on the existing FastAPI service. The MCP adapter does not replace the frontend or calculation engines.
 
 ## Current tools
 
@@ -54,29 +54,19 @@ The stdio transport is for local MCP clients such as Claude Code. Do not type in
 
 ## Remote setup — Streamable HTTP
 
-The remote entry point serves the exact same tools over the MCP-standard Streamable HTTP transport:
-
-~~~powershell
-python -m app.mcp_server.http_server
-~~~
-
-It listens on `0.0.0.0`, uses the hosting provider's `PORT` environment variable (fallback `8000`), and exposes the MCP endpoint at `/mcp`. Stateless requests and JSON responses are enabled for hosted use.
-
-### Render deployment
-
-The root `render.yaml` defines a separate `bhrigusetu-mcp` web service using the existing backend Dockerfile. After the feature branch is merged and the Render Blueprint is synced/deployed, Render assigns a public HTTPS hostname. The ChatGPT connection URL will be:
+The existing FastAPI service also exposes the same MCP tool registry at:
 
 ~~~text
-https://<your-bhrigusetu-mcp-host>.onrender.com/mcp
+https://<existing-bhrigusetu-api-host>/mcp
 ~~~
 
-Use the actual hostname shown by Render; do not guess it. The Render free web service may spin down when idle, so the first request can be slow.
+There is no second Render service: MCP is mounted inside the existing API process and uses the same Render-assigned public HTTPS hostname. This avoids consuming another free instance. The mounted endpoint uses stateless HTTP requests and JSON responses. Local stdio remains unchanged.
 
-**Exposure and privacy:** this initial remote endpoint has no sign-in/OAuth layer and is publicly reachable. The currently registered tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Add OAuth before exposing any future write-capable or private-data tools.
+**Exposure and privacy:** this remote endpoint has no sign-in/OAuth layer and is publicly reachable. The registered tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Add OAuth before exposing any future write-capable or private-data tools.
 
 ### Add to ChatGPT
 
-ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. On an eligible ChatGPT web account, open the custom MCP server connection flow, use the Render `/mcp` URL, choose **No authentication** for this read-only public endpoint, review the tool list and risk notice, then create the connection.
+ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. On an eligible ChatGPT web account, open the custom MCP server connection flow, use the existing API host with the `/mcp` path, choose **No authentication** for this read-only public endpoint, review the tool list and risk notice, then create the connection.
 
 Plan availability is controlled by ChatGPT: OpenAI currently lists Pro for read/fetch-only custom MCP connections and Business/Enterprise/Edu for broader MCP access. Free is not listed as eligible. If the account is on Free, the server can still be used from local MCP clients (including the already configured Claude Code connection), but ChatGPT will not offer the custom-server connection until the account/workspace is eligible. Setup is web-only.
 
@@ -116,7 +106,7 @@ Restart Claude Desktop after saving the configuration.
 - BSP predictive candidates remain disabled until source verification and validation.
 - Birth-data ephemeris calculation is not implemented. Caller-supplied sidereal positions can be mapped to signs and whole-sign houses without validating their astronomical source. A complete horoscope is not implemented.
 - Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
-- Local stdio use needs no API key or cloud service. Remote HTTP hosting is a separate optional deployment.
+- Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
 
 ## Tests
 
