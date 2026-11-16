@@ -99,3 +99,28 @@ def test_nonexistent_dst_birth_time_is_rejected():
     })
     assert response.status_code == 422
     assert "does not exist" in str(response.json())
+
+
+
+def test_manual_chart_endpoint_maps_supplied_positions():
+    response = client.post("/api/chart/manual", json={
+        "running_year": 1,
+        "lagna_longitude": 0,
+        "ayanamsha": "Lahiri",
+        "planetary_longitudes": {"Moon": 60, "Mars": 10},
+    })
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["planets"]["Moon"]["sign"] == "Gemini"
+    assert payload["planets"]["Moon"]["whole_sign_house"] == 3
+    assert payload["bcp_cycle_reference"]["status"] == "provisional_secondary_source_only"
+    assert payload["bsp"]["enabled_rule_count"] == 0
+    assert payload["ayanamsha"].startswith("Lahiri (caller-declared")
+
+
+def test_manual_chart_endpoint_rejects_out_of_range_longitude():
+    response = client.post("/api/chart/manual", json={
+        "running_year": 1, "lagna_longitude": 0,
+        "planetary_longitudes": {"Mars": 360},
+    })
+    assert response.status_code == 422

@@ -1,6 +1,7 @@
 from app.mcp_server.server import (
     analyze_bcp_tool,
     analyze_bsp_tool,
+    analyze_supplied_chart_tool,
     calculate_kakshya_tool,
     calculate_running_year_tool,
     compare_same_degree_tool,
@@ -48,3 +49,11 @@ def test_mcp_status_is_honest_about_missing_chart_engine():
     result = get_system_status_tool()
     assert result["chart_calculation"] == "not_implemented"
     assert result["enabled_bsp_rules"] == 0
+
+
+
+def test_mcp_manual_chart_tool_uses_shared_engine():
+    result = analyze_supplied_chart_tool(1, 0, {"Moon": 60, "Mars": 10})
+    assert result["planets"]["Moon"]["whole_sign_house"] == 3
+    assert result["bcp_cycle_reference"]["status"] == "provisional_secondary_source_only"
+    assert result["bsp"]["triggered_rules"] == []

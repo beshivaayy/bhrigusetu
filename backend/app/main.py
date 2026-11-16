@@ -9,6 +9,7 @@ from .bcp.engine import calculate_running_year, analyze_bcp
 from .bsp.engine import analyze_bsp
 from .rules import load_catalog, enabled_rules
 from .places import InvalidPlaceQuery, search_places
+from .chart.manual import SuppliedChartInput, analyze_supplied_chart
 
 app = FastAPI(
     title="BhriguSetu API",
@@ -90,3 +91,9 @@ def analyze(birth: BirthDetails):
             "Planetary positions, ascendant and houses have not been calculated.",
         ],
     }
+
+
+@app.post("/api/chart/manual")
+def manual_chart_analysis(chart: SuppliedChartInput):
+    """Map externally supplied sidereal longitudes; does not calculate an ephemeris."""
+    return analyze_supplied_chart(chart)

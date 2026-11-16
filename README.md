@@ -21,6 +21,7 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 - BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
 - Frontend is connected to the FastAPI analysis endpoint.
 - Astronomical chart calculation (planetary positions, ascendant and houses) is not yet enabled.
+- Manual chart import maps caller-supplied sidereal longitudes to signs and whole-sign houses; it does not calculate or verify an ephemeris.
 - This release is a partial calculation foundation, not a complete horoscope or prediction service.
 
 ## Repository structure
@@ -46,7 +47,7 @@ uvicorn app.main:app --reload --port 8000
 
 ~~~powershell
 cd frontend
-npm install
+npm ci
 $env:NEXT_PUBLIC_API_BASE_URL="http://localhost:8000"
 npm run dev
 ~~~
