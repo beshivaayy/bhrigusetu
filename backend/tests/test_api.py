@@ -101,7 +101,6 @@ def test_nonexistent_dst_birth_time_is_rejected():
     assert "does not exist" in str(response.json())
 
 
-
 def test_manual_chart_endpoint_maps_supplied_positions():
     response = client.post("/api/chart/manual", json={
         "running_year": 1,
@@ -124,3 +123,24 @@ def test_manual_chart_endpoint_rejects_out_of_range_longitude():
         "planetary_longitudes": {"Mars": 360},
     })
     assert response.status_code == 422
+
+
+def test_remote_mcp_endpoint_initializes():
+    with TestClient(app) as mcp_client:
+        response = mcp_client.post(
+            "/mcp",
+            headers={"Accept": "application/json, text/event-stream"},
+            json={
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "initialize",
+                "params": {
+                    "protocolVersion": "2025-03-26",
+                    "capabilities": {},
+                    "clientInfo": {"name": "api-test", "version": "1.0"},
+                },
+            },
+        )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["result"]["serverInfo"]["name"] == "BhriguSetu"
