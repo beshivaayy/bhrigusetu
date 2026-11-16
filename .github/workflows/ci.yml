@@ -59,7 +59,7 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:10000/health
-          curl -fsS -X POST http://127.0.0.1:10000/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}' | grep -q 'serverInfo'
+          if ! curl -fsS -X POST http://127.0.0.1:10000/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}' | grep -q 'serverInfo'; then docker logs bhrigusetu-api-ci; exit 1; fi
       - name: Clean up backend container
         if: always()
         run: docker rm -f bhrigusetu-api-ci || true
