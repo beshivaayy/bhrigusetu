@@ -18,7 +18,6 @@ from .mcp_server.server import mcp as bhrigusetu_mcp
 # Mount the same MCP tool registry under /mcp on the existing API service.
 # Local stdio clients continue to use: python -m app.mcp_server
 mcp_http_app = bhrigusetu_mcp.streamable_http_app(
-    streamable_http_path="/",
     json_response=True,
     stateless_http=True,
     host="0.0.0.0",
@@ -126,4 +125,4 @@ def manual_chart_analysis(chart: SuppliedChartInput):
 
 
 # Mount last so existing FastAPI routes keep precedence.
-app.mount("/mcp", mcp_http_app)
+app.mount("/", mcp_http_app)
