@@ -1,4 +1,7 @@
+import asyncio
+
 from app.mcp_server.server import (
+    mcp,
     analyze_bcp_tool,
     analyze_bsp_tool,
     analyze_supplied_chart_tool,
@@ -57,3 +60,15 @@ def test_mcp_manual_chart_tool_uses_shared_engine():
     assert result["planets"]["Moon"]["whole_sign_house"] == 3
     assert result["bcp_cycle_reference"]["status"] == "provisional_secondary_source_only"
     assert result["bsp"]["triggered_rules"] == []
+
+
+
+def test_mcp_tools_explicitly_advertise_read_only_behavior():
+    tools = asyncio.run(mcp.list_tools())
+    by_name = {tool.name: tool for tool in tools}
+
+    assert tools
+    assert all(tool.annotations is not None for tool in tools)
+    assert all(tool.annotations.read_only_hint is True for tool in tools)
+    assert by_name["search_birthplace_tool"].annotations.open_world_hint is True
+    assert by_name["analyze_bcp_tool"].annotations.open_world_hint is False
