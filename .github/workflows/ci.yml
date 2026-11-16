@@ -40,7 +40,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install
+      - run: npm ci
       - run: npm audit --audit-level=high
       - run: npm run build
 
@@ -63,5 +63,17 @@ jobs:
       - name: Clean up backend container
         if: always()
         run: docker rm -f bhrigusetu-api-ci || true
+      - name: Smoke-test remote MCP transport
+        run: |
+          docker run -d --name bhrigusetu-mcp-ci -e PORT=10001 -p 10001:10001 bhrigusetu-api:ci python -m app.mcp_server.http_server
+          for attempt in $(seq 1 20); do
+            if curl -fsS -X POST http://127.0.0.1:10001/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}' | grep -q 'serverInfo'; then exit 0; fi
+            sleep 1
+          done
+          docker logs bhrigusetu-mcp-ci
+          exit 1
+      - name: Clean up MCP container
+        if: always()
+        run: docker rm -f bhrigusetu-mcp-ci || true
       - name: Build frontend image
         run: docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.example.invalid -t bhrigusetu-web:ci ./frontend
