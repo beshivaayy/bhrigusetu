@@ -1,10 +1,10 @@
 # Repository Protection Baseline
 
-This document defines the intended GitHub repository settings for BhriguSetu. Workflow files in the repository provide automated checks, but **they do not themselves enforce branch protection**. The ruleset below must be created in GitHub repository settings by an owner.
+This document records the GitHub protection baseline for BhriguSetu. Workflow files provide automated checks, but **they do not themselves enforce branch protection**. On 2026-11-17, the repository owner-visible GitHub API showed an active repository ruleset named `Protect main`, targeting the `main` branch. The default branch was also reported as protected. This confirms that a ruleset exists; every individual rule and bypass setting still needs inspection in GitHub Settings.
 
 ## 1. Main branch ruleset
 
-Create a repository ruleset named `Protect main`:
+The observed repository ruleset is named `Protect main`. Verify its detailed configuration against this target baseline:
 
 - Enforcement status: **Active**
 - Target: branch `main`
@@ -24,7 +24,7 @@ Create a repository ruleset named `Protect main`:
 - Do not allow force pushes or deletion, including for administrators, unless a documented emergency requires a temporary bypass.
 - Bypass list: empty by default.
 
-**Important:** GitHub only offers required checks after the workflow has reported them. Create the ruleset after the first successful run of each workflow and select the exact check names shown in the Checks tab. Do not guess check names.
+**Observed checks on the current main commit (2026-11-17):** `backend`, `frontend`, `docker`, `Analyze (python)`, `Analyze (javascript-typescript)` and `gitleaks` all completed successfully. This does not prove they are all configured as required status checks in the ruleset. Verify the required-check selection in Settings → Rules → Rulesets.
 
 ## 2. Repository settings
 
