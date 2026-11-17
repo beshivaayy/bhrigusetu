@@ -120,6 +120,8 @@ def _sign_data(longitude: float) -> dict:
         4,
         int((value - nak_index * NAKSHATRA_SPAN + boundary_epsilon) // PADA_SPAN) + 1,
     )
+    nak_index = min(26, int(value // NAKSHATRA_SPAN))
+    pada = min(4, int((value - nak_index * NAKSHATRA_SPAN) // PADA_SPAN) + 1)
 
     segment = min(8, int(degree // NAVAMSA_SPAN))
     modality = index % 3
@@ -244,6 +246,7 @@ def calculate_natal_chart(birth) -> dict:
             "provider": "Astronomy Engine",
             "provider_version": "2.1.19",
             "accuracy_claim": "approximately Â±1 arcminute for supported celestial positions",
+            "accuracy_claim": "approximately ±1 arcminute for supported celestial positions",
             "coordinate_frame": "apparent geocentric ecliptic of date",
             "node": "mean lunar node; Ketu exactly opposite Rahu",
         },

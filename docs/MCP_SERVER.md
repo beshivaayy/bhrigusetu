@@ -6,6 +6,39 @@ BhriguSetu exposes its existing calculation and research functions through the M
 
 ~~~text
 https://bhrigusetu-api.onrender.com/mcp
+BhriguSetu exposes its existing calculation and research capabilities through the Model Context Protocol. The same tool registry is available to local stdio clients and remotely over Streamable HTTP at `/mcp` on the existing FastAPI service. The MCP adapter does not replace the frontend or calculation engines.
+
+## Current tools
+
+- `analyze_birth_details_tool` — validated partial birth analysis (running year, BCP, BSP status).
+- `calculate_birth_chart_tool` — calculates an approximate natal chart using the in-repository Astronomy Engine implementation; it is not JHora parity.
+- `calculate_jhora_chart_tool` — calls the independent Jagannatha Hora public REST API with explicit ayanamsha, Mean/True node, calculation type, Bhava Madhya and language settings; this is not desktop-JHora parity.
+- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; does not verify their ephemeris.
+- `calculate_running_year_tool` — running-year arithmetic.
+- `analyze_bcp_tool` — BCP house activation and provisional cycle metadata.
+- `analyze_bsp_tool` / `get_bsp_rules_tool` — research candidates and evidence status.
+- `calculate_kakshya_tool` / `compare_same_degree_tool` — deterministic BSP-7 lookup utilities.
+- `search_birthplace_tool` — existing OSM Nominatim search.
+- `resolve_birth_timezone_tool` — existing DST-safe local birth-time resolution.
+- `get_system_status_tool` — capability and methodology status.
+
+### Manual chart tool example
+
+Call `analyze_supplied_chart_tool` with:
+
+~~~json
+{
+  "running_year": 27,
+  "lagna_longitude": 285.5,
+  "ayanamsha": "Lahiri",
+  "planetary_longitudes": {
+    "Sun": 245.2,
+    "Moon": 195.4,
+    "Mars": 303.8,
+    "Jupiter": 1.4,
+    "Saturn": 16.5
+  }
+}
 ~~~
 
 The remote endpoint is protected by a Bearer token configured as BHRIGUSETU_MCP_TOKEN in the API service environment. The token must also be available to the MCP client. Never commit or publish the token. The health endpoint remains public; the MCP route requires authentication.
@@ -52,6 +85,7 @@ Chart output includes provider metadata and warnings. Treat this as an approxima
 ## JHora provider is a separate integration
 
 A public Jagannatha Hora API and MCP service is documented here:
+**Authentication and privacy:** the remote `/mcp` route requires a Bearer token configured through `BHRIGUSETU_MCP_TOKEN`; requests without a valid token receive HTTP 401. Keep the token in the hosting provider's secret/environment settings and never commit it. This token protects only the remote MCP route, not the other FastAPI routes. The registered MCP tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Before exposing write-capable or private-data tools, add user-level authorization, audit logging and appropriate privacy controls.
 
 - REST API: https://jagannathahora.com/api-mcp
 - MCP guide: https://jagannathahora.com/api-mcp/mcp-usage
@@ -60,6 +94,7 @@ A public Jagannatha Hora API and MCP service is documented here:
 The public API documents multiple ayanamsha identifiers and a mean/true node option for supported REST endpoints. Its documentation states that the service is independent and is not affiliated with the desktop astrology software or its author.
 
 Connecting a client directly to that public MCP endpoint is not the same as integrating it into BhriguSetu. Before integration, inspect the live tool schemas and verify each setting. Do not assume house systems, observer modes or position conventions are supported merely because they are common in astrology software.
+ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. **Do not choose “No authentication” for this endpoint:** remote `/mcp` requires a Bearer token. Use only a client connection flow that explicitly supports the required Bearer-token authentication, and store the token in that client's secure credential field. Never put the token in a URL, README, source file or screenshot. If the selected ChatGPT connection flow does not offer a compatible authentication method, do not expose the MCP endpoint without authentication as a workaround; continue using the already configured local Claude Code MCP connection until a supported secure connection method is available.
 
 ## Local stdio setup (Windows PowerShell)
 
@@ -96,6 +131,14 @@ The FastAPI OpenAPI page is available at /docs on the deployed API host or local
 - Registered tools are read-only calculations, lookups and research reads; they do not provide a write interface.
 - Birth details are processed by the calculation request. Review hosting and external-provider privacy policies before sending personal data.
 - Birthplace search uses OpenStreetMap Nominatim and must follow its usage policy and attribution requirements.
+- BCP running-year and house-activation calculations reuse the existing engine.
+- The chakra-swami sequence remains provisional.
+- BSP predictive candidates remain disabled until source verification and validation.
+- `calculate_birth_chart_tool` remains the approximate in-repository engine: Astronomy Engine 2.1.19, approximate Lahiri polynomial, Mean Nodes and Whole Sign houses, with D1/D9 mapping. It is not validated for JHora parity.
+- `calculate_jhora_chart_tool` calls the separate public REST provider. It exposes the provider's documented ayanamsha modes, Mean/True nodes, Drik/Surya Siddhanta, Bhava Madhya methods 1–5 and language options. The provider's returned engine revision and request notes are passed through. This is labelled public API output, not desktop-JHora parity.
+- Caller-supplied sidereal positions can separately be mapped to signs and whole-sign houses without validating their astronomical source. The chart layer does not enable BSP predictions; BSP candidates remain disabled.
+- Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
+- Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
 
 ## Tests
 
