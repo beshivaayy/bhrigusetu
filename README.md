@@ -77,6 +77,34 @@ Calculation conventions materially affect chart results. BhriguSetu treats birth
 
 The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself.
 
+## Acknowledgements & source credits
+
+BhriguSetu is built with gratitude to the teachers, authors, researchers and knowledge traditions from which its creator has learned. The project aims to acknowledge intellectual contributions clearly and respectfully.
+
+### Teachers and guiding influences
+
+Our special gratitude goes to:
+
+- **Sunil John** — for the teachings, guidance and knowledge that have helped shape the creator's understanding and research into Bhrigu Chakra Paddhati (BCP) and Bhrigu Saral Paddhati (BSP).
+- **Deepanshu Giri** — for sharing Jyotish knowledge, practical insights and teaching that have contributed to the creator's learning and continued study.
+- **Sanjay Rath** — for his extensive contributions to Jyotish education, traditional study and the wisdom that has informed the creator's learning and research approach.
+
+These acknowledgements express gratitude for learning and intellectual influence. They do not imply endorsement of BhriguSetu, collaboration, affiliation or review by the individuals named. Their teachings and authored materials remain theirs; BhriguSetu does not claim ownership over them.
+
+### Other teachers, authors and researchers
+
+We are also grateful to every other Jyotish teacher, author, scholar and researcher whose publicly shared or properly accessed work informs a specific part of this project. They will be credited by name alongside the relevant research entry, with a source link and—where available—a lecture timestamp, publication, page or chapter reference. No contributor should be represented as a source for a rule unless that attribution has been verified.
+
+### Classical knowledge and information sources
+
+BhriguSetu also acknowledges the authorship, preservation, translation and scholarship associated with classical Jyotish works, including *Brihat Parashara Hora Shastra*, *Phaladeepika*, *Laghu Parashari* and *Jaimini Sutras*. Specific editions, translators, editors and shloka references will be identified wherever they are used; traditional knowledge is not claimed as original project intellectual property.
+
+Software libraries, ephemeris/calculation providers, APIs, datasets, documentation, open-source maintainers and other information providers will be credited in the relevant notices or source registers according to their licences and attribution terms. The [Source matrix](research/SOURCE_MATRIX.md) records research references and evidence status.
+
+**Our principle:** give credit where knowledge came from, distinguish quotation from interpretation and distinguish both from BhriguSetu's own implementation or analysis. If a source or contributor is missing or incorrectly attributed, please open an issue so the record can be corrected.
+
+See [Acknowledgements and attribution policy](ACKNOWLEDGEMENTS.md) for the full credit standard.
+
 ## Architecture
 
 ```mermaid
