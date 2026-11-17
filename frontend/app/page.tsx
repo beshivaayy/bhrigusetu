@@ -56,7 +56,7 @@ export default function Home() {
   const [lat,setLat]=useState(""); const [lon,setLon]=useState(""); const [tz,setTz]=useState("Asia/Kolkata");
   const [timezoneOptions,setTimezoneOptions]=useState<string[]>([]); const [timeFold,setTimeFold]=useState("");
   const [ayanamsha,setAyanamsha]=useState("LAHIRI"); const [customAyanamsha,setCustomAyanamsha]=useState("");
-  const [node,setNode]=useState("mean"); const [calculation,setCalculation]=useState("drik"); const [bhava,setBhava]=useState("5");
+  const [node,setNode]=useState("mean"); const [calcMethod,setCalcMethod]=useState("drik"); const [bhava,setBhava]=useState("5");
   const [timezoneMode,setTimezoneMode]=useState("file"); const [language,setLanguage]=useState("en");
   const [loading,setLoading]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
   const [result,setResult]=useState<RecordValue|null>(null); const [activeSection,setActiveSection]=useState<SectionKey>("chart");
@@ -85,7 +85,7 @@ export default function Home() {
         date_of_birth:dob,time_of_birth:tob.length===5?`${tob}:00`:tob,time_fold:timeFold===""?null:Number(timeFold),
         place_name:place||null,latitude:Number(lat),longitude:Number(lon),timezone:tz,
         ayanamsa_mode:ayanamsha,ayanamsa_value:ayanamsha==="SIDM_USER"?Number(customAyanamsha):null,
-        node_type:node,calculation_type:calculation,bhava_madhya_method:Number(bhava),timezone_mode:timezoneMode,language
+        node_type:node,calculation_type:calcMethod,bhava_madhya_method:Number(bhava),timezone_mode:timezoneMode,language
       })});
       const payload=await response.json();
       if(!response.ok){const d=typeof payload.detail==="string"?payload.detail:payload.detail?.message||JSON.stringify(payload.detail);throw new Error(d||"Calculation failed.");}
@@ -133,7 +133,7 @@ export default function Home() {
           <label>Ayanamsha<select value={ayanamsha} onChange={e=>setAyanamsha(e.target.value)}>{["LAHIRI","TRUE_CITRA","TRUE_LAHIRI","KP","FAGAN","RAMAN","USHASHASHI","YUKTESHWAR","SURYASIDDHANTA","SURYASIDDHANTA_MSUN","ARYABHATA","ARYABHATA_MSUN","SS_CITRA","TRUE_REVATI","SS_REVATI","TRUE_PUSHYA","TRUE_MULA","KP-SENTHIL","SENTHIL","SIDM_USER"].map(v=><option key={v} value={v}>{v.replaceAll("_"," ")}</option>)}</select></label>
           {ayanamsha==="SIDM_USER"&&<label>Custom ayanamsha °<input type="number" step="any" value={customAyanamsha} onChange={e=>setCustomAyanamsha(e.target.value)} required/></label>}
           <label>Nodes<select value={node} onChange={e=>setNode(e.target.value)}><option value="mean">Mean node</option><option value="true">True node</option></select></label>
-          <label>Calculation method<select value={calculation} onChange={e=>setCalculation(e.target.value)}><option value="drik">Drik</option><option value="ss">Surya Siddhanta</option></select></label>
+          <label>Calculation method<select value={calcMethod} onChange={e=>setCalcMethod(e.target.value)}><option value="drik">Drik</option><option value="ss">Surya Siddhanta</option></select></label>
           <label>Bhava method<select value={bhava} onChange={e=>setBhava(e.target.value)}><option value="1">Equal · Lagna middle</option><option value="2">Equal · Lagna start</option><option value="3">Sripati</option><option value="4">KP / Placidus</option><option value="5">Whole Sign</option></select></label>
           <label>Timezone calculation<select value={timezoneMode} onChange={e=>setTimezoneMode(e.target.value)}><option value="file">Resolved timezone</option><option value="auto">Automatic historical lookup</option></select></label>
           <label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="en">English</option><option value="hi">Hindi</option><option value="ka">Kannada</option><option value="ta">Tamil</option><option value="te">Telugu</option></select></label>
@@ -144,7 +144,7 @@ export default function Home() {
     </section>
 
     {result&&<section className="horoscope-workspace">
-      <div className="chart-heading"><div><span className="overline">HOROSCOPE</span><h2>{place.split(",")[0]} <small>{dob} · {tob}</small></h2></div><div className="chart-summary"><span>Ayanamsha <b>{degree(horoscope.ayanamsa_value)}</b></span><span>Julian day <b>{degree(horoscope.julian_day)}</b></span></div></div>
+      <div className="chart-heading"><div><span className="overline">HOROSCOPE</span><h2>{place.split(",")[0]} <small>{dob} · {tob}</small></h2></div><div className="chart-summary"><span>Ayanamsha <b>{degree(horoscope.ayanamsa_value)}</b></span></div></div>
       <nav className="section-tabs" aria-label="Calculation sections">{SECTIONS.map(s=><button key={s.key} className={activeSection===s.key?"active":""} onClick={()=>setActiveSection(s.key)}>{s.label}</button>)}</nav>
 
       {activeSection==="chart"&&<div className="section-content">
@@ -166,9 +166,9 @@ export default function Home() {
       {activeSection!=="chart"&&activeSection!=="grahas"&&<div className="section-content">
         {Object.entries(sectionData[activeSection]).filter(([,v])=>v!==undefined&&v!==null).map(([title,value])=><DataPanel key={title} title={title} value={value}/>)}
       </div>}
-      <div className="birth-summary"><span>{result.result?.birth_details?.date||dob} · {result.result?.birth_details?.time||tob}</span><span>{lat}, {lon} · {tz}</span><span>Engine revision {result.engine_revision}</span></div>
+      <div className="birth-summary"><span>{result.result?.birth_details?.date||dob} · {result.result?.birth_details?.time||tob}</span><span>{lat}, {lon} · {tz}</span></div>
     </section>}
-    <footer className="app-footer"><span>BhriguSetu</span><span>Jyotish calculation workspace</span></footer>
+    <footer className="app-footer"><span>BhriguSetu</span><span>Jyotish calculation workspace</span><small>Place search © OpenStreetMap contributors</small></footer>
   </main>;
 }
 
