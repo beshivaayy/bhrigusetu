@@ -7,7 +7,7 @@ type Position = { sign?: string; longitude?: number };
 type RecordValue = Record<string, any>;
 type SectionKey = "chart" | "grahas" | "bhava" | "panchanga" | "yoga" | "strength" | "ashtakavarga" | "dasha" | "special";
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || "https://bhrigusetu-api.onrender.com").replace(/\/$/, "");
+const API_BASE = "/backend-api";
 const SIGN_ORDER = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 const GRAHAS = ["Ascendant","Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn","Rahu","Ketu","Uranus","Neptune","Pluto"];
 const SECTIONS: { key: SectionKey; label: string }[] = [
