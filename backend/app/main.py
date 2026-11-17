@@ -16,6 +16,7 @@ from .places import InvalidPlaceQuery, search_places
 from .chart.manual import SuppliedChartInput, analyze_supplied_chart
 from .chart.analysis import analyze_chart_context
 from .astronomy.ephemeris import calculate_natal_chart
+from .astronomy.jhora_provider import JHoraChartRequest, calculate_with_jhora
 from .mcp_server.server import mcp as bhrigusetu_mcp
 
 # Mount the same MCP tool registry under /mcp on the existing API service.
@@ -146,6 +147,12 @@ def analyze(birth: BirthDetails):
 def calculate_birth_chart(birth: BirthDetails):
     """Calculate D1/D9 sidereal positions and whole-sign houses from birth details."""
     return calculate_natal_chart(birth)
+
+
+@app.post("/api/chart/jhora")
+async def calculate_jhora_birth_chart(request: JHoraChartRequest):
+    """Calculate a natal chart through the independent Jagannatha Hora public REST API."""
+    return await calculate_with_jhora(request)
 
 
 @app.post("/api/chart/manual")

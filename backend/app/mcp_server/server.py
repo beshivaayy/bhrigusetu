@@ -19,6 +19,7 @@ from app.models import BirthDetails
 from app.chart.manual import SuppliedChartInput, analyze_supplied_chart
 from app.chart.analysis import analyze_chart_context
 from app.astronomy.ephemeris import calculate_natal_chart
+from app.astronomy.jhora_provider import JHoraChartRequest, calculate_with_jhora
 from app.places import search_places
 from app.rules import enabled_rules, load_catalog
 
@@ -206,6 +207,47 @@ def calculate_birth_chart_tool(
     return calculate_natal_chart(birth)
 
 
+@mcp.tool(annotations=_EXTERNAL_READ_ONLY)
+async def calculate_jhora_chart_tool(
+    date_of_birth: str,
+    time_of_birth: str,
+    latitude: float,
+    longitude: float,
+    timezone_name: str = "Asia/Kolkata",
+    place_name: str | None = None,
+    time_fold: int | None = None,
+    ayanamsa_mode: str = "LAHIRI",
+    ayanamsa_value: float | None = None,
+    node_type: str = "mean",
+    calculation_type: str = "drik",
+    bhava_madhya_method: int = 5,
+    timezone_mode: str = "file",
+    language: str = "en",
+) -> dict:
+    """Calculate a chart via the independent JHora REST API with explicit supported settings.
+
+    This provider call is separate from the approximate in-repository chart engine.
+    It does not establish parity with the desktop JHora application.
+    """
+    request = JHoraChartRequest(
+        date_of_birth=date.fromisoformat(date_of_birth),
+        time_of_birth=time.fromisoformat(time_of_birth),
+        latitude=latitude,
+        longitude=longitude,
+        timezone=timezone_name,
+        place_name=place_name,
+        time_fold=time_fold,
+        ayanamsa_mode=ayanamsa_mode,
+        ayanamsa_value=ayanamsa_value,
+        node_type=node_type,
+        calculation_type=calculation_type,
+        bhava_madhya_method=bhava_madhya_method,
+        timezone_mode=timezone_mode,
+        language=language,
+    )
+    return await calculate_with_jhora(request)
+
+
 @mcp.tool(annotations=_READ_ONLY)
 def analyze_supplied_chart_tool(
     running_year: int,
@@ -236,6 +278,7 @@ def get_system_status_tool() -> dict:
         "birthplace": "OSM Nominatim search and timezone candidate lookup available",
         "chart_calculation": "available_with_approximate_lahiri_model",
         "chart_calculation_scope": "birth_details_geocentric_planets_ascendant_whole_sign_d1_d9",
+        "jhora_rest_provider": "available_by_explicit_request; independent public REST API; desktop JHora parity not established",
         "ephemeris": "Astronomy Engine 2.1.19; approximate Lahiri polynomial; mean lunar node",
         "manual_chart_mapping": "available_for_caller_supplied_sidereal_positions",
         "enabled_bsp_rules": len(enabled_rules()),
@@ -254,7 +297,7 @@ def methodology_resource() -> str:
         "verification. BSP candidates remain disabled until their sources, "
         "preconditions and validation cases are verified. Kakshya lookup is "
         "a deterministic 3°45′ slot lookup. Planetary positions, ascendant, "
-        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings."
+        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings. A separate tool can call the independent Jagannatha Hora public REST API with explicit supported settings; this does not establish desktop-JHora parity."
     )
 
 

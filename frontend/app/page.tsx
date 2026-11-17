@@ -78,6 +78,16 @@ export default function Home() {
   const [result, setResult] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [jhoraAyanamsha, setJhoraAyanamsha] = useState("LAHIRI");
+  const [jhoraAyanamshaValue, setJhoraAyanamshaValue] = useState("");
+  const [jhoraNode, setJhoraNode] = useState("mean");
+  const [jhoraCalculation, setJhoraCalculation] = useState("drik");
+  const [jhoraBhava, setJhoraBhava] = useState("5");
+  const [jhoraTimezoneMode, setJhoraTimezoneMode] = useState("file");
+  const [jhoraLanguage, setJhoraLanguage] = useState("en");
+  const [jhoraResult, setJhoraResult] = useState<any>(null);
+  const [jhoraLoading, setJhoraLoading] = useState(false);
+  const [jhoraError, setJhoraError] = useState("");
 
   async function searchPlace() {
     if (place.trim().length < 3) {
@@ -110,6 +120,45 @@ export default function Home() {
     setLon(String(selected.longitude));
     setTimezoneOptions(selected.timezone_candidates || []);
     setTz(selected.timezone || "");
+  }
+
+  async function submitJhora(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setJhoraLoading(true);
+    setJhoraError("");
+    setJhoraResult(null);
+    try {
+      const response = await fetch(`${API_BASE}/api/chart/jhora`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date_of_birth: dob,
+          time_of_birth: tob.length === 5 ? `${tob}:00` : tob,
+          time_fold: timeFold === "" ? null : Number(timeFold),
+          place_name: place || null,
+          latitude: Number(lat),
+          longitude: Number(lon),
+          timezone: tz,
+          ayanamsa_mode: jhoraAyanamsha,
+          ayanamsa_value: jhoraAyanamsha === "SIDM_USER" ? Number(jhoraAyanamshaValue) : null,
+          node_type: jhoraNode,
+          calculation_type: jhoraCalculation,
+          bhava_madhya_method: Number(jhoraBhava),
+          timezone_mode: jhoraTimezoneMode,
+          language: jhoraLanguage,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok) {
+        const detail = typeof payload.detail === "string" ? payload.detail : payload.detail?.message || JSON.stringify(payload.detail);
+        throw new Error(detail || "Jagannatha Hora provider returned an error.");
+      }
+      setJhoraResult(payload);
+    } catch (err) {
+      setJhoraError(err instanceof Error ? err.message : "Unable to reach the Jagannatha Hora public API.");
+    } finally {
+      setJhoraLoading(false);
+    }
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -184,6 +233,32 @@ export default function Home() {
           <button className="submit full" disabled={loading}>{loading ? "Calculating…" : "Calculate natal chart + BCP activation + BSP status"} <span>→</span></button>
         </form>
         {error && <div className="error" role="alert">{error}</div>}
+        <div className="chart-section">
+          <div className="section-heading"><div><p className="eyebrow">JAGANNATHA HORA PUBLIC API</p><h2>Reference chart provider</h2></div><span className="status-pill">Separate provider</span></div>
+          <p className="form-hint">Uses the independent public REST API, not the desktop JHora application. Birth details above are reused. Unsupported settings are rejected; no approximate-engine fallback is applied.</p>
+          <form onSubmit={submitJhora}>
+            <label className="full">Ayanamsha<select value={jhoraAyanamsha} onChange={e => setJhoraAyanamsha(e.target.value)}>
+              {["LAHIRI","TRUE_CITRA","TRUE_LAHIRI","KP","FAGAN","RAMAN","USHASHASHI","YUKTESHWAR","SURYASIDDHANTA","SURYASIDDHANTA_MSUN","ARYABHATA","ARYABHATA_MSUN","SS_CITRA","TRUE_REVATI","SS_REVATI","TRUE_PUSHYA","TRUE_MULA","KP-SENTHIL","SENTHIL","SIDM_USER"].map(mode => <option key={mode} value={mode}>{mode}</option>)}
+            </select></label>
+            {jhoraAyanamsha === "SIDM_USER" && <label>Custom ayanamsha (degrees) *<input type="number" min="-30" max="30" step="any" value={jhoraAyanamshaValue} onChange={e => setJhoraAyanamshaValue(e.target.value)} required /></label>}
+            <label>Lunar node<select value={jhoraNode} onChange={e => setJhoraNode(e.target.value)}><option value="mean">Mean Node</option><option value="true">True Node</option></select></label>
+            <label>Calculation method<select value={jhoraCalculation} onChange={e => setJhoraCalculation(e.target.value)}><option value="drik">Drik</option><option value="ss">Surya Siddhanta</option></select></label>
+            <label>Bhava Madhya method<select value={jhoraBhava} onChange={e => setJhoraBhava(e.target.value)}><option value="1">Equal — Lagna at middle</option><option value="2">Equal — Lagna at start</option><option value="3">Sripati</option><option value="4">KP / Placidus</option><option value="5">Whole Sign</option></select></label>
+            <label>Timezone handling<select value={jhoraTimezoneMode} onChange={e => setJhoraTimezoneMode(e.target.value)}><option value="file">Use resolved IANA offset</option><option value="auto">Provider historical lookup</option></select></label>
+            <label>Response language<select value={jhoraLanguage} onChange={e => setJhoraLanguage(e.target.value)}><option value="en">English</option><option value="hi">Hindi</option><option value="ka">Kannada</option><option value="ta">Tamil</option><option value="te">Telugu</option></select></label>
+            <p className="form-hint full">The selected settings are sent explicitly. The provider's engine revision and any applied-setting notes are retained in the response.</p>
+            <button className="submit full" disabled={jhoraLoading || !dob || !tob || !lat || !lon || !tz}>{jhoraLoading ? "Requesting JHora chart…" : "Calculate with JHora public API"} <span>→</span></button>
+          </form>
+          {jhoraError && <div className="error" role="alert">{jhoraError}</div>}
+          {jhoraResult && <div className="notice chart-method">
+            <strong>Provider response received</strong>
+            <p>{jhoraResult.provider} · Engine revision: {jhoraResult.engine_revision ?? "not supplied"}</p>
+            <p>Desktop-JHora parity: not established. This is public API output only.</p>
+            <p>Returned sections: {Object.keys(jhoraResult.result?.horoscope || {}).join(" · ") || "Response received; section map unavailable."}</p>
+            {jhoraResult.request_notes && <p>Provider notes: {JSON.stringify(jhoraResult.request_notes)}</p>}
+            <details><summary>Calculation receipt</summary><pre>{JSON.stringify({requested_settings:jhoraResult.requested_settings,applied_settings:jhoraResult.applied_settings,timezone_used:jhoraResult.timezone_used,timezone_source:jhoraResult.timezone_source,ayanamsa_value:jhoraResult.ayanamsa_value}, null, 2)}</pre></details>
+          </div>}
+        </div>
       </section>
 
       {result && <section className="results" aria-live="polite">
