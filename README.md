@@ -207,7 +207,7 @@ Do not treat third-party libraries, public-domain/classical texts, teacher-autho
 
 ## Contributing
 
-Contributions are welcome in source research, reproducible examples, calculation tests, documentation and engineering. A BCP/BSP rule proposal must include its source, exact location, preconditions, worked example, expected output and regression test. Unattributed predictions should not be submitted as established doctrine.
+Until the private-core split and contributor terms are in place, use public issues and pull requests for documentation corrections, reproducible bug reports and discussion; do not assume a code contribution grants or transfers intellectual-property rights. Contributions to proprietary components require a written contributor/IP agreement before acceptance. A BCP/BSP research proposal must include its source, exact location, preconditions, worked example, expected output and regression test. Unattributed predictions should not be submitted as established doctrine.
 
 ---
 
