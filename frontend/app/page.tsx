@@ -27,6 +27,10 @@ function DataView({value,depth=0}:{value:any;depth?:number}) : ReactNode {
   if (typeof value === "string") return <span>{value}</span>;
   if (Array.isArray(value)) {
     if (!value.length) return <span className="muted">—</span>;
+    if (value.every(row => Array.isArray(row) && row.every((item:any) => item === null || ["string","number","boolean"].includes(typeof item)))) {
+      const width=Math.max(...value.map((row:any[])=>row.length));
+      return <div className="table-scroll"><table className="calc-table matrix-table"><thead><tr><th>#</th>{Array.from({length:width},(_,i)=><th key={i}>{i+1}</th>)}</tr></thead><tbody>{value.map((row:any[],i)=><tr key={i}><th>{i+1}</th>{Array.from({length:width},(_,j)=><td key={j}><DataView value={row[j]}/></td>)}</tr>)}</tbody></table></div>;
+    }
     if (value.every(item => item === null || ["string","number","boolean"].includes(typeof item))) {
       return <div className="value-list">{value.map((item,i)=><span key={i}><DataView value={item} depth={depth+1}/></span>)}</div>;
     }
