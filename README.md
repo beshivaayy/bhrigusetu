@@ -75,7 +75,7 @@ Calculation conventions materially affect chart results. BhriguSetu treats birth
 - [JHora public REST API](https://jagannathahora.com/api-mcp)
 - [JHora public MCP guide](https://jagannathahora.com/api-mcp/mcp-usage)
 
-The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself.
+The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself. The published REST request schema and its verified settings are documented in [JHora REST Provider Contract](docs/JHORA_REST_PROVIDER_CONTRACT.md); integration remains pending.
 
 ## Acknowledgements & source credits
 
@@ -222,6 +222,7 @@ Do not treat third-party libraries, public-domain/classical texts, teacher-autho
 | [Acknowledgements](ACKNOWLEDGEMENTS.md) | Gratitude to teachers and point-of-use attribution for research, classical, technical and community sources |
 | [Architecture](docs/ARCHITECTURE.md) | Application layers and responsibility boundaries |
 | [MCP server](docs/MCP_SERVER.md) | Available tools, transports and client setup |
+| [JHora REST provider contract](docs/JHORA_REST_PROVIDER_CONTRACT.md) | Verified public API request settings, attribution, failure policy and parity gates |
 | [Deployment](docs/DEPLOYMENT.md) | Render, Vercel, CORS and release verification |
 | [Place search](docs/PLACE_SEARCH.md) | Nominatim usage and timezone lookup safeguards |
 | [Manual chart import](docs/MANUAL_CHART_IMPORT.md) | Caller-supplied longitudes and mapping limitations |
