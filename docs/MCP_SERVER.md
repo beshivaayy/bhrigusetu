@@ -6,6 +6,7 @@ BhriguSetu exposes its existing calculation and research capabilities through th
 
 - `analyze_birth_details_tool` — validated partial birth analysis (running year, BCP, BSP status).
 - `calculate_birth_chart_tool` — calculates an approximate natal chart using the in-repository Astronomy Engine implementation; it is not JHora parity.
+- `calculate_jhora_chart_tool` — calls the independent Jagannatha Hora public REST API with explicit ayanamsha, Mean/True node, calculation type, Bhava Madhya and language settings; this is not desktop-JHora parity.
 - `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; does not verify their ephemeris.
 - `calculate_running_year_tool` — running-year arithmetic.
 - `analyze_bcp_tool` — BCP house activation and provisional cycle metadata.
@@ -103,7 +104,8 @@ Restart Claude Desktop after saving the configuration.
 - BCP running-year and house-activation calculations reuse the existing engine.
 - The chakra-swami sequence remains provisional.
 - BSP predictive candidates remain disabled until source verification and validation.
-- Birth-data chart calculation is available through `calculate_birth_chart_tool`, but is approximate: Astronomy Engine 2.1.19, approximate Lahiri polynomial, Mean Nodes and Whole Sign houses, with D1/D9 mapping. It is not validated for JHora parity. True Node, selectable ayanamsha variants and alternative bhava systems are not implemented in the in-repository engine.
+- `calculate_birth_chart_tool` remains the approximate in-repository engine: Astronomy Engine 2.1.19, approximate Lahiri polynomial, Mean Nodes and Whole Sign houses, with D1/D9 mapping. It is not validated for JHora parity.
+- `calculate_jhora_chart_tool` calls the separate public REST provider. It exposes the provider's documented ayanamsha modes, Mean/True nodes, Drik/Surya Siddhanta, Bhava Madhya methods 1–5 and language options. The provider's returned engine revision and request notes are passed through. This is labelled public API output, not desktop-JHora parity.
 - Caller-supplied sidereal positions can separately be mapped to signs and whole-sign houses without validating their astronomical source. The chart layer does not enable BSP predictions; BSP candidates remain disabled.
 - Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
 - Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
