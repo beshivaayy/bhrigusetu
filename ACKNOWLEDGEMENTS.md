@@ -24,6 +24,18 @@ Every other teacher, author, scholar or researcher whose work informs a BhriguSe
 
 Do not add names merely to create an impressive list. Do not attribute a claim to a teacher unless the source has been checked. Where several teachers differ, preserve each attribution and describe the disagreement rather than blending their positions.
 
+## Additional located Jyotish source contributors
+
+The current source register also identifies the following named authors and contributors. They are acknowledged here for the specific published material recorded in [the Source Matrix](research/SOURCE_MATRIX.md); this is not a claim that each person is a personal teacher, nor does it imply endorsement or affiliation.
+
+- **Vinayak Bhatt** — credited in the page metadata for the Saptarishis Astrology articles *Bhrighu Chakra Paddathi – 1* and *Bhrighu Chakra Paddathi – 2*.
+- **M. Imran** — author of the secondary article *Bhrigu Chakra with Cycle Rulers*. Its cycle-ruler sequence and proposed reference-count method are recorded as a secondary interpretation, not as confirmation of Sunil John's original method.
+- **Venkat Ramana** — associated with *Sage Bhrighu's Blessings*, Vol. 6, and credited for data assistance in the BSP-11 source record.
+- **Saptarishis Astrology Research Team** — credited collective research authorship for the BSP-10 and BSP-11 source records.
+- **Saptarishis Astrology** — publisher/platform hosting the cited BCP/BSP articles, magazine material and lectures.
+
+These names are included because the repository's existing source matrix identifies them in specific records. As the research catalogue expands, additional authors, translators, editors, lecturers and researchers should be added here only when their contribution is verified in the underlying source.
+
 ## Classical texts and traditional knowledge
 
 Classical Jyotish texts and traditional knowledge are treated as a distinct source layer, not as proprietary BhriguSetu content. Cite the exact work, edition, chapter, shloka/page and translator/editor where known. Examples of works that may appear in the research register include *Brihat Parashara Hora Shastra*, *Phaladeepika*, *Laghu Parashari* and *Jaimini Sutras*. The exact edition and passage must be verified for each actual claim; this list is not a claim that every listed work has already been used to substantiate every implemented rule.
