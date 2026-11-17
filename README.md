@@ -343,6 +343,7 @@ See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md) and [Place se
 - [x] Verify the JHora public REST request contract and register the provider in BhriguSetu API/MCP.
 - [x] Document the provider capability matrix for supported ayanamsha, node type, calculation and Bhava settings.
 - [ ] Add per-chart calculation profiles and persist the full settings receipt.
+- [x] Add a bounded, process-local JHora response cache (5-minute TTL, 128-entry limit, settings- and engine-revision-aware key).
 - [x] Integrate the JHora public REST provider as a distinct, explicitly selected API/MCP calculation path.
 - [ ] Build authorized desktop-JHora reference fixtures and angular-error comparison reports.
 - [ ] Expand frontend rendering of provider vargas and validate Bhava / house-system outputs.
