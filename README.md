@@ -41,6 +41,7 @@ This table describes the implementation on the `main` branch—not planned work.
 | BSP rule catalogue | Research stage | Five source-linked candidates; predictive matching disabled |
 | BSP-7 Kakshya | Implemented utility | Eight divisions of 3°45′; lookup only, not a standalone prediction |
 | Birth-chart calculation | Implemented, approximate | Astronomy Engine 2.1.19; approximate Lahiri polynomial, mean nodes, whole-sign houses and D1/D9; not JHora parity |
+| JHora public REST provider | Implemented as explicit API/MCP option | Configurable ayanamsha, Mean/True node, Drik/SS and Bhava methods; separate provider, not desktop-JHora parity |
 | Manual chart import | Implemented | Maps caller-supplied sidereal longitudes; does not verify their ephemeris |
 | MCP interface | Implemented | Exposes existing calculation and research functions |
 
@@ -75,7 +76,7 @@ Calculation conventions materially affect chart results. BhriguSetu treats birth
 - [JHora public REST API](https://jagannathahora.com/api-mcp)
 - [JHora public MCP guide](https://jagannathahora.com/api-mcp/mcp-usage)
 
-The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself.
+The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself. BhriguSetu now exposes an explicit public REST provider path; its calculation receipt preserves requested/applied settings and engine revision.
 
 ## Acknowledgements & source credits
 
