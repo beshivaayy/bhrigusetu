@@ -254,7 +254,31 @@ export default function Home() {
             <strong>Provider response received</strong>
             <p>{jhoraResult.provider} · Engine revision: {jhoraResult.engine_revision ?? "not supplied"}</p>
             <p>Desktop-JHora parity: not established. This is public API output only.</p>
-            <p>Returned sections: {Object.keys(jhoraResult.result?.horoscope || {}).join(" · ") || "Response received; section map unavailable."}</p>
+            <p>Provider: independent Jagannatha Hora REST API. The returned D1/D9 positions below are provider output, not desktop-JHora validation.</p>
+            {([
+              { key: "D-1_rasi", label: "D1 · Rashi" },
+              { key: "D-9_navamsa", label: "D9 · Navamsa" },
+            ] as const).map(({ key, label }) => {
+              const chart = jhoraResult.result?.horoscope?.divisional_charts?.[key];
+              if (!chart) return null;
+              const grahas = ["Ascendant", "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu"];
+              const available = grahas.filter(name => chart[name]);
+              return <div className="chart-table-wrap" key={key}>
+                <h3>{label} · provider positions</h3>
+                <table className="chart-table">
+                  <thead><tr><th>Graha</th><th>Rashi</th><th>Longitude within sign</th></tr></thead>
+                  <tbody>{available.map(name => {
+                    const position = chart[name];
+                    const longitude = Number(position.longitude);
+                    return <tr key={name}>
+                      <td>{name === "Ascendant" ? "Lagna" : name}</td>
+                      <td>{position.sign || "—"}</td>
+                      <td>{Number.isFinite(longitude) ? `${longitude.toFixed(4)}°` : "—"}</td>
+                    </tr>;
+                  })}</tbody>
+                </table>
+              </div>;
+            })}
             {jhoraResult.request_notes && <p>Provider notes: {JSON.stringify(jhoraResult.request_notes)}</p>}
             <details><summary>Calculation receipt</summary><pre>{JSON.stringify({requested_settings:jhoraResult.requested_settings,applied_settings:jhoraResult.applied_settings,timezone_used:jhoraResult.timezone_used,timezone_source:jhoraResult.timezone_source,ayanamsa_value:jhoraResult.ayanamsa_value}, null, 2)}</pre></details>
           </div>}
