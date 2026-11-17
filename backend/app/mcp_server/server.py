@@ -278,6 +278,7 @@ def get_system_status_tool() -> dict:
         "birthplace": "OSM Nominatim search and timezone candidate lookup available",
         "chart_calculation": "available_with_approximate_lahiri_model",
         "chart_calculation_scope": "birth_details_geocentric_planets_ascendant_whole_sign_d1_d9",
+        "jhora_rest_provider": "available_by_explicit_request; independent public REST API; desktop JHora parity not established",
         "ephemeris": "Astronomy Engine 2.1.19; approximate Lahiri polynomial; mean lunar node",
         "manual_chart_mapping": "available_for_caller_supplied_sidereal_positions",
         "enabled_bsp_rules": len(enabled_rules()),
@@ -296,7 +297,7 @@ def methodology_resource() -> str:
         "verification. BSP candidates remain disabled until their sources, "
         "preconditions and validation cases are verified. Kakshya lookup is "
         "a deterministic 3°45′ slot lookup. Planetary positions, ascendant, "
-        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings."
+        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings. A separate tool can call the independent Jagannatha Hora public REST API with explicit supported settings; this does not establish desktop-JHora parity."
     )
 
 
