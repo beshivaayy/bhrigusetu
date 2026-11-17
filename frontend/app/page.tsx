@@ -112,12 +112,12 @@ export default function Home() {
   const planetRows=GRAHAS.filter(name=>d1[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,...d1[name],house:houseFromSign(d1[name].sign,d1.Ascendant?.sign)}));
   const sectionData:Record<Exclude<SectionKey,"chart"|"grahas">,RecordValue> = {
     bhava:{ "Bhava chart":horoscope.bhava_chart,"House relationships":horoscope.house_relationships,"House relationships by Varga":horoscope.house_relationships_by_varga,"Bhava bala":horoscope.bhava_bala,"House varnadas":horoscope.house_varnadas },
-    panchanga:{"Calendar":horoscope.calendar_info,"Nakshatra & Pada":horoscope.nakshatra_pada,"Amsa rulers":horoscope.amsa_rulers},
+    panchanga:{"Calendar":horoscope.calendar_info,"Julian day":horoscope.julian_day,"Nakshatra & Pada":horoscope.nakshatra_pada,"Amsa rulers":horoscope.amsa_rulers},
     yoga:{"Yogas":horoscope.yogas,"Doshas":horoscope.doshas},
     strength:{"Shad bala":horoscope.shad_bala,"Required Shad bala":horoscope.shad_bala_required,"Bhava bala":horoscope.bhava_bala,"Other bala":horoscope.other_bala,"Vimsopaka bala":horoscope.vimsopaka_bala,"Vaiseshikamsa bala":horoscope.vaiseshikamsa_bala,"Planetary states":horoscope.planetary_states},
     ashtakavarga:{"Ashtakavarga":horoscope.ashtakavarga},
     dasha:{"Graha dashas":horoscope.graha_dashas,"Rasi dashas":horoscope.rasi_dashas,"Saturn transits":horoscope.saturn_transits},
-    special:{"Chara karakas":horoscope.chara_karakas,"Upagrahas":horoscope.upagrahas,"Special lagnas":horoscope.special_lagnas,"Graha arudhas":horoscope.graha_arudhas,"Surya arudhas":horoscope.surya_arudhas,"Chandra arudhas":horoscope.chandra_arudhas,"Arudha padas":horoscope.arudha_padhas,"Sphutas":horoscope.sphuta,"Sahams":horoscope.sahams,"Shashtiamsa rulers":horoscope.shashtiamsa_rulers,"Graha relationships":horoscope.house_relationships}
+    special:{"Chara karakas":horoscope.chara_karakas,"Upagrahas":horoscope.upagrahas,"Special lagnas":horoscope.special_lagnas,"Graha arudhas":horoscope.graha_arudhas,"Surya arudhas":horoscope.surya_arudhas,"Chandra arudhas":horoscope.chandra_arudhas,"Arudha padas":horoscope.arudha_padhas,"Sphutas":horoscope.sphuta,"Sahams":horoscope.sahams,"Shashtiamsa rulers":horoscope.shashtiamsa_rulers,"Graha relationships":horoscope.house_relationships,"Longevity calculations":horoscope.longevity_prediction,"Longevity reference":horoscope.longevity_reference}
   };
 
   return <main className="app-shell">
