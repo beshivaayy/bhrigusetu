@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BhriguSetu | BCP & BSP Research Platform",
-  description: "A source-traceable research platform for Bhrigu Chakra Paddhati and Bhrigu Saral Paddhati.",
+  title: "BhriguSetu | Jyotish Software",
+  description: "Vedic astrology chart calculations, divisional charts, planetary positions, dashas and strength calculations.",
   applicationName: "BhriguSetu",
 };
 
