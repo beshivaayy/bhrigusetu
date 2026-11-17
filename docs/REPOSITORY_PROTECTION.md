@@ -41,6 +41,7 @@ Under Settings → Actions → General:
 - Keep approval requirements for outside collaborators' workflow runs enabled.
 
 Under Settings → Code security and analysis:
+- Enable **Dependency graph** (required for the Dependency Review workflow).
 - Enable Dependabot alerts.
 - Enable Dependabot security updates.
 - Enable secret scanning and push protection when available for this repository/plan.
@@ -49,9 +50,9 @@ Under Settings → Code security and analysis:
 
 ## 3. Checks implemented in this repository
 
-- CI: backend tests, frontend production build, npm high-severity audit, Docker image builds and backend runtime smoke test.
-- CodeQL: Python and JavaScript/TypeScript static analysis.
-- Dependency Review: blocks pull requests that introduce high-severity vulnerable dependencies and denies GPL-3.0/AGPL-3.0 dependencies pending an explicit project licensing decision.
+- CI: backend tests, Python dependency audit (`pip-audit`), frontend production build, npm high-severity audit, Docker image builds and backend runtime smoke test.
+- CodeQL v4: Python and JavaScript/TypeScript static analysis.
+- Dependency Review: blocks pull requests that introduce high-severity vulnerable dependencies and denies GPL-3.0/AGPL-3.0 dependencies pending an explicit project licensing decision. It requires the repository Dependency graph to be enabled.
 - Gitleaks: scans repository history for accidentally committed secrets.
 - Dependabot: monthly grouped minor/patch updates; major upgrades remain manual.
 - Pull request checklist: tests, source evidence, personal-data and licensing review.
