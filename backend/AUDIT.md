@@ -1,7 +1,7 @@
 # BhriguSetu Implementation Audit
 
 **Generated:** 2026-11-17
-**Status:** 77 backend tests passing; frontend production build passing
+**Status:** chart engine integrated; 86 backend tests passing; frontend production build passing
 
 ---
 
@@ -14,9 +14,18 @@
 - Added boundary, validation, BCP-reference, BSP-safeguard, API and MCP tests. Backend suite: 77 passed.
 - Installed frontend dependencies with a generated package-lock.json; Next.js production build and TypeScript checks pass.
 
+## 2026-11-17 chart engine implementation update
+
+- Added Astronomy Engine 2.1.19 (MIT) for geocentric apparent ecliptic-of-date planetary longitudes.
+- Added approximate Lahiri ayanamsha polynomial, mean lunar node, ascendant, whole-sign houses, nakshatra/pada and D1/D9 mapping.
+- Integrated chart output into /api/analyze, added /api/chart/calculate, and exposed calculate_birth_chart_tool through MCP.
+- Added explicit provider, time, ayanamsha, node and precision metadata. Swiss Ephemeris was not added because its AGPL/professional dual licence needs a separate project decision.
+- Chart calculations are available but remain labelled approximate; BSP predictive rules remain disabled.
+- Backend tests after integration and BCP chart mapping: 86 passed.
+
 ## Executive Summary
 
-The repository implements a **research-first** BCP/BSP Jyotish calculation system. Core infrastructure is solid (running year, BCP house activation, Kakshya lookup, birthplace search, timezone resolution, MCP server). However, **all predictive functionality is explicitly disabled** pending verification.
+The repository implements a **research-first** BCP/BSP Jyotish calculation system. Core infrastructure is solid (running year, BCP house activation, Kakshya lookup, birthplace search, timezone resolution, MCP server). However, **BSP predictive functionality remains explicitly disabled** pending verification. The astronomy layer now calculates approximate natal D1/D9 charts.
 
 ---
 
@@ -30,7 +39,7 @@ The repository implements a **research-first** BCP/BSP Jyotish calculation syste
 | 12-house activation | ✅ Complete | — |
 | Cycle calculation | ✅ Complete | — |
 | **Chakra-swami (cycle ruler) mapping** | ⚠️ **Provisional** | Only 9 cycles documented (Moon→Ketu); cycle 10+ returns `None`. Needs primary source verification. |
-| **Cycle ruler reference point** | PROVISIONAL | Available only when caller supplies the cycle lord's natal longitude; secondary-source-only, not primary-source verified. |
+| **Cycle ruler reference point** | PROVISIONAL | Calculated from the natal chart using the secondary-source sequence; never promoted to a verified BCP rule. |
 | **Predictive interpretation** | ❌ **Disabled** | `interpretation_status: "not_enabled_pending_rule_verification"` |
 
 **Key Code:** `app/bcp/engine.py` lines 10-13, 37-53
@@ -45,7 +54,7 @@ The repository implements a **research-first** BCP/BSP Jyotish calculation syste
 | Rule schema enforcement | ✅ Complete | — |
 | **5 research candidates** | ⚠️ **All disabled** | None verified or enabled. See `rules/bsp_rules.json` |
 | **Rule matching engine** | ❌ **Not implemented** | `analyze_bsp()` returns `triggered_rules: []` with "matching deliberately withheld" |
-| **Chart data integration** | MANUAL INPUT ONLY | Caller-supplied positions can be mapped; no ephemeris or automated BSP matching exists. |
+| **Chart data integration** | PARTIAL | Calculated D1/D9 chart is available; automatic BSP matching remains disabled. |
 
 **Research Candidates (all `verified: false, enabled: false`):**
 1. **BSP-MARS-10TH-27** — Mars activates 10th-from-Mars in year 27
@@ -91,10 +100,10 @@ The repository implements a **research-first** BCP/BSP Jyotish calculation syste
 |---------|--------|-----|
 | Validated birth details model | ✅ Complete | — |
 | Running year + BCP + BSP | ✅ Complete | — |
-| **Birth-data chart calculation** | NOT IMPLEMENTED | No ephemeris-generated planetary positions or ascendant; manual mapping endpoint accepts external positions. |
-| **Ephemeris integration** | ❌ **Missing** | No Swiss Ephemeris / PyEphem / Skyfield integration |
-| **House system calculation** | ❌ **Missing** | No whole-sign, Placidus, etc. |
-| **Natal planet positions** | ❌ **Missing** | Required for BSP rule preconditions |
+| **Birth-data chart calculation** | AVAILABLE WITH CAVEATS | Astronomy Engine calculates seven classical planets, mean nodes, sidereal ascendant, whole-sign houses, nakshatra/pada and D1/D9. |
+| **Ephemeris integration** | PARTIAL | Astronomy Engine 2.1.19 (MIT); geocentric ecliptic-of-date positions; approx. ±1 arcminute claim. |
+| **House system calculation** | PARTIAL | Whole-sign houses implemented; quadrant systems are not. |
+| **Natal planet positions** | AVAILABLE WITH CAVEATS | Sun through Saturn plus mean Rahu/Ketu; true node and outer planets are not included. |
 
 **Key Code:** `app/main.py` lines 82-85, `app/mcp_server/server.py` lines 172-175
 
@@ -104,9 +113,10 @@ The repository implements a **research-first** BCP/BSP Jyotish calculation syste
 
 | Feature | Status | Gap |
 |---------|--------|-----|
-| 11 tools exposed | COMPLETE | Includes caller-supplied chart mapping. |
+| 12 tools exposed | COMPLETE | Includes calculated natal D1/D9 chart and caller-supplied chart mapping. |
 | Resource + prompt | ✅ Complete | — |
-| **Manual position mapping tool** | EXPOSED | Maps caller-supplied positions; it is not an ephemeris chart calculator. |
+| **Calculated birth chart tool** | EXPOSED | calculate_birth_chart_tool returns approximate Lahiri D1/D9 and whole-sign houses. |
+| **Manual position mapping tool** | EXPOSED | Maps caller-supplied positions independently of the ephemeris engine. |
 | **Rule matching tool** | ❌ **Not exposed** | Would require BSP matching engine first |
 
 **Key Code:** `app/mcp_server/server.py`
@@ -135,18 +145,17 @@ Chart Engine (ephemeris + houses)
 
 ## Prioritized Implementation Plan
 
-### Phase 1: Chart Calculation Foundation (HIGHEST PRIORITY)
+### Phase 1: Chart Calculation Foundation (INITIAL IMPLEMENTATION COMPLETE; VALIDATION CONTINUES)
 **Goal:** Enable planetary positions, ascendant, and house calculation
 
-1. **Add ephemeris dependency** — `swisseph` or `kerykeion` or `skyfield`
-2. **Implement `app/astronomy/ephemeris.py`** — planetary longitude calculation
-3. **Implement `app/astronomy/houses.py`** — house cusps (whole-sign first, then Placidus)
-4. **Implement `app/chart/engine.py`** — assemble complete natal chart
-5. **Add chart to `/api/analyze` and MCP `analyze_birth_details_tool`**
-6. **Tests** for known reference charts (e.g., Raman, Saptarishis examples)
+1. Astronomy Engine 2.1.19 is integrated; Swiss Ephemeris remains excluded pending licence choice.
+2. `app/astronomy/ephemeris.py` calculates geocentric longitudes, approximate Lahiri sidereal positions, ascendant, whole-sign houses, nakshatra/pada and D1/D9.
+3. API and MCP expose the calculated chart; frontend renders D1, D9, houses and model metadata.
+4. Expand golden tests across eras, locations, high latitudes and chart-boundary cases.
+5. Compare ayanamsha values against Indian Astronomical Ephemeris/JHora reference values before claiming strict parity.
 
-**Effort:** Medium-High
-**Unblocks:** All BSP rules, BCP cycle ruler reference
+**Effort:** Validation ongoing
+**Unblocks:** Chart-data consumers; BSP rules remain gated by source verification
 
 ---
 
@@ -217,11 +226,6 @@ Priority order based on complexity:
 
 ## Immediate Next Step
 
-**Next gate: choose and validate an ephemeris before Phase 1 chart calculation**
+**Next gate: expand astronomical golden tests and verify the ayanamsha model**
 
-This is the single highest-impact task — it unblocks everything else. I'll begin by:
-
-1. Evaluating ephemeris library options (swisseph vs kerykeion vs skyfield)
-2. Adding dependency to `requirements.txt`
-3. Implementing planetary position calculation
-4. Adding tests against known reference data
+The first chart engine is integrated. The remaining work is to validate more dates and latitudes, document the exact Lahiri reference convention, and keep chart-derived BSP predictions disabled until primary-source rules are independently verified.

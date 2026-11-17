@@ -33,3 +33,21 @@ Do not enable chart-derived BCP/BSP predictions until:
 3. A source-controlled golden test set compares the implementation with independently generated reference charts over multiple eras and latitudes.
 4. Ascendant and house boundaries are tested, including high latitudes and DST transitions.
 5. The UI shows the calculation settings and a reproducibility receipt.
+
+
+## Initial implementation selected (2026-11-17)
+
+The first chart engine uses Astronomy Engine 2.1.19 (astronomy-engine on PyPI), an MIT-licensed library. It provides geocentric vectors in the J2000 equatorial frame and a documented transform to the true ecliptic of date. The implementation deliberately uses GeoVector + Ecliptic for planets; EclipticLongitude is heliocentric and is therefore not suitable for natal geocentric longitudes.
+
+- Project: https://github.com/cosinekitty/astronomy
+- Python package/API reference: https://pypi.org/project/astronomy-engine/
+- Published accuracy statement: approximately ±1 arcminute for supported celestial positions.
+- Version pinned in backend/requirements.txt: astronomy-engine==2.1.19.
+
+The current chart implementation calculates Sun through Saturn, mean lunar node (Rahu) and opposite Ketu, tropical ascendant converted to sidereal, whole-sign houses, nakshatra/pada, and D1/D9 mapping. Planetary motion is estimated from a centred 24-hour longitude difference.
+
+Ayanamsha caveat: the current Lahiri/Chitrapaksha value is a polynomial approximation anchored at J2000. It is not represented as the complete Swiss Ephemeris IAE 1985 implementation. Chart metadata explicitly labels it approximate. The implementation has been checked against a known Lahiri reference chart for the 2000 epoch, but a broader golden set across dates and latitudes remains a release gate.
+
+Node caveat: mean node only; true node is not implemented.
+
+Do not enable BSP predictions from this chart output yet. The chart engine is a deterministic astronomy/mapping layer; the five BSP candidates remain disabled pending primary-source verification and independent worked examples.

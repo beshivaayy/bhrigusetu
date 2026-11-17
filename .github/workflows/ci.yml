@@ -57,13 +57,16 @@ jobs:
         run: docker build -t bhrigusetu-api:ci ./backend
       - name: Smoke-test API and MCP endpoint with Render PORT
         run: |
-          docker run -d --name bhrigusetu-api-ci -e PORT=10000 -p 10000:10000 bhrigusetu-api:ci
+          MCP_TOKEN="$(openssl rand -hex 32)"
+          docker run -d --name bhrigusetu-api-ci -e PORT=10000 -e BHRIGUSETU_MCP_TOKEN="$MCP_TOKEN" -p 10000:10000 bhrigusetu-api:ci
           for attempt in $(seq 1 20); do
             if curl -fsS http://127.0.0.1:10000/health; then break; fi
             sleep 1
           done
           curl -fsS http://127.0.0.1:10000/health
-          if ! curl -fsS -X POST http://127.0.0.1:10000/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}' | grep -q 'serverInfo'; then docker logs bhrigusetu-api-ci; exit 1; fi
+          unauth_status=$(curl -sS -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:10000/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}')
+          test "$unauth_status" = "401"
+          if ! curl -fsS -X POST http://127.0.0.1:10000/mcp -H "Authorization: Bearer $MCP_TOKEN" -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1.0"}}}' | grep -q 'serverInfo'; then docker logs bhrigusetu-api-ci; exit 1; fi
       - name: Clean up backend container
         if: always()
         run: docker rm -f bhrigusetu-api-ci || true

@@ -6,6 +6,7 @@ from app.mcp_server.server import (
     analyze_bsp_tool,
     analyze_supplied_chart_tool,
     calculate_kakshya_tool,
+    calculate_birth_chart_tool,
     calculate_running_year_tool,
     compare_same_degree_tool,
     get_bsp_rules_tool,
@@ -48,9 +49,9 @@ def test_mcp_same_degree_tool_compares_integer_degree():
     assert result["same_degree_number"] is True
 
 
-def test_mcp_status_is_honest_about_missing_chart_engine():
+def test_mcp_status_reports_chart_engine_and_keeps_bsp_disabled():
     result = get_system_status_tool()
-    assert result["chart_calculation"] == "not_implemented"
+    assert result["chart_calculation"] == "available_with_approximate_lahiri_model"
     assert result["enabled_bsp_rules"] == 0
 
 
@@ -72,3 +73,16 @@ def test_mcp_tools_explicitly_advertise_read_only_behavior():
     assert all(tool.annotations.read_only_hint is True for tool in tools)
     assert by_name["search_birthplace_tool"].annotations.open_world_hint is True
     assert by_name["analyze_bcp_tool"].annotations.open_world_hint is False
+
+
+def test_mcp_birth_chart_tool_returns_d1_d9_and_whole_sign_houses():
+    result = calculate_birth_chart_tool(
+        "2000-01-01", "00:00:00", 0.0, 0.0, "UTC"
+    )
+    assert result["status"] == "calculated_with_approximate_lahiri_model"
+    assert result["house_system"] == "whole_sign"
+    assert len(result["houses"]) == 12
+    assert "Moon" in result["planets"]
+    assert "Rahu" in result["planets"] and "Ketu" in result["planets"]
+    assert result["divisional_charts"]["D9"]["lagna"]["sign"]
+    assert result["warnings"]

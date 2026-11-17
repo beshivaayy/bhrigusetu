@@ -7,9 +7,9 @@ def test_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
-    assert response.json()["version"] == "0.3.0"
+    assert response.json()["version"] == "0.4.0"
 
-def test_analysis_returns_partial_result_without_fake_chart():
+def test_analysis_returns_birth_chart_with_explicit_model_warnings():
     response = client.post("/api/analyze", json={
         "date_of_birth": "2000-01-01",
         "time_of_birth": "09:40:00",
@@ -23,8 +23,9 @@ def test_analysis_returns_partial_result_without_fake_chart():
     assert payload["running_year"] == 27
     assert payload["bcp"]["activated_house"] == 3
     assert payload["bcp"]["cycle"] == 3
-    assert payload["bcp"]["reference_basis"] == "natal_lagna_only"
-    assert payload["bcp"]["cycle_ruler_reference_status"] == "not_calculated_chart_data_required"
+    assert payload["bcp"]["reference_basis"] == "natal_lagna_plus_provisional_cycle_lord"
+    assert payload["bcp"]["cycle_ruler_reference_status"] == "provisional_secondary_source_only"
+    assert payload["bcp_cycle_reference"]["status"] == "provisional_secondary_source_only"
     assert payload["bsp"]["triggered_rules"] == []
     assert payload["bsp"]["research_candidate_count"] == 5
     assert {rule["id"] for rule in payload["bsp"]["research_candidates"]} == {
@@ -33,7 +34,11 @@ def test_analysis_returns_partial_result_without_fake_chart():
         "BSP-JUPITER-9TH-ASPECT-40",
     }
     assert all(rule["status"] == "disabled_pending_verification" for rule in payload["bsp"]["research_candidates"])
-    assert payload["chart"]["status"] == "not_calculated"
+    assert payload["chart"]["status"] == "calculated_with_approximate_lahiri_model"
+    assert payload["chart"]["lagna"]["sign"] == "Capricorn"
+    assert payload["chart"]["planets"]["Moon"]["sign"] == "Libra"
+    assert payload["chart"]["divisional_charts"]["D9"]["lagna"]["sign"] == "Leo"
+    assert payload["chart"]["house_system"] == "whole_sign"
     assert payload["birth_details"]["birth_datetime_local"] == "2000-01-01T09:40:00+05:30"
     assert payload["birth_details"]["birth_datetime_utc"] == "2000-01-01T04:10:00+00:00"
 

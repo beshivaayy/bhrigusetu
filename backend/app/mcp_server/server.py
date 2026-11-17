@@ -1,7 +1,6 @@
 """BhriguSetu MCP server.
 
-The existing application engines remain the only calculation source.
-No ephemeris calculation or predictive BSP rules are added here. Caller-supplied positions can be mapped.
+The astronomy module calculates approximate Lahiri D1/D9 charts. BSP predictive rules remain disabled. Caller-supplied positions can also be mapped.
 Run from the backend directory: python -m app.mcp_server
 """
 from __future__ import annotations
@@ -18,6 +17,8 @@ from app.bsp.engine import analyze_bsp
 from app.bsp.kakshya import calculate_kakshya, same_degree_number
 from app.models import BirthDetails
 from app.chart.manual import SuppliedChartInput, analyze_supplied_chart
+from app.chart.analysis import analyze_chart_context
+from app.astronomy.ephemeris import calculate_natal_chart
 from app.places import search_places
 from app.rules import enabled_rules, load_catalog
 
@@ -27,7 +28,7 @@ mcp = MCPServer(
         "Research-first Jyotish calculation server. Use the existing BhriguSetu "
         "engines as the source of truth. Clearly preserve provisional and "
         "research-pending statuses. Never claim a complete horoscope: planetary "
-        "positions are not calculated from birth details; caller-supplied positions can be mapped to whole-sign houses."
+        "birth details can produce approximate Lahiri D1/D9 positions and whole-sign houses; see chart warnings for model limits."
     ),
 )
 
@@ -138,10 +139,7 @@ def analyze_birth_details_tool(
     as_of_date: str | None = None,
     time_fold: int | None = None,
 ) -> dict:
-    """Run the existing partial BCP/BSP analysis for validated birth details.
-
-    This does not calculate planetary positions, ascendant, houses or a complete chart.
-    """
+    """Run BCP/BSP status analysis and calculate the approximate natal D1/D9 chart."""
     birth = BirthDetails(
         date_of_birth=date.fromisoformat(date_of_birth),
         time_of_birth=time.fromisoformat(time_of_birth),
@@ -156,6 +154,8 @@ def analyze_birth_details_tool(
     analysis_date = birth.as_of_date or local_today
     running_year = calculate_running_year(birth.date_of_birth, analysis_date)
     local_birth = birth.resolved_birth_datetime()
+    chart = calculate_natal_chart(birth)
+    chart_context = analyze_chart_context(running_year, chart)
     return {
         "status": "partial_calculation",
         "methodology_status": "research_pending",
@@ -173,18 +173,37 @@ def analyze_birth_details_tool(
             "timezone": birth.timezone,
         },
         "running_year": running_year,
-        "bcp": analyze_bcp(running_year),
-        "bsp": analyze_bsp(running_year),
-        "chart": {
-            "status": "not_calculated",
-            "reason": "Planetary positions, ascendant and houses are not implemented or verified.",
-        },
+        "bcp": chart_context["bcp"],
+        "bsp": chart_context["bsp"],
+        "bcp_cycle_reference": chart_context["bcp_cycle_reference"],
+        "chart": chart,
         "warnings": [
             "Research foundation only; not a complete horoscope or prediction.",
             "BCP chakra-swami mapping remains provisional pending primary-source verification.",
             "No BSP production prediction rules are enabled.",
         ],
     }
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def calculate_birth_chart_tool(
+    date_of_birth: str,
+    time_of_birth: str,
+    latitude: float,
+    longitude: float,
+    timezone_name: str = "Asia/Kolkata",
+    time_fold: int | None = None,
+) -> dict:
+    """Calculate an approximate Lahiri sidereal D1/D9 chart from birth details."""
+    birth = BirthDetails(
+        date_of_birth=date.fromisoformat(date_of_birth),
+        time_of_birth=time.fromisoformat(time_of_birth),
+        latitude=latitude,
+        longitude=longitude,
+        timezone=timezone_name,
+        time_fold=time_fold,
+    )
+    return calculate_natal_chart(birth)
 
 
 @mcp.tool(annotations=_READ_ONLY)
@@ -215,9 +234,10 @@ def get_system_status_tool() -> dict:
         "bsp": "research catalog available; predictive matching disabled",
         "kakshya": "3°45′ lookup and same-degree comparison available",
         "birthplace": "OSM Nominatim search and timezone candidate lookup available",
-        "chart_calculation": "not_implemented",
-        "chart_calculation_scope": "birth_details_ephemeris_not_implemented",
-        "manual_chart_mapping": "available_for_caller_supplied_sidereal_positions; no_ephemeris",
+        "chart_calculation": "available_with_approximate_lahiri_model",
+        "chart_calculation_scope": "birth_details_geocentric_planets_ascendant_whole_sign_d1_d9",
+        "ephemeris": "Astronomy Engine 2.1.19; approximate Lahiri polynomial; mean lunar node",
+        "manual_chart_mapping": "available_for_caller_supplied_sidereal_positions",
         "enabled_bsp_rules": len(enabled_rules()),
         "research_candidates": len(catalog["rules"]),
     }
@@ -234,7 +254,7 @@ def methodology_resource() -> str:
         "verification. BSP candidates remain disabled until their sources, "
         "preconditions and validation cases are verified. Kakshya lookup is "
         "a deterministic 3°45′ slot lookup. Planetary positions, ascendant, "
-        "houses and complete horoscope calculations are not implemented."
+        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings."
     )
 
 

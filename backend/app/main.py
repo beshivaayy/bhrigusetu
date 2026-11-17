@@ -10,11 +10,12 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import BirthDetails
-from .bcp.engine import calculate_running_year, analyze_bcp
-from .bsp.engine import analyze_bsp
+from .bcp.engine import calculate_running_year
 from .rules import load_catalog, enabled_rules
 from .places import InvalidPlaceQuery, search_places
 from .chart.manual import SuppliedChartInput, analyze_supplied_chart
+from .chart.analysis import analyze_chart_context
+from .astronomy.ephemeris import calculate_natal_chart
 from .mcp_server.server import mcp as bhrigusetu_mcp
 
 # Mount the same MCP tool registry under /mcp on the existing API service.
@@ -35,7 +36,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(
     title="BhriguSetu API",
-    version="0.3.0",
+    version="0.4.0",
     description="Research-first BCP and BSP application. Unverified predictive rules are disabled.",
     lifespan=lifespan,
 )
@@ -109,6 +110,8 @@ def analyze(birth: BirthDetails):
     running_year = calculate_running_year(birth.date_of_birth, analysis_date)
     birth_local = birth.resolved_birth_datetime()
     birth_utc = birth_local.astimezone(ZoneInfo("UTC"))
+    chart = calculate_natal_chart(birth)
+    chart_context = analyze_chart_context(running_year, chart)
     return {
         "status": "partial_calculation",
         "methodology_status": "research_pending",
@@ -126,19 +129,23 @@ def analyze(birth: BirthDetails):
             "timezone": birth.timezone,
         },
         "running_year": running_year,
-        "bcp": analyze_bcp(running_year),
-        "bsp": analyze_bsp(running_year),
-        "chart": {
-            "status": "not_calculated",
-            "reason": "Astronomical chart calculation is not enabled until ephemeris settings and reference test cases are verified.",
-        },
+        "bcp": chart_context["bcp"],
+        "bsp": chart_context["bsp"],
+        "bcp_cycle_reference": chart_context["bcp_cycle_reference"],
+        "chart": chart,
         "warnings": [
             "This is a research foundation, not a complete horoscope or prediction.",
             "BCP house activation follows the current working arithmetic; chakra-swami mapping still requires primary-source verification.",
             "No BSP prediction rules are enabled.",
-            "Planetary positions, ascendant and houses have not been calculated.",
+            "Chart uses Astronomy Engine with an approximate Lahiri ayanamsha; review chart warnings before precision-sensitive use.",
         ],
     }
+
+
+@app.post("/api/chart/calculate")
+def calculate_birth_chart(birth: BirthDetails):
+    """Calculate D1/D9 sidereal positions and whole-sign houses from birth details."""
+    return calculate_natal_chart(birth)
 
 
 @app.post("/api/chart/manual")
