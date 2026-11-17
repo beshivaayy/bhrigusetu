@@ -45,9 +45,14 @@ function Table({rows,columns}:{rows:RecordValue[];columns:{key:string;label:stri
   return <div className="table-scroll"><table className="calc-table"><thead><tr>{columns.map(c=><th key={c.key}>{c.label}</th>)}</tr></thead><tbody>{rows.map((row,i)=><tr key={i}>{columns.map(c=><td key={c.key}>{c.render ? c.render(row[c.key],row) : <DataView value={row[c.key]}/>}</td>)}</tr>)}</tbody></table></div>;
 }
 
-function ChartGrid({chart,asc}:{chart:RecordValue;asc?:string}) {
-  const signs=useMemo(()=>SIGN_ORDER.map((sign,i)=>({sign,house:houseFromSign(sign,asc),planets:Object.entries(chart||{}).filter(([name,p]:[string,any])=>name!=="Ascendant"&&p?.sign===sign)})),[chart,asc]);
-  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" key={item.sign}><span className="rashi-house">House {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name==="Ascendant"?"Lagna":name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">—</span>}</div></article>)}</div>;
+function ChartGrid({chart,asc,title}:{chart:RecordValue;asc?:string;title:string}) {
+  const positions:Record<string,{row:number;col:number}> = {
+    Aries:{row:1,col:1},Taurus:{row:1,col:2},Gemini:{row:1,col:3},Cancer:{row:1,col:4},
+    Leo:{row:2,col:4},Virgo:{row:3,col:4},Libra:{row:4,col:4},Scorpio:{row:4,col:3},
+    Sagittarius:{row:4,col:2},Capricorn:{row:4,col:1},Aquarius:{row:3,col:1},Pisces:{row:2,col:1}
+  };
+  const signs=useMemo(()=>SIGN_ORDER.map(sign=>({sign,house:houseFromSign(sign,asc),planets:Object.entries(chart||{}).filter(([name,p]:[string,any])=>name!=="Ascendant"&&p?.sign===sign)})),[chart,asc]);
+  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" style={{gridRow:positions[item.sign].row,gridColumn:positions[item.sign].col}} key={item.sign}><span className="rashi-house">House {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">—</span>}</div></article>)}<div className="chart-center"><span className="overline">{title}</span><strong>{asc||"—"}</strong><small>Lagna</small></div></div>;
 }
 
 export default function Home() {
@@ -149,7 +154,7 @@ export default function Home() {
 
       {activeSection==="chart"&&<div className="section-content">
         <div className="subheading"><div><span className="overline">DIVISIONAL CHARTS</span><h3>{pretty(selectedVarga)}</h3></div><select className="varga-select" value={selectedVarga} onChange={e=>setSelectedVarga(e.target.value)}>{divisionKeys.map(k=><option key={k} value={k}>{pretty(k)}</option>)}</select></div>
-        <ChartGrid chart={selectedChart} asc={asc}/>
+        <ChartGrid chart={selectedChart} asc={asc} title={selectedVarga.split("_")[0]}/>
         <Table rows={GRAHAS.filter(name=>selectedChart[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,sign:selectedChart[name].sign,longitude:selectedChart[name].longitude,house:houseFromSign(selectedChart[name].sign,asc)}))} columns={[
           {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Degree",render:v=>degree(v)},{key:"house",label:"House"}
         ]}/>
