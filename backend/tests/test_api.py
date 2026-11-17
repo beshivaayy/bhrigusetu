@@ -125,11 +125,12 @@ def test_manual_chart_endpoint_rejects_out_of_range_longitude():
     assert response.status_code == 422
 
 
-def test_remote_mcp_endpoint_initializes():
+def test_remote_mcp_endpoint_initializes(monkeypatch):
+    monkeypatch.setenv("BHRIGUSETU_MCP_TOKEN", "test-secret-token")
     with TestClient(app) as mcp_client:
         response = mcp_client.post(
             "/mcp",
-            headers={"Accept": "application/json, text/event-stream"},
+            headers={"Accept": "application/json, text/event-stream", "Authorization": "Bearer test-secret-token"},
             json={
                 "jsonrpc": "2.0",
                 "id": 1,

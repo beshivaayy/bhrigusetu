@@ -1,10 +1,12 @@
 import os
+import secrets
 from contextlib import asynccontextmanager
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import httpx
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import BirthDetails
@@ -44,8 +46,29 @@ app.add_middleware(
     allow_origins=_configured_origins or _default_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type", "Accept", "MCP-Protocol-Version", "Mcp-Session-Id"],
+    allow_headers=["Content-Type", "Accept", "Authorization", "MCP-Protocol-Version", "Mcp-Session-Id"],
 )
+
+
+@app.middleware("http")
+async def protect_remote_mcp(request: Request, call_next):
+    """Require a configured bearer token for the public Streamable HTTP MCP route."""
+    if request.url.path == "/mcp" or request.url.path.startswith("/mcp/"):
+        expected = os.getenv("BHRIGUSETU_MCP_TOKEN", "").strip()
+        if not expected:
+            return JSONResponse(
+                status_code=503,
+                content={"detail": "Remote MCP authentication is not configured."},
+            )
+        supplied = request.headers.get("authorization", "")
+        scheme, _, token = supplied.partition(" ")
+        if scheme.lower() != "bearer" or not token or not secrets.compare_digest(token, expected):
+            return JSONResponse(
+                status_code=401,
+                content={"detail": "A valid bearer token is required for remote MCP access."},
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    return await call_next(request)
 
 
 @app.get("/health")
