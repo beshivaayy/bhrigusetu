@@ -62,7 +62,7 @@ https://<existing-bhrigusetu-api-host>/mcp
 
 There is no second Render service: MCP is mounted inside the existing API process and uses the same Render-assigned public HTTPS hostname. This avoids consuming another free instance. The mounted endpoint uses stateless HTTP requests and JSON responses. Local stdio remains unchanged.
 
-**Exposure and privacy:** this remote endpoint has no sign-in/OAuth layer and is publicly reachable. The registered tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Add OAuth before exposing any future write-capable or private-data tools.
+**Authentication and privacy:** the remote `/mcp` route requires a Bearer token configured through `BHRIGUSETU_MCP_TOKEN`; requests without a valid token receive HTTP 401. Keep the token in the hosting provider's secret/environment settings and never commit it. This token protects only the remote MCP route, not the other FastAPI routes. The registered MCP tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Before exposing write-capable or private-data tools, add user-level authorization, audit logging and appropriate privacy controls.
 
 ### Add to ChatGPT
 
