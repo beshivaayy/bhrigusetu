@@ -19,6 +19,7 @@ from app.models import BirthDetails
 from app.chart.manual import SuppliedChartInput, analyze_supplied_chart
 from app.chart.analysis import analyze_chart_context
 from app.astronomy.ephemeris import calculate_natal_chart
+from app.astronomy.jhora_provider import JHoraChartRequest, calculate_with_jhora
 from app.places import search_places
 from app.rules import enabled_rules, load_catalog
 
@@ -204,6 +205,47 @@ def calculate_birth_chart_tool(
         time_fold=time_fold,
     )
     return calculate_natal_chart(birth)
+
+
+@mcp.tool(annotations=_EXTERNAL_READ_ONLY)
+async def calculate_jhora_chart_tool(
+    date_of_birth: str,
+    time_of_birth: str,
+    latitude: float,
+    longitude: float,
+    timezone_name: str = "Asia/Kolkata",
+    place_name: str | None = None,
+    time_fold: int | None = None,
+    ayanamsa_mode: str = "LAHIRI",
+    ayanamsa_value: float | None = None,
+    node_type: str = "mean",
+    calculation_type: str = "drik",
+    bhava_madhya_method: int = 5,
+    timezone_mode: str = "file",
+    language: str = "en",
+) -> dict:
+    """Calculate a chart via the independent JHora REST API with explicit supported settings.
+
+    This provider call is separate from the approximate in-repository chart engine.
+    It does not establish parity with the desktop JHora application.
+    """
+    request = JHoraChartRequest(
+        date_of_birth=date.fromisoformat(date_of_birth),
+        time_of_birth=time.fromisoformat(time_of_birth),
+        latitude=latitude,
+        longitude=longitude,
+        timezone=timezone_name,
+        place_name=place_name,
+        time_fold=time_fold,
+        ayanamsa_mode=ayanamsa_mode,
+        ayanamsa_value=ayanamsa_value,
+        node_type=node_type,
+        calculation_type=calculation_type,
+        bhava_madhya_method=bhava_madhya_method,
+        timezone_mode=timezone_mode,
+        language=language,
+    )
+    return await calculate_with_jhora(request)
 
 
 @mcp.tool(annotations=_READ_ONLY)
