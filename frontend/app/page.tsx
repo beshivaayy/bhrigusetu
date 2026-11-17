@@ -30,7 +30,6 @@ export default function Home() {
     </header>
 
     <section className="sanatan-hero">
-      <div className="hero-manuscript-mark" aria-hidden="true"><span>ॐ</span><i/><b/><em/></div>
       <div className="sanatan-hero-copy">
         <div className="sanskrit-kicker">विद्या · विचार · विवेक</div>
         <p className="eyebrow-line">A KNOWLEDGE PLATFORM ROOTED IN TRADITION</p>
