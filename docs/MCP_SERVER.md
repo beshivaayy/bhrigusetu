@@ -66,9 +66,7 @@ There is no second Render service: MCP is mounted inside the existing API proces
 
 ### Add to ChatGPT
 
-ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. On an eligible ChatGPT web account, open the custom MCP server connection flow, use the existing API host with the `/mcp` path, choose **No authentication** for this read-only public endpoint, review the tool list and risk notice, then create the connection.
-
-Plan availability is controlled by ChatGPT: OpenAI currently lists Pro for read/fetch-only custom MCP connections and Business/Enterprise/Edu for broader MCP access. Free is not listed as eligible. If the account is on Free, the server can still be used from local MCP clients (including the already configured Claude Code connection), but ChatGPT will not offer the custom-server connection until the account/workspace is eligible. Setup is web-only.
+ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. **Do not choose “No authentication” for this endpoint:** remote `/mcp` requires a Bearer token. Use only a client connection flow that explicitly supports the required Bearer-token authentication, and store the token in that client's secure credential field. Never put the token in a URL, README, source file or screenshot. If the selected ChatGPT connection flow does not offer a compatible authentication method, do not expose the MCP endpoint without authentication as a workaround; continue using the already configured local Claude Code MCP connection until a supported secure connection method is available.
 
 ## Claude Code (Windows PowerShell)
 
