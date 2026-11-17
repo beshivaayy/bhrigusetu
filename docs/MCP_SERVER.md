@@ -5,7 +5,8 @@ BhriguSetu exposes its existing calculation and research capabilities through th
 ## Current tools
 
 - `analyze_birth_details_tool` — validated partial birth analysis (running year, BCP, BSP status).
-- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; no ephemeris calculation.
+- `calculate_birth_chart_tool` — calculates an approximate natal chart using the in-repository Astronomy Engine implementation; it is not JHora parity.
+- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; does not verify their ephemeris.
 - `calculate_running_year_tool` — running-year arithmetic.
 - `analyze_bcp_tool` — BCP house activation and provisional cycle metadata.
 - `analyze_bsp_tool` / `get_bsp_rules_tool` — research candidates and evidence status.
@@ -102,7 +103,8 @@ Restart Claude Desktop after saving the configuration.
 - BCP running-year and house-activation calculations reuse the existing engine.
 - The chakra-swami sequence remains provisional.
 - BSP predictive candidates remain disabled until source verification and validation.
-- Birth-data ephemeris calculation is not implemented. Caller-supplied sidereal positions can be mapped to signs and whole-sign houses without validating their astronomical source. A complete horoscope is not implemented.
+- Birth-data chart calculation is available through `calculate_birth_chart_tool`, but is approximate: Astronomy Engine 2.1.19, approximate Lahiri polynomial, Mean Nodes and Whole Sign houses, with D1/D9 mapping. It is not validated for JHora parity. True Node, selectable ayanamsha variants and alternative bhava systems are not implemented in the in-repository engine.
+- Caller-supplied sidereal positions can separately be mapped to signs and whole-sign houses without validating their astronomical source. The chart layer does not enable BSP predictions; BSP candidates remain disabled.
 - Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
 - Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
 
