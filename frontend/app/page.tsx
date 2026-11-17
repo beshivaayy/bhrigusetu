@@ -255,6 +255,7 @@ export default function Home() {
             <p>{jhoraResult.provider} · Engine revision: {jhoraResult.engine_revision ?? "not supplied"}</p>
             <p>Desktop-JHora parity: not established. This is public API output only.</p>
             <p>Provider: independent Jagannatha Hora REST API. The returned D1/D9 positions below are provider output, not desktop-JHora validation.</p>
+            {jhoraResult.cache && <p>Response cache: {jhoraResult.cache.hit ? `Hit · ${jhoraResult.cache.expires_in_seconds ?? 0}s remaining` : `Fresh response · ${jhoraResult.cache.ttl_seconds}s TTL`}</p>}
             {([
               { key: "D-1_rasi", label: "D1 · Rashi" },
               { key: "D-9_navamsa", label: "D9 · Navamsa" },
