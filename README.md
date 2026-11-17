@@ -171,6 +171,14 @@ Never commit API keys, tokens, passwords or local environment files. Use HTTPS f
 
 The intended split deployment is **Vercel** for the frontend (root directory `frontend/`) and **Render** for the backend (repository Render configuration and backend Dockerfile). Configuration files do not guarantee that a service is deployed or healthy. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and verify the deployed commit, health checks, CORS and logs.
 
+## Ownership and distribution
+
+BhriguSetu follows a **hybrid product model**: the hosted product and selected public interfaces may be accessible, while the proprietary calculation, research and service implementation is intended to remain private. The repository is currently public; the private-core separation is a migration target, not yet completed. See [Ownership and distribution policy](docs/OWNERSHIP_AND_DISTRIBUTION.md).
+
+**Current source status:** no project-level software licence has been added. The absence of a licence does not make the project open source; default copyright applies to original project code. GitHub users can still view and fork a public repository under GitHub's platform terms. Public visibility also means the existing source, branches and history have already been exposed; changing visibility later cannot recall existing public forks or local copies.
+
+Do not treat third-party libraries, public-domain/classical texts, teacher-authored material, public API providers or user-supplied data as BhriguSetu-owned intellectual property. Their respective rights, licences, terms and attribution requirements remain separate.
+
 ## External services, privacy & licensing
 
 - Birthplace lookup uses OpenStreetMap Nominatim. Attribution is displayed; follow its usage policy and do not turn one-shot lookup into uncontrolled autocomplete.
