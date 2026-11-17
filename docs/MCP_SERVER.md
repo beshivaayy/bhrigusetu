@@ -4,9 +4,9 @@ BhriguSetu exposes its existing calculation and research functions through the M
 
 ## Remote endpoint
 
-~~~text
-https://bhrigusetu-api.onrender.com/mcp
-BhriguSetu exposes its existing calculation and research capabilities through the Model Context Protocol. The same tool registry is available to local stdio clients and remotely over Streamable HTTP at `/mcp` on the existing FastAPI service. The MCP adapter does not replace the frontend or calculation engines.
+`https://bhrigusetu-api.onrender.com/mcp`
+
+The same tool registry is available locally over stdio and remotely over Streamable HTTP at `/mcp` on the existing FastAPI service. The MCP adapter does not replace the frontend or calculation engines.
 
 ## Current tools
 
@@ -59,6 +59,7 @@ MCP is mounted inside the existing API service. It does not require a second Ren
 | resolve_birth_timezone_tool | Resolve local wall time, UTC offset and DST fold |
 | analyze_birth_details_tool | Run birth analysis and return the current approximate chart |
 | calculate_birth_chart_tool | Calculate the in-repo approximate D1/D9 chart |
+| calculate_jhora_chart_tool | Call the independent JHora public REST API with explicit supported settings |
 | analyze_supplied_chart_tool | Map caller-supplied sidereal longitudes; does not calculate an ephemeris |
 | get_system_status_tool | Report current calculation and methodology capabilities |
 
@@ -93,7 +94,7 @@ A public Jagannatha Hora API and MCP service is documented here:
 
 The public API documents multiple ayanamsha identifiers and a mean/true node option for supported REST endpoints. Its documentation states that the service is independent and is not affiliated with the desktop astrology software or its author.
 
-Connecting a client directly to that public MCP endpoint is not the same as integrating it into BhriguSetu. Before integration, inspect the live tool schemas and verify each setting. Do not assume house systems, observer modes or position conventions are supported merely because they are common in astrology software.
+BhriguSetu integrates the public REST provider through `POST /api/chart/jhora` and the `calculate_jhora_chart_tool` MCP tool. The BhriguSetu adapter sends only the documented settings it validates, returns the provider engine revision and applied-setting receipt, and does not silently fall back to the approximate engine. Connecting a client directly to the public JHora MCP endpoint remains a separate integration. Do not assume observer modes or position conventions are supported merely because they are common in astrology software.
 ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. **Do not choose “No authentication” for this endpoint:** remote `/mcp` requires a Bearer token. Use only a client connection flow that explicitly supports the required Bearer-token authentication, and store the token in that client's secure credential field. Never put the token in a URL, README, source file or screenshot. If the selected ChatGPT connection flow does not offer a compatible authentication method, do not expose the MCP endpoint without authentication as a workaround; continue using the already configured local Claude Code MCP connection until a supported secure connection method is available.
 
 ## Local stdio setup (Windows PowerShell)
@@ -118,6 +119,7 @@ The remote endpoint can be registered at user scope. Keep the token in the Windo
 - GET /health — service health.
 - POST /api/analyze — running year, BCP/BSP status and chart context.
 - POST /api/chart/calculate — approximate birth-chart calculation.
+- POST /api/chart/jhora — independent JHora public REST provider calculation; no approximate fallback.
 - POST /api/chart/manual — mapping of caller-supplied sidereal longitudes.
 - GET /api/places/search — one-shot birthplace search.
 - /mcp — authenticated remote MCP endpoint.
