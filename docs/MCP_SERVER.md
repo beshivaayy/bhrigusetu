@@ -40,6 +40,14 @@ Resource: `bhrigusetu://methodology`
 
 Prompt: `jyotish_research_analysis`
 
+## Jagannatha Hora public REST provider (planned integration)
+
+The public Jagannatha Hora REST API exposes calculation controls that the currently connected assistant-side horoscope tool does not expose in its input schema. Its `POST /horoscope` contract documents selectable ayanamsha modes, Mean/True nodes, Drik/Surya Siddhanta calculation, five Bhava Madhya methods, timezone handling and divisional-chart options.
+
+**This is not yet integrated into BhriguSetu.** The current `calculate_birth_chart_tool` below still uses the approximate in-repository Astronomy Engine implementation. Do not infer REST settings from the assistant-side tool schema, and do not label public API results as desktop-JHora parity.
+
+The verified request contract, setting enums, provider identity, attribution, rate limits, cache rules and validation gates are recorded in [JHora REST Provider Contract](JHORA_REST_PROVIDER_CONTRACT.md). The planned integration must use the documented REST request schema and preserve provider-returned settings and engine revision.
+
 ## Local setup — stdio (Windows PowerShell)
 
 Run from the repository's `backend` directory:
