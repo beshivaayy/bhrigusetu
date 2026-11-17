@@ -4,71 +4,71 @@ import Link from "next/link";
 import { useState } from "react";
 
 const collections = [
-  { id:"vedic", number:"01", title:"Vedic & Jyotish", intro:"Classical Indian astrology, chart mathematics and predictive traditions.", items:["Parashari Jyotish","Jaimini astrology","Bhrigu Nandi Nadi","Nadi astrology","KP / Krishnamurti Paddhati","Tajika / Varshaphala","Bhrigu Chakra Paddhati","Bhrigu Saral Paddhati","Prashna / Horary Jyotish","Muhurta / Electional","Ashtakavarga & Shadbala","Varga & divisional charts"] },
-  { id:"western", number:"02", title:"Western astrology", intro:"Traditional and modern approaches to natal, predictive and relationship astrology.", items:["Natal astrology","Hellenistic astrology","Traditional / Medieval","Modern psychological","Horary astrology","Electional astrology","Mundane astrology","Synastry & composite","Secondary progressions","Solar & lunar returns","Transits & profections","Asteroids & fixed stars"] },
-  { id:"world", number:"03", title:"World astrology", intro:"Explore distinct astronomical and astrological traditions across cultures.", items:["Chinese BaZi / Four Pillars","Chinese Zi Wei Dou Shu","Tibetan astrology","Mayan calendar systems","Persian & Arabic astrology","Uranian / Hamburg School","Vedic-compatible regional systems"] },
-  { id:"tarot", number:"04", title:"Tarot & card systems", intro:"Symbolic card traditions for reflection, spreads and interpretive readings.", items:["Rider–Waite–Smith Tarot","Thoth Tarot","Marseille Tarot","Major & Minor Arcana","Lenormand","Oracle card systems","Tarot spreads & journaling"] },
-  { id:"numbers", number:"05", title:"Numerology", intro:"Number-based systems, name analysis and date-derived cycles.", items:["Pythagorean numerology","Chaldean numerology","Vedic / Indian numerology","Lo Shu grid","Life path & destiny numbers","Name & business numerology","Personal year & cycles"] },
-  { id:"wisdom", number:"06", title:"Other divination & wisdom arts", intro:"A wider library of symbolic, traditional and contemplative disciplines.", items:["Palmistry / Hasta Samudrika","Face reading / Samudrika","Vastu Shastra","I Ching","Runes","Geomancy","Dream symbolism","Swar Shastra","Anga Lakshana","Traditional omens (Shakuna)"] },
+  { id:"vedic", no:"०१", title:"वैदिक ज्योतिष", en:"Vedic Jyotisha", intro:"भारतीय ज्योतिष परम्परा — गणित, सिद्धान्त, फलित और काल-विचार।", items:["पराशरी ज्योतिष","जैमिनि ज्योतिष","षोडशवर्ग — D1 से D60","नक्षत्र और पाद","पञ्चाङ्ग एवं कालगणना","दशा और गोचर","अष्टकवर्ग एवं षड्बल","प्रश्न और मुहूर्त","ताजिक / वर्षफल","नाड़ी परम्पराएँ","भृगु नन्दी नाड़ी","BCP एवं BSP — स्वतंत्र अध्ययन"] },
+  { id:"western", no:"०२", title:"पाश्चात्य ज्योतिष", en:"Western Astrology", intro:"Natal, traditional, modern and predictive schools in their own methodological context.", items:["Natal & Hellenistic","Traditional / Medieval","Modern psychological","Horary & Electional","Mundane astrology","Synastry & Composite","Progressions & Returns","Transits & Profections","Fixed stars & Asteroids"] },
+  { id:"world", no:"०३", title:"विश्व ज्योतिष", en:"World Astrology", intro:"Distinct cultural systems, studied without blending their foundations.", items:["Chinese BaZi / Four Pillars","Zi Wei Dou Shu","Tibetan astrology","Persian & Arabic traditions","Uranian / Hamburg School","Mayan calendrical systems"] },
+  { id:"numbers", no:"०४", title:"अंक विद्या", en:"Numerology", intro:"Number symbolism and calculation systems with clearly stated alphabets and reduction rules.", items:["Pythagorean","Chaldean","Vedic / Indian","Lo Shu Grid","Life Path & Destiny","Name & Business numbers","Personal cycles & compatibility"] },
+  { id:"tarot", no:"०५", title:"टैरो एवं कार्ड पद्धतियाँ", en:"Tarot & Card Systems", intro:"Deck-specific symbolism, spreads, reading structures and reflective practice.", items:["Rider–Waite–Smith","Thoth Tarot","Marseille Tarot","Major & Minor Arcana","Lenormand","Oracle decks","Spreads & journaling"] },
+  { id:"wisdom", no:"०६", title:"अन्य ज्ञान एवं प्रश्न पद्धतियाँ", en:"Other Wisdom Arts", intro:"A wider catalogue of traditional symbolic and contemplative disciplines.", items:["हस्त सामुद्रिक / Palmistry","सामुद्रिक शास्त्र","वास्तु शास्त्र","I Ching","Runes & Geomancy","स्वर शास्त्र","स्वप्न संकेत","शकुन एवं निमित्त"] },
 ];
 
-const pillars = [
-  {n:"01",title:"Calculate",body:"Precise chart construction, astronomical positions, divisional charts, strengths, periods and derived calculations."},
-  {n:"02",title:"Interpret",body:"Traditional rules, schools of thought, structured readings and clearly separated interpretive frameworks."},
-  {n:"03",title:"Research",body:"Classical source references, shlokas, calculation notes, comparative methods and evidence-aware study."},
-  {n:"04",title:"Explore",body:"A growing library of astrology, numerology, Tarot and other traditional knowledge systems."},
+const pathways = [
+  { no:"01", title:"गणना", sub:"Calculate", text:"Chart mathematics, astronomical data, calendars and reproducible results.", href:"/calculator", action:"Open Jyotisha workspace" },
+  { no:"02", title:"अध्ययन", sub:"Study", text:"Books, classical sources, articles, glossaries and guided learning paths.", href:"#library", action:"Explore the library" },
+  { no:"03", title:"अनुसन्धान", sub:"Research", text:"Methods, source comparisons, citations, evidence and open questions.", href:"#research", action:"Research approach" },
+  { no:"04", title:"संवाद", sub:"Understand", text:"Tradition-specific explanations and specialist AI assistants, introduced as each module is verified.", href:"#approach", action:"How it works" },
 ];
 
 export default function Home() {
   const [active,setActive]=useState("vedic");
   const selected=collections.find(x=>x.id===active) || collections[0];
-  return <main className="landing-shell">
-    <header className="landing-header">
-      <Link className="landing-brand" href="/"><span className="landing-mark">ॐ</span><span><strong>BhriguSetu</strong><small>THE KNOWLEDGE OF COSMIC SYSTEMS</small></span></Link>
-      <nav className="landing-nav"><a href="#universe">Explore</a><a href="#approach">Our approach</a><Link href="/calculator" className="nav-workspace">Open workspace <span>↗</span></Link></nav>
+  return <main className="sanatan-home">
+    <div className="heritage-strip"><span>॥ श्री गणेशाय नमः ॥</span><span>KNOWLEDGE · METHOD · PARAMPARĀ</span><span>EST. IN THE SPIRIT OF INQUIRY</span></div>
+    <header className="sanatan-header">
+      <Link href="/" className="sanatan-brand"><span className="brand-seal" aria-hidden="true"><span>भृ</span></span><span><strong>BhriguSetu</strong><small>ज्योतिष · ज्ञान · अनुसन्धान</small></span></Link>
+      <nav className="sanatan-nav"><a href="#traditions">Traditions</a><a href="#library">Library</a><a href="#research">Research</a><Link href="/calculator" className="nav-cta">Jyotisha workspace <span>↗</span></Link></nav>
     </header>
 
-    <section className="landing-hero">
-      <div className="hero-copy">
-        <span className="landing-eyebrow"><i/> A UNIFIED KNOWLEDGE PLATFORM</span>
-        <h1>Many traditions.<br/><em>One place to explore.</em></h1>
-        <p className="hero-lede">From Jyotish and Western astrology to Tarot, Numerology and the world’s divination traditions — discover the systems, study their foundations and work with their methods.</p>
-        <div className="hero-actions"><Link href="/calculator" className="primary-cta">Enter Jyotish workspace <span>→</span></Link><a href="#universe" className="secondary-cta">Explore the knowledge library <span>↓</span></a></div>
-        <div className="hero-footnote"><span>ASTROLOGY</span><b>·</b><span>DIVINATION</span><b>·</b><span>NUMEROLOGY</span><b>·</b><span>TRADITIONAL WISDOM</span></div>
+    <section className="sanatan-hero">
+      <div className="sanatan-hero-copy">
+        <div className="sanskrit-kicker">विद्या · विचार · विवेक</div>
+        <p className="eyebrow-line">A KNOWLEDGE PLATFORM ROOTED IN TRADITION</p>
+        <h1>Explore the wisdom.<br/><em>Understand the method.</em></h1>
+        <p className="hero-description">A growing home for Jyotisha, astrology, numerology, Tarot and the world's knowledge traditions — with their calculations, texts, histories and distinct ways of understanding.</p>
+        <div className="hero-buttons"><Link href="/calculator" className="heritage-button">Enter Jyotisha <span>→</span></Link><a href="#traditions" className="text-link">Explore traditions <span>↓</span></a></div>
+        <div className="hero-note"><span>स्वाध्याय</span><i/> <span>शास्त्र</span><i/> <span>अनुभव</span><i/> <span>प्रमाण</span></div>
       </div>
-      <div className="hero-art" aria-label="Celestial astronomical illustration">
-        <div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="orbit orbit-three"/>
-        <div className="sun-disc"><span>ॐ</span></div><span className="orbit-point point-one">✦</span><span className="orbit-point point-two">✧</span><span className="orbit-point point-three">✦</span>
-        <div className="art-caption"><span>THE CELESTIAL ATLAS</span><small>Tradition · Method · Meaning</small></div>
+      <div className="yantra-panel" aria-label="Abstract geometric illustration inspired by traditional Indian diagrammatic design">
+        <div className="yantra-frame frame-outer"/><div className="yantra-frame frame-middle"/><div className="yantra-frame frame-inner"/>
+        <div className="yantra-square"><div className="yantra-diamond"><div className="yantra-circle"><span>श्री</span></div></div></div>
+        <div className="yantra-card-caption"><span>परम्परा</span><i/> <span>पद्धति</span><i/> <span>अर्थ</span></div>
       </div>
     </section>
 
-    <section className="landing-ribbon"><span>VEDIC & CLASSICAL ROOTS</span><i>✦</i><span>GLOBAL ASTROLOGICAL SYSTEMS</span><i>✦</i><span>SYMBOLIC ARTS</span><i>✦</i><span>RESEARCH & PRACTICE</span></section>
+    <section className="heritage-band"><span>शास्त्राध्ययन</span><b>✦</b><span>गणित एवं काल</span><b>✦</b><span>परम्परा एवं पद्धति</span><b>✦</b><span>ज्ञान एवं अनुसन्धान</span></section>
 
-    <section className="universe-section" id="universe">
-      <div className="section-intro"><div><span className="landing-eyebrow">THE KNOWLEDGE UNIVERSE</span><h2>Explore every tradition.<br/><em>Understand its own language.</em></h2></div><p>A growing, organised library — not one blended system. Each discipline keeps its own terminology, methods, calculations and interpretive context.</p></div>
-      <div className="universe-layout">
-        <div className="universe-menu">{collections.map(c=><button key={c.id} className={active===c.id?"chosen":""} onClick={()=>setActive(c.id)}><span>{c.number}</span><strong>{c.title}</strong><b>↗</b></button>)}</div>
-        <article className="universe-detail" key={selected.id}>
-          <div className="detail-top"><span>COLLECTION {selected.number}</span><span>KNOWLEDGE LIBRARY</span></div>
-          <h3>{selected.title}</h3><p>{selected.intro}</p>
-          <div className="discipline-list">{selected.items.map((item,i)=><div key={item}><span>{String(i+1).padStart(2,"0")}</span>{item}</div>)}</div>
-          <div className="detail-note">Organised as independent systems — each with its own roadmap and standards.</div>
+    <section className="traditions-section" id="traditions">
+      <div className="section-heading"><div><p className="eyebrow-line">THE KNOWLEDGE TRADITIONS</p><h2>Many paths of inquiry.<br/><em>Each in its own tradition.</em></h2></div><p>Every system deserves its own language, calculations, sources and interpretive framework. We do not collapse distinct traditions into one generic reading.</p></div>
+      <div className="tradition-browser">
+        <div className="tradition-tabs" role="tablist" aria-label="Knowledge traditions">{collections.map(c=><button key={c.id} role="tab" aria-selected={active===c.id} className={active===c.id?"active":""} onClick={()=>setActive(c.id)}><span>{c.no}</span><b>{c.title}</b><small>{c.en}</small></button>)}</div>
+        <article className="tradition-content" role="tabpanel" key={selected.id}>
+          <div className="tradition-content-head"><span>{selected.no} / COLLECTION</span><span>METHODS & DISCIPLINES</span></div>
+          <h3>{selected.title}</h3><p className="tradition-english">{selected.en}</p><p className="tradition-intro">{selected.intro}</p>
+          <div className="tradition-items">{selected.items.map((item,i)=><div key={item}><small>{String(i+1).padStart(2,"0")}</small>{item}</div>)}</div>
+          <p className="catalogue-disclaimer">Catalogue and roadmap only where a module is not yet marked live. Each tradition will be released after method, source and calculation validation.</p>
         </article>
       </div>
     </section>
 
-    <section className="workspace-band">
-      <div><span className="landing-eyebrow">BUILT FOR SERIOUS STUDY</span><h2>From birth chart<br/><em>to deeper understanding.</em></h2><p>Start with the Jyotish calculation workspace. Dedicated workspaces for the wider knowledge library will be developed as independent modules.</p><Link href="/calculator" className="primary-cta">Open Jyotish workspace <span>→</span></Link></div>
-      <div className="workspace-stat"><strong>12+</strong><span>Varga families & calculation areas</span><i/><strong>6</strong><span>Major knowledge collections</span><i/><strong>∞</strong><span>Room to expand, without mixing traditions</span></div>
+    <section className="pathways-section" id="approach"><div className="section-heading compact"><div><p className="eyebrow-line">A PLACE TO WORK AND LEARN</p><h2>From calculation<br/><em>to understanding.</em></h2></div><p>Tools, study and research belong together. Each has a clear place in the platform.</p></div>
+      <div className="pathway-grid">{pathways.map(p=><article key={p.no}><span className="pathway-no">{p.no}</span><p>{p.sub}</p><h3>{p.title}</h3><div>{p.text}</div><a href={p.href}>{p.action} <span>↗</span></a></article>)}</div>
     </section>
 
-    <section className="approach-section" id="approach"><div className="section-intro"><div><span className="landing-eyebrow">THE BHRIGUSETU APPROACH</span><h2>Respect the source.<br/><em>Make the method usable.</em></h2></div><p>Knowledge deserves structure. We keep calculation, interpretation and research distinct so that every result can be understood in its proper context.</p></div>
-      <div className="pillar-grid">{pillars.map(p=><article key={p.n}><span>{p.n}</span><h3>{p.title}</h3><p>{p.body}</p></article>)}</div>
-    </section>
+    <section className="library-section" id="library"><div className="library-ornament">॥</div><div className="library-copy"><p className="eyebrow-line">ग्रन्थ · लेख · अध्ययन</p><h2>A library for<br/><em>lifelong learning.</em></h2><p>Read original BhriguSetu articles, explore classical texts and modern books, follow structured learning paths, and trace ideas back to their sources.</p><div className="library-tags"><span>Classical texts</span><span>Books & editions</span><span>Research papers</span><span>Blogs & explainers</span><span>Glossary</span><span>Learning paths</span></div></div><div className="library-side"><article><small>01 / READ</small><h3>Articles & blogs</h3><p>Concept guides, worked examples and critical explorations.</p></article><article><small>02 / DISCOVER</small><h3>Books & granthas</h3><p>Bibliographic records, editions, translations and authorised access.</p></article><article><small>03 / STUDY</small><h3>Learning paths</h3><p>Guided journeys from foundations to advanced study.</p></article></div></section>
 
-    <section className="closing-cta"><span className="landing-eyebrow">BEGIN WITH THE CHART</span><h2>A clearer way to work<br/>with Jyotish.</h2><Link href="/calculator" className="primary-cta">Launch calculation workspace <span>→</span></Link></section>
+    <section className="research-section" id="research"><div><p className="eyebrow-line">SOURCE BEFORE ASSERTION</p><h2>Respect the text.<br/><em>Show the reasoning.</em></h2></div><div className="research-principles"><p>Calculations, interpretations and AI explanations remain separate. We identify the source, edition, method and uncertainty behind a result — and preserve differences between schools instead of hiding them.</p><div><span>01</span> Traceable sources <span>02</span> Explicit methods <span>03</span> Honest limitations</div></div></section>
 
-    <footer className="landing-footer"><Link className="landing-brand" href="/"><span className="landing-mark">ॐ</span><span><strong>BhriguSetu</strong><small>THE KNOWLEDGE OF COSMIC SYSTEMS</small></span></Link><span>Independent traditions. Structured knowledge.</span><span>© BhriguSetu</span></footer>
+    <section className="sanatan-closing"><p>॥ शुभम् भवतु ॥</p><h2>Begin with a question.<br/><em>Continue with understanding.</em></h2><Link href="/calculator" className="heritage-button light">Open Jyotisha workspace <span>→</span></Link></section>
+    <footer className="sanatan-footer"><Link href="/" className="sanatan-brand"><span className="brand-seal"><span>भृ</span></span><span><strong>BhriguSetu</strong><small>ज्योतिष · ज्ञान · अनुसन्धान</small></span></Link><p>Independent traditions. Transparent methods. A growing library.</p><span>© BhriguSetu</span></footer>
   </main>;
 }
