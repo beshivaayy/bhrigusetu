@@ -219,6 +219,7 @@ Do not treat third-party libraries, public-domain/classical texts, teacher-autho
 
 | Document | Description |
 | --- | --- |
+| [Acknowledgements](ACKNOWLEDGEMENTS.md) | Gratitude to teachers and point-of-use attribution for research, classical, technical and community sources |
 | [Architecture](docs/ARCHITECTURE.md) | Application layers and responsibility boundaries |
 | [MCP server](docs/MCP_SERVER.md) | Available tools, transports and client setup |
 | [Deployment](docs/DEPLOYMENT.md) | Render, Vercel, CORS and release verification |
