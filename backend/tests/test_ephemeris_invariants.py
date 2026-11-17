@@ -33,6 +33,12 @@ def test_nakshatra_and_pada_boundaries_are_half_open():
         for pada in range(1, 5):
             boundary = start + (pada - 1) * PADA_SPAN
             assert _sign_data(boundary)["pada"] == pada
+            if pada > 1:
+                assert _sign_data(boundary - 1e-8)["pada"] == pada - 1
+        if index > 0:
+            previous = _sign_data(start - 1e-8)
+            assert previous["nakshatra"] == NAKSHATRAS[index - 1]
+            assert previous["pada"] == 4
 
 
 def test_chart_longitudes_houses_and_d9_are_internally_consistent():
