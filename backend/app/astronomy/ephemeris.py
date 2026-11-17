@@ -113,6 +113,13 @@ def _sign_data(longitude: float) -> dict:
     value = _norm(longitude)
     index = int(value // 30.0)
     degree = value - index * 30.0
+    # Tiny tolerance prevents binary-float underflow at exact nakshatra/pada boundaries.
+    boundary_epsilon = 1e-10
+    nak_index = min(26, int((value + boundary_epsilon) // NAKSHATRA_SPAN))
+    pada = min(
+        4,
+        int((value - nak_index * NAKSHATRA_SPAN + boundary_epsilon) // PADA_SPAN) + 1,
+    )
     nak_index = min(26, int(value // NAKSHATRA_SPAN))
     pada = min(4, int((value - nak_index * NAKSHATRA_SPAN) // PADA_SPAN) + 1)
 
@@ -238,6 +245,7 @@ def calculate_natal_chart(birth) -> dict:
         "ephemeris": {
             "provider": "Astronomy Engine",
             "provider_version": "2.1.19",
+            "accuracy_claim": "approximately Â±1 arcminute for supported celestial positions",
             "accuracy_claim": "approximately ±1 arcminute for supported celestial positions",
             "coordinate_frame": "apparent geocentric ecliptic of date",
             "node": "mean lunar node; Ketu exactly opposite Rahu",

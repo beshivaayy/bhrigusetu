@@ -297,6 +297,7 @@ def methodology_resource() -> str:
         "verification. BSP candidates remain disabled until their sources, "
         "preconditions and validation cases are verified. Kakshya lookup is "
         "a deterministic 3°45′ slot lookup. Planetary positions, ascendant, "
+        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings."
         "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings. A separate tool can call the independent Jagannatha Hora public REST API with explicit supported settings; this does not establish desktop-JHora parity."
     )
 
