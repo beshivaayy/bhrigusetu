@@ -1,6 +1,6 @@
 # BhriguSetu
 
-**Current API release:** 0.3.0
+**Current API release:** 0.4.0
 
 **Bhrigu Chakra Paddhati (BCP) · Bhrigu Saral Paddhati (BSP)**
 
@@ -14,13 +14,15 @@ BhriguSetu is a research-first application for source-traceable BCP and BSP calc
 - Exact seconds and optional DST fold selection supported by the frontend.
 - Running-year calculation based on the birthday and the selected timezone's local date.
 - BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.
-- BCP cycle-swami labels are secondary-source corroborated; cycle-ruler parallel reference houses remain unimplemented.
+- BCP cycle-swami labels remain provisional; calculated charts expose a secondary-source-only cycle-ruler parallel reference house, never promoted to a verified rule.
 - BCP Bhrighu Chakra Bindu trigger-point dates remain disabled because the source's degree-to-day arithmetic needs clarification.
 - Chakra-swami labels are exposed as provisional pending primary-source verification.
 - BSP rule evaluator exposes five source-linked research candidates, all disabled pending verification.
 - BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
 - Frontend is connected to the FastAPI analysis endpoint.
-- Astronomical chart calculation (planetary positions, ascendant and houses) is not yet enabled.
+- Birth-chart calculation is available for the seven classical planets, mean Rahu/Ketu, sidereal ascendant, whole-sign houses, nakshatra/pada and D1/D9.
+- Astronomy Engine is MIT-licensed; Lahiri uses a documented polynomial approximation and is not claimed to be Swiss Ephemeris/Jagannatha Hora parity.
+- Chart output carries its UTC instant, coordinates, ayanamsha model, node convention, provider and precision warnings.
 - Manual chart import maps caller-supplied sidereal longitudes to signs and whole-sign houses; it does not calculate or verify an ephemeris.
 - This release is a partial calculation foundation, not a complete horoscope or prediction service.
 
@@ -78,7 +80,7 @@ The form uses a one-shot OpenStreetMap Nominatim search (not autocomplete), cach
 
 ## Astronomy and licensing
 
-See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) before selecting an ephemeris dependency. Swiss Ephemeris has a dual-licensing requirement; it is not added until the project makes an explicit licence decision. The Lagna-based house-year rotation is documented in Saptarishis BCP-1; the nine cycle-lord sequence has secondary corroboration only. See [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md) and [research/BCP_TRIGGER_POINTS.md](research/BCP_TRIGGER_POINTS.md).
+See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) for the selected Astronomy Engine implementation and the Swiss Ephemeris dual-licensing decision. Swiss Ephemeris is not bundled. The Lagna-based house-year rotation is documented in Saptarishis BCP-1; the nine cycle-lord sequence has secondary corroboration only. See [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md) and [research/BCP_TRIGGER_POINTS.md](research/BCP_TRIGGER_POINTS.md).
 
 ## Research and accuracy policy
 

@@ -4,6 +4,39 @@ import { FormEvent, useState } from "react";
 
 type PlaceResult = { place_id: number; display_name: string; latitude: number; longitude: number; timezone: string | null; timezone_candidates: string[] };
 
+type ChartPosition = {
+  longitude: number;
+  sign: string;
+  sign_index: number;
+  degree_in_sign: number;
+  nakshatra: string;
+  pada: number;
+  whole_sign_house: number;
+  motion: string;
+  daily_motion_deg?: number;
+  navamsa: { sign: string; sign_index: number; degree_in_sign: number; segment: number };
+};
+
+type Chart = {
+  status: string;
+  birth_datetime_local: string;
+  birth_datetime_utc: string;
+  julian_day_ut: number;
+  ayanamsha: { name: string; value_degrees: number; model: string };
+  ephemeris: { provider: string; accuracy_claim: string; coordinate_frame: string; node: string };
+  house_system: string;
+  lagna: ChartPosition;
+  planets: Record<string, ChartPosition>;
+  houses: { house: number; sign: string; planets: string[] }[];
+  divisional_charts: {
+    D9: {
+      lagna: { sign: string; sign_index: number; degree_in_sign: number; segment: number };
+      planets: Record<string, { sign: string; sign_index: number; degree_in_sign: number; whole_sign_house: number }>;
+    };
+  };
+  warnings: string[];
+};
+
 type Analysis = {
   status: string;
   analysis_date: string;
@@ -22,7 +55,7 @@ type Analysis = {
     message: string;
   };
   bsp: { status: string; triggered_rules: unknown[]; enabled_rule_count: number; research_candidate_count: number; research_candidates: { id: string; statement: string; source_title: string; source_url: string; confidence: string; status: string }[]; message: string };
-  chart: { status: string; reason: string };
+  chart: Chart;
   warnings: string[];
 };
 
@@ -148,7 +181,7 @@ export default function Home() {
           <label>Repeated local time (DST only)<select value={timeFold} onChange={e => setTimeFold(e.target.value)}><option value="">Not applicable / unknown</option><option value="0">Earlier occurrence (fold 0)</option><option value="1">Later occurrence (fold 1)</option></select></label>
           <label>Analyse for date<input type="date" value={asOf} onChange={e => setAsOf(e.target.value)} /></label>
           <p className="form-hint full">Leave “Analyse for date” empty to use today in the selected timezone. Coordinates are required; birthplace text alone is not used for astronomical calculations. If a timezone repeats a clock time during a DST change, select the earlier or later occurrence. The detected timezone can be edited if needed.</p>
-          <button className="submit full" disabled={loading}>{loading ? "Calculating…" : "Calculate BCP activation + BSP status"} <span>→</span></button>
+          <button className="submit full" disabled={loading}>{loading ? "Calculating…" : "Calculate natal chart + BCP activation + BSP status"} <span>→</span></button>
         </form>
         {error && <div className="error" role="alert">{error}</div>}
       </section>
@@ -161,9 +194,35 @@ export default function Home() {
           <article className="metric"><span>BCP activated house</span><strong>{result.bcp.activated_house}</strong><small>House activation only</small></article>
           <article className="metric"><span>BCP cycle</span><strong>{result.bcp.cycle}</strong><small>{result.bcp.chakra_swami ? `Provisional swami: ${result.bcp.chakra_swami}` : "Swami not defined"}</small></article>
         </div>
-        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small><small>Reference basis: Lagna only. Cycle-ruler reference point: pending chart calculation and source verification.</small></div><span className="status-pill">Provisional</span></div>
+        <div className="report-row"><div><p className="eyebrow">BCP</p><h3>House activation calculated</h3><p>{result.bcp.message}</p><small>Chakra-swami status: {result.bcp.chakra_swami_status.replaceAll("_", " ")}</small><small>Reference basis: {result.bcp.reference_basis.replaceAll("_", " ")}.</small><small>Cycle-ruler reference: {result.bcp.cycle_ruler_reference_status.replaceAll("_", " ")}. {result.bcp.cycle_ruler_reference_note}</small></div><span className="status-pill">Provisional</span></div>
         <div className="report-row"><div><p className="eyebrow">BSP</p><h3>Rule evaluation not enabled</h3><p>{result.bsp.message}</p><small>Enabled rules: {result.bsp.enabled_rule_count} · Research candidates: {result.bsp.research_candidate_count}</small>{result.bsp.research_candidates.map(rule => <div className="candidate" key={rule.id}><strong>{rule.id}</strong><p>{rule.statement}</p><small>{rule.confidence}</small><p><a href={rule.source_url} target="_blank" rel="noreferrer">{rule.source_title}</a></p><small>Disabled pending verification</small></div>)}</div><span className="status-pill muted">Research pending</span></div>
-        <div className="notice"><strong>Why no horoscope is shown yet</strong><p>{result.chart.reason}</p></div>
+        <div className="chart-section">
+          <div className="section-heading"><div><p className="eyebrow">NATAL CHART</p><h2>D1 · Rashi</h2></div><span className="status-pill">Calculated · approximate model</span></div>
+          <div className="chart-overview">
+            <article><span>Ascendant</span><strong>{result.chart.lagna.sign}</strong><small>{result.chart.lagna.degree_in_sign.toFixed(2)}° · {result.chart.lagna.nakshatra} Pada {result.chart.lagna.pada}</small></article>
+            <article><span>D9 Ascendant</span><strong>{result.chart.divisional_charts.D9.lagna.sign}</strong><small>{result.chart.divisional_charts.D9.lagna.degree_in_sign.toFixed(2)}°</small></article>
+            <article><span>Lahiri ayanamsha</span><strong>{result.chart.ayanamsha.value_degrees.toFixed(5)}°</strong><small>{result.chart.ayanamsha.name} · approximate</small></article>
+          </div>
+          <div className="chart-table-wrap">
+            <h3>Planetary positions · D1</h3>
+            <table className="chart-table">
+              <thead><tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>Nakshatra</th><th>House</th><th>Motion</th></tr></thead>
+              <tbody>{Object.entries(result.chart.planets).map(([name, planet]) => <tr key={name}><td>{name}</td><td>{planet.sign}</td><td>{planet.degree_in_sign.toFixed(2)}°</td><td>{planet.nakshatra} · {planet.pada}</td><td>{planet.whole_sign_house}</td><td>{planet.motion === "mean_node" ? "Mean node" : planet.motion}</td></tr>)}</tbody>
+            </table>
+          </div>
+          <div className="chart-table-wrap">
+            <h3>D9 · Navamsa</h3>
+            <table className="chart-table">
+              <thead><tr><th>Graha</th><th>Navamsa rashi</th><th>Degree</th><th>House</th></tr></thead>
+              <tbody><tr><td>Lagna</td><td>{result.chart.divisional_charts.D9.lagna.sign}</td><td>{result.chart.divisional_charts.D9.lagna.degree_in_sign.toFixed(2)}°</td><td>1</td></tr>{Object.entries(result.chart.divisional_charts.D9.planets).map(([name, planet]) => <tr key={name}><td>{name}</td><td>{planet.sign}</td><td>{planet.degree_in_sign.toFixed(2)}°</td><td>{planet.whole_sign_house}</td></tr>)}</tbody>
+            </table>
+          </div>
+          <div className="house-grid">
+            {result.chart.houses.map(house => <article key={house.house}><span>House {house.house}</span><strong>{house.sign}</strong><small>{house.planets.length ? house.planets.join(" · ") : "—"}</small></article>)}
+          </div>
+          <div className="notice chart-method"><strong>Calculation method</strong><p>{result.chart.ephemeris.provider} · {result.chart.house_system} houses · {result.chart.ephemeris.node}.</p><p>{result.chart.ephemeris.accuracy_claim}. Birth UTC: {result.chart.birth_datetime_utc} · JD(UT): {result.chart.julian_day_ut}</p></div>
+          <div className="warnings"><strong>Chart-specific accuracy notes</strong><ul>{result.chart.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></div>
+        </div>
         <div className="warnings"><strong>Methodology and accuracy notes</strong><ul>{result.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></div>
       </section>}
 
