@@ -223,6 +223,7 @@ Do not treat third-party libraries, public-domain/classical texts, teacher-autho
 | [Acknowledgements](ACKNOWLEDGEMENTS.md) | Gratitude to teachers and point-of-use attribution for research, classical, technical and community sources |
 | [Architecture](docs/ARCHITECTURE.md) | Application layers and responsibility boundaries |
 | [MCP server](docs/MCP_SERVER.md) | Available tools, transports and client setup |
+| [JHora REST provider contract](docs/JHORA_REST_PROVIDER_CONTRACT.md) | Verified settings, provider attribution, failure handling and parity gates |
 | [Deployment](docs/DEPLOYMENT.md) | Render, Vercel, CORS and release verification |
 | [Place search](docs/PLACE_SEARCH.md) | Nominatim usage and timezone lookup safeguards |
 | [Manual chart import](docs/MANUAL_CHART_IMPORT.md) | Caller-supplied longitudes and mapping limitations |
