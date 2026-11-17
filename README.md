@@ -40,7 +40,7 @@ This table describes the implementation on the `main` branch—not planned work.
 | BCP trigger-point dates | Disabled | Degree-to-day interpretation needs source clarification |
 | BSP rule catalogue | Research stage | Five source-linked candidates; predictive matching disabled |
 | BSP-7 Kakshya | Implemented utility | Eight divisions of 3°45′; lookup only, not a standalone prediction |
-| Birth-chart calculation | Not available on main | No planetary positions or houses are calculated from birth details |
+| Birth-chart calculation | Implemented, approximate | Astronomy Engine 2.1.19; approximate Lahiri polynomial, mean nodes, whole-sign houses and D1/D9; not JHora parity |
 | Manual chart import | Implemented | Maps caller-supplied sidereal longitudes; does not verify their ephemeris |
 | MCP interface | Implemented | Exposes existing calculation and research functions |
 
@@ -70,7 +70,7 @@ Before a rule can be enabled, it needs a traceable source and exact location, cl
 
 Calculation conventions materially affect chart results. BhriguSetu treats birth date, local civil time, coordinates, IANA timezone, UTC conversion and calculation-provider settings as explicit inputs.
 
-**Jagannatha Hora (JHora) is the intended reference target for chart-calculation validation.** The `main` branch does not claim JHora parity or provide a complete birth-chart engine. A separate chart-engine branch remains under review. Any future provider integration must expose only verified settings, preserve the exact calculation profile and reject unsupported options rather than silently substituting defaults.
+**Jagannatha Hora (JHora) is the intended reference target for chart-calculation validation.** The `main` branch contains an initial approximate birth-chart engine, but it does not claim JHora parity. The in-repo engine uses Astronomy Engine 2.1.19, an approximate Lahiri polynomial, Mean Nodes and Whole Sign houses; True Node, alternative ayanamsha modes and alternative bhava systems are not implemented in that engine. Any provider integration must expose only verified settings, preserve the exact calculation profile and reject unsupported options rather than silently substituting defaults.
 
 - [JHora public REST API](https://jagannathahora.com/api-mcp)
 - [JHora public MCP guide](https://jagannathahora.com/api-mcp/mcp-usage)
@@ -182,7 +182,7 @@ Do not treat third-party libraries, public-domain/classical texts, teacher-autho
 ## External services, privacy & licensing
 
 - Birthplace lookup uses OpenStreetMap Nominatim. Attribution is displayed; follow its usage policy and do not turn one-shot lookup into uncontrolled autocomplete.
-- The `main` branch does not include a production ephemeris chart engine. See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md).
+- The `main` branch includes an approximate ephemeris chart engine; it is not validated for JHora parity or precision-sensitive predictions. See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md).
 - Swiss Ephemeris is not bundled. Its dual-licensing requirements need an explicit AGPL-compliance or professional-licence decision before integration.
 - Birth date, time and location are personal data. Review hosting and external-provider privacy terms before sending them to third-party services.
 - No project-level `LICENSE` file is currently present; reuse and redistribution terms have not been formally declared. Third-party dependencies retain their own licences.
