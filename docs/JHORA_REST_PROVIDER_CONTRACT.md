@@ -1,6 +1,6 @@
 # JHora REST Provider Contract
 
-**Status:** verified against the public API reference on 2026-11-17. The REST adapter, API route, MCP tool and UI settings are implemented in PR #31 and remain subject to CI/review. This does not claim desktop-JHora parity.
+**Status:** implemented in PR #31 and live-smoke-tested on 2026-11-18 using synthetic birth data. The REST adapter, API route, BhriguSetu MCP tool and UI settings are deployed. The live response returned provider engine revision 21 and D1/D9 plus additional varga data. This does not claim desktop-JHora parity.
 
 ## Provider identity and attribution
 
@@ -49,15 +49,15 @@ For `SIDM_USER`, `ayanamsa_value` is mandatory (range -30 to +30 degrees). Do no
 
 | Capability | Published REST contract | Integration status in BhriguSetu |
 | --- | --- | --- |
-| Ayanamsha modes above | Supported by `/horoscope` | Implemented in PR #31; pending CI/merge |
-| Custom ayanamsha | `SIDM_USER` + `ayanamsa_value` | Implemented in PR #31; pending CI/merge |
-| Mean / True lunar node | `node_type` | Implemented in PR #31; pending CI/merge |
-| Drik / Surya Siddhanta | `calculation_type` | Implemented in PR #31; pending CI/merge |
-| Bhava methods 1–5 | `bhava_madhya_method` | Implemented in PR #31; pending CI/merge |
-| Historical timezone resolution | `timezone_mode`; response reports applied offset | Implemented in PR #31; pending CI/merge |
-| D1 and divisional charts | Full response documents 23 vargas | Implemented in PR #31; pending CI/merge |
-| Engine revision | `engine_revision` in response | Not integrated; must be stored in cache metadata |
-| Rate limits | `/horoscope`: 30 requests/minute/IP | Not integrated; client must handle HTTP 429 |
+| Ayanamsha modes above | Supported by `/horoscope` | Implemented; live REST request succeeded |
+| Custom ayanamsha | `SIDM_USER` + `ayanamsa_value` | Implemented with strict request validation |
+| Mean / True lunar node | `node_type` | Implemented and passed through explicitly |
+| Drik / Surya Siddhanta | `calculation_type` | Implemented and passed through explicitly |
+| Bhava methods 1–5 | `bhava_madhya_method` | Implemented and passed through explicitly |
+| Historical timezone resolution | `timezone_mode`; response reports applied offset | Implemented; timezone offset and source returned in receipt |
+| D1 and divisional charts | Full response documents 23 vargas | Provider returns 23 varga sections; UI renders D1/D9 |
+| Engine revision | `engine_revision` in response | Included in the API/MCP response receipt; no persistent cache is implemented |
+| Rate limits | `/horoscope`: 30 requests/minute/IP | HTTP 429 is handled and surfaced without fallback |
 
 **Important distinction:** the currently connected assistant-side JHora horoscope tool has a narrower input schema (birth details and optional gender; no explicit ayanamsha, node or bhava arguments). Do not assume that its tool interface exposes every REST setting. The REST contract above is the source for the BhriguSetu provider adapter.
 
@@ -69,7 +69,7 @@ For `SIDM_USER`, `ayanamsa_value` is mandatory (range -30 to +30 degrees). Do no
 4. Send the full request body over HTTPS. Never put birth date/time or coordinates in query strings.
 5. Set finite connect/read timeouts. Treat 422 as invalid/unsupported input, 429 as rate limiting, 5xx/network errors as provider unavailable. Never silently retry with different calculation settings.
 6. Preserve the exact requested settings and provider-returned `request_settings`, `request_notes`, `timezone_used`, `timezone_source`, `ayanamsa_value`, and `engine_revision` in the calculation receipt where present.
-7. Cache by normalized birth input + every calculation setting + provider identity + `engine_revision`. Never reuse a chart across different node, ayanamsha, bhava, timezone or chart-method settings.
+7. **Open item:** implement a bounded, privacy-aware cache keyed by normalized birth input, every calculation setting, provider identity and `engine_revision`. No response cache is currently implemented; do not imply otherwise.
 8. Return a capability receipt with `provider`, `engine_revision`, requested settings, applied settings and warnings.
 9. Surface provider fallbacks in `request_notes`; do not report a requested chart method as applied if the provider fell back to method 1.
 10. Credit Jagannatha Hora in the UI and documentation. Make no uptime, support or desktop-application affiliation claims.
