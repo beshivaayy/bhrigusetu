@@ -1,110 +1,212 @@
 # BhriguSetu
 
-**Current API release:** 0.4.0
+<div align="center">
 
-**Bhrigu Chakra Paddhati (BCP) · Bhrigu Saral Paddhati (BSP)**
+### A research-first workspace for Bhrigu Chakra Paddhati (BCP) and Bhrigu Saral Paddhati (BSP)
 
-BhriguSetu is a research-first application for source-traceable BCP and BSP calculations. The project deliberately separates astronomical calculations, BCP logic, BSP rules, interpretation and presentation.
+**Traditional Jyotish research, implemented with transparent calculations, traceable sources and explicit limitations.**
 
-## Current implementation status
+[![Research prototype](https://img.shields.io/badge/status-research%20prototype-c49a45?style=flat-square)](https://github.com/beshivaayy/bhrigusetu)
+[![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/frontend-Next.js-111111?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![API v0.4.0](https://img.shields.io/badge/API-v0.4.0-blue?style=flat-square)](https://github.com/beshivaayy/bhrigusetu)
 
-- Birth details API with coordinate and IANA timezone validation.
-- Explicit birthplace search with coordinate selection and offline IANA timezone detection.
-- Birth wall-time resolution to UTC with DST nonexistent/ambiguous-time safeguards.
-- Exact seconds and optional DST fold selection supported by the frontend.
-- Running-year calculation based on the birthday and the selected timezone's local date.
-- BCP 12-house activation arithmetic and cycle index, grounded in the published Saptarishis BCP-1 method steps.
-- BCP cycle-swami labels remain provisional; calculated charts expose a secondary-source-only cycle-ruler parallel reference house, never promoted to a verified rule.
-- BCP Bhrighu Chakra Bindu trigger-point dates remain disabled because the source's degree-to-day arithmetic needs clarification.
-- Chakra-swami labels are exposed as provisional pending primary-source verification.
-- BSP rule evaluator exposes five source-linked research candidates, all disabled pending verification.
-- BSP-7 Kakshya slot lookup (eight 3°45′ divisions) is implemented as a standalone, non-predictive utility.
-- Frontend is connected to the FastAPI analysis endpoint.
-- Birth-chart calculation is available for the seven classical planets, mean Rahu/Ketu, sidereal ascendant, whole-sign houses, nakshatra/pada and D1/D9.
-- Astronomy Engine is MIT-licensed; Lahiri uses a documented polynomial approximation and is not claimed to be Swiss Ephemeris/Jagannatha Hora parity.
-- Chart output carries its UTC instant, coordinates, ayanamsha model, node convention, provider and precision warnings.
-- Manual chart import maps caller-supplied sidereal longitudes to signs and whole-sign houses; it does not calculate or verify an ephemeris.
-- This release is a partial calculation foundation, not a complete horoscope or prediction service.
+[Overview](#overview) · [Capabilities](#current-capabilities) · [Methodology](#methodology--source-policy) · [Architecture](#architecture) · [Quick start](#quick-start) · [Documentation](#documentation)
 
-## Repository structure
+</div>
 
-- frontend/ — Next.js + TypeScript user interface
-- backend/ — FastAPI API and calculation modules
-- research/ — methodology, source matrix and conflicts
-- docs/ — architecture and implementation notes
+---
 
-## Local development
+## Overview
 
-### Backend (Windows PowerShell)
+BhriguSetu is a research-first software project for **Bhrigu Chakra Paddhati (BCP)** and **Bhrigu Saral Paddhati (BSP)**. It brings birth-data validation, running-year arithmetic, house activation, research-rule catalogues and reproducible utilities into one application.
 
-~~~powershell
+> **A calculation is not an interpretation, an interpretation is not a source, and a source is not automatically a verified rule.**
+
+The project keeps these layers separate so users can inspect how a result was produced, which assumptions were used and what remains uncertain.
+
+## Current capabilities
+
+This table describes the implementation on the `main` branch—not planned work.
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Birth details | Implemented | Validates date, local wall time, coordinates and IANA timezone |
+| Birthplace search | Implemented | One-shot OpenStreetMap Nominatim lookup with attribution |
+| Timezone resolution | Implemented | UTC conversion with DST gap/repeated-time safeguards |
+| Running year | Implemented | Birthday-based completed-years-plus-one calculation using selected local date |
+| BCP house activation | Implemented | 12-house activation arithmetic based on documented method steps |
+| BCP cycle labels | Provisional | Not promoted as verified rules |
+| BCP trigger-point dates | Disabled | Degree-to-day interpretation needs source clarification |
+| BSP rule catalogue | Research stage | Five source-linked candidates; predictive matching disabled |
+| BSP-7 Kakshya | Implemented utility | Eight divisions of 3°45′; lookup only, not a standalone prediction |
+| Birth-chart calculation | Not available on main | No planetary positions or houses are calculated from birth details |
+| Manual chart import | Implemented | Maps caller-supplied sidereal longitudes; does not verify their ephemeris |
+| MCP interface | Implemented | Exposes existing calculation and research functions |
+
+**Scope:** this branch is a partial calculation and research foundation, not a complete horoscope generator or automated prediction service. Chart-engine development is maintained separately and is not a released capability until merged and validated.
+
+## Methodology & source policy
+
+Modern teaching sources are prioritised in this order:
+
+1. **Sunil John** — first priority for BCP/BSP-specific material and source context.
+2. **Deepanshu Giri** — second priority for practical teaching and cross-checking.
+3. **Sanjay Rath** — third priority for foundational Jyotish research and corroboration.
+
+Other authors may be included as supplementary references, clearly attributed. Different teachers' views must not be silently merged into one generic rule.
+
+### Classical texts are a separate evidence layer
+
+Classical works such as *Brihat Parashara Hora Shastra*, *Phaladeepika*, *Laghu Parashari* and *Jaimini Sutras* are recorded separately from modern lectures, courses and interpretations.
+
+Each research entry should identify the source and exact location (chapter, shloka, page or timestamp), distinguish original wording from interpretation, state preconditions, include a worked example and record evidence status and conflicts. A general Parashari principle is not automatically a BCP or BSP rule.
+
+### Evidence before prediction
+
+Before a rule can be enabled, it needs a traceable source and exact location, clear preconditions and calculation steps, a reproducible worked example, conflict review, deterministic implementation and regression tests. Unverified BSP candidates remain disabled. Conflicts are documented, not averaged away.
+
+## Calculation integrity
+
+Calculation conventions materially affect chart results. BhriguSetu treats birth date, local civil time, coordinates, IANA timezone, UTC conversion and calculation-provider settings as explicit inputs.
+
+**Jagannatha Hora (JHora) is the intended reference target for chart-calculation validation.** The `main` branch does not claim JHora parity or provide a complete birth-chart engine. A separate chart-engine branch remains under review. Any future provider integration must expose only verified settings, preserve the exact calculation profile and reject unsupported options rather than silently substituting defaults.
+
+- [JHora public REST API](https://jagannathahora.com/api-mcp)
+- [JHora public MCP guide](https://jagannathahora.com/api-mcp/mcp-usage)
+
+The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself.
+
+## Architecture
+
+```mermaid
+flowchart TD
+    USER["User / MCP client"] --> UI["Next.js interface"]
+    UI --> API["FastAPI backend"]
+    API --> BIRTH["Birth and timezone validation"]
+    API --> YEAR["Running-year calculation"]
+    API --> BCP["BCP house activation"]
+    API --> BSP["BSP research catalogue"]
+    API --> UTILS["Kakshya and comparison utilities"]
+    API --> MANUAL["Manual chart mapping"]
+    BCP --> EVIDENCE["Source and evidence records"]
+    BSP --> EVIDENCE
+    EVIDENCE --> RESULT["Structured result and limitations"]
+    RESULT --> UI
+    MCP["MCP tool registry"] --> API
+```
+
+| Repository path | Responsibility |
+| --- | --- |
+| `frontend/` | Next.js + TypeScript user interface |
+| `backend/` | FastAPI application and calculation modules |
+| `research/` | Method specifications, source matrix and conflicts |
+| `docs/` | Architecture, MCP, deployment and implementation guides |
+
+## Quick start
+
+### Requirements
+
+Python 3.12 recommended, Node.js/npm compatible with the frontend lockfile, and Git. Docker Desktop is optional.
+
+### 1. Clone
+
+```powershell
+git clone https://github.com/beshivaayy/bhrigusetu.git
+cd bhrigusetu
+```
+
+### 2. Backend
+
+```powershell
 cd backend
-py -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-~~~
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --port 8000
+```
 
-### Frontend (new terminal)
+API health: [http://localhost:8000/health](http://localhost:8000/health) · API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-~~~powershell
+### 3. Frontend
+
+Open a second terminal from the repository root:
+
+```powershell
 cd frontend
 npm ci
-$env:NEXT_PUBLIC_API_BASE_URL="http://localhost:8000"
+$env:NEXT_PUBLIC_API_BASE_URL = "http://localhost:8000"
 npm run dev
-~~~
+```
 
-Open http://localhost:3000. API health: http://localhost:8000/health. Interactive API docs: http://localhost:8000/docs.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Configuration
+### 4. Tests
 
-Backend:
-- CORS_ORIGINS — comma-separated allowed frontend origins. Defaults to localhost:3000 and 127.0.0.1:3000.
-
-Frontend:
-- NEXT_PUBLIC_API_BASE_URL — public API base URL. Defaults to http://localhost:8000.
-
-Do not commit secrets or private credentials. Use HTTPS for deployed API origins.
-
-## Test backend
-
-~~~powershell
+```powershell
 cd backend
-pip install -r requirements.txt
-pytest -q
-~~~
+python -m pytest -q
+```
 
-## Birthplace search
-
-The form uses a one-shot OpenStreetMap Nominatim search (not autocomplete), caches results and displays attribution. Timezones are detected offline from coordinates. Read [docs/PLACE_SEARCH.md](docs/PLACE_SEARCH.md) before changing the geocoder or scaling the service.
-
-## Astronomy and licensing
-
-See [research/ASTRONOMY_AND_LICENSING.md](research/ASTRONOMY_AND_LICENSING.md) for the selected Astronomy Engine implementation and the Swiss Ephemeris dual-licensing decision. Swiss Ephemeris is not bundled. The Lagna-based house-year rotation is documented in Saptarishis BCP-1; the nine cycle-lord sequence has secondary corroboration only. See [research/BCP_CYCLE_LORD_EVIDENCE.md](research/BCP_CYCLE_LORD_EVIDENCE.md) and [research/BCP_TRIGGER_POINTS.md](research/BCP_TRIGGER_POINTS.md).
-
-## Research and accuracy policy
-
-1. Sunil John / original Saptarishis BSP and BCP material receives highest priority for system-specific rules.
-2. Deepanshu Giri is used for cross-checking and practical teaching context.
-3. Sanjay Rath is used for foundational Jyotish corroboration where applicable.
-4. Generic Parashari rules are not automatically treated as BSP rules.
-5. Every production rule must have an exact source location, explicit preconditions, deterministic calculation, confidence rationale and reproducible test case.
-6. Conflicts are documented, not silently averaged.
-
-See research/BCP_SPECIFICATION.md, research/BSP_SPECIFICATION.md, research/SOURCE_MATRIX.md and research/CONFLICTS.md before enabling predictive logic.
-
-## Run full stack with Docker
+### 5. Docker (optional)
 
 From the repository root:
 
-~~~powershell
+```powershell
 docker compose up --build
-~~~
+```
 
-Open http://localhost:3000. Stop with Ctrl+C; remove the containers with:
+Open [http://localhost:3000](http://localhost:3000). Stop with `Ctrl+C`, then run `docker compose down`.
 
-~~~powershell
-docker compose down
-~~~
+## Configuration
 
-The frontend and API are separate services. The Docker setup is intended for local evaluation; production deployment still requires public HTTPS origins and explicit CORS configuration.
+| Variable | Component | Purpose |
+| --- | --- | --- |
+| `CORS_ORIGINS` | Backend | Comma-separated allowed frontend origins |
+| `NEXT_PUBLIC_API_BASE_URL` | Frontend | FastAPI base URL; defaults to `http://localhost:8000` |
+
+Never commit API keys, tokens, passwords or local environment files. Use HTTPS for deployed API origins and configure CORS for the exact frontend origin.
+
+## Deployment
+
+The intended split deployment is **Vercel** for the frontend (root directory `frontend/`) and **Render** for the backend (repository Render configuration and backend Dockerfile). Configuration files do not guarantee that a service is deployed or healthy. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and verify the deployed commit, health checks, CORS and logs.
+
+## External services, privacy & licensing
+
+- Birthplace lookup uses OpenStreetMap Nominatim. Attribution is displayed; follow its usage policy and do not turn one-shot lookup into uncontrolled autocomplete.
+- The `main` branch does not include a production ephemeris chart engine. See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md).
+- Swiss Ephemeris is not bundled. Its dual-licensing requirements need an explicit AGPL-compliance or professional-licence decision before integration.
+- Birth date, time and location are personal data. Review hosting and external-provider privacy terms before sending them to third-party services.
+- No project-level `LICENSE` file is currently present; reuse and redistribution terms have not been formally declared. Third-party dependencies retain their own licences.
+
+## Documentation
+
+| Document | Description |
+| --- | --- |
+| [Architecture](docs/ARCHITECTURE.md) | Application layers and responsibility boundaries |
+| [MCP server](docs/MCP_SERVER.md) | Available tools, transports and client setup |
+| [Deployment](docs/DEPLOYMENT.md) | Render, Vercel, CORS and release verification |
+| [Place search](docs/PLACE_SEARCH.md) | Nominatim usage and timezone lookup safeguards |
+| [Manual chart import](docs/MANUAL_CHART_IMPORT.md) | Caller-supplied longitudes and mapping limitations |
+| [Astronomy & licensing](research/ASTRONOMY_AND_LICENSING.md) | Ephemeris choices, precision and licensing |
+| [BCP specification](research/BCP_SPECIFICATION.md) | BCP calculation scope and assumptions |
+| [BCP cycle-lord evidence](research/BCP_CYCLE_LORD_EVIDENCE.md) | Evidence for provisional cycle-ruler mapping |
+| [BCP trigger points](research/BCP_TRIGGER_POINTS.md) | Unresolved trigger-point method |
+| [BSP specification](research/BSP_SPECIFICATION.md) | BSP research scope and implementation boundaries |
+| [BSP rule register](research/BSP_RULE_REGISTER.md) | Candidate rules, sources and verification status |
+| [Source matrix](research/SOURCE_MATRIX.md) | Source inventory and evidence status |
+| [Conflicts](research/CONFLICTS.md) | Conflicting interpretations and open questions |
+
+## Contributing
+
+Contributions are welcome in source research, reproducible examples, calculation tests, documentation and engineering. A BCP/BSP rule proposal must include its source, exact location, preconditions, worked example, expected output and regression test. Unattributed predictions should not be submitted as established doctrine.
+
+---
+
+<div align="center">
+
+**BhriguSetu** · Bridging traditional Jyotish research and disciplined software engineering.
+
+[Repository](https://github.com/beshivaayy/bhrigusetu) · [Issues](https://github.com/beshivaayy/bhrigusetu/issues) · [JHora API](https://jagannathahora.com/api-mcp)
+
+</div>
