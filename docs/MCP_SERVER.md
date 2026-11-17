@@ -5,7 +5,8 @@ BhriguSetu exposes its existing calculation and research capabilities through th
 ## Current tools
 
 - `analyze_birth_details_tool` — validated partial birth analysis (running year, BCP, BSP status).
-- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; no ephemeris calculation.
+- `calculate_birth_chart_tool` — calculates an approximate natal chart using the in-repository Astronomy Engine implementation; it is not JHora parity.
+- `analyze_supplied_chart_tool` — maps caller-supplied sidereal longitudes to signs and whole-sign houses; does not verify their ephemeris.
 - `calculate_running_year_tool` — running-year arithmetic.
 - `analyze_bcp_tool` — BCP house activation and provisional cycle metadata.
 - `analyze_bsp_tool` / `get_bsp_rules_tool` — research candidates and evidence status.
@@ -62,13 +63,11 @@ https://<existing-bhrigusetu-api-host>/mcp
 
 There is no second Render service: MCP is mounted inside the existing API process and uses the same Render-assigned public HTTPS hostname. This avoids consuming another free instance. The mounted endpoint uses stateless HTTP requests and JSON responses. Local stdio remains unchanged.
 
-**Exposure and privacy:** this remote endpoint has no sign-in/OAuth layer and is publicly reachable. The registered tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Add OAuth before exposing any future write-capable or private-data tools.
+**Authentication and privacy:** the remote `/mcp` route requires a Bearer token configured through `BHRIGUSETU_MCP_TOKEN`; requests without a valid token receive HTTP 401. Keep the token in the hosting provider's secret/environment settings and never commit it. This token protects only the remote MCP route, not the other FastAPI routes. The registered MCP tools are read-only (calculations, lookups and research status); they do not mutate data or persist birth details. Do not send passwords, API keys, or other secrets through tool arguments. Before exposing write-capable or private-data tools, add user-level authorization, audit logging and appropriate privacy controls.
 
 ### Add to ChatGPT
 
-ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. On an eligible ChatGPT web account, open the custom MCP server connection flow, use the existing API host with the `/mcp` path, choose **No authentication** for this read-only public endpoint, review the tool list and risk notice, then create the connection.
-
-Plan availability is controlled by ChatGPT: OpenAI currently lists Pro for read/fetch-only custom MCP connections and Business/Enterprise/Edu for broader MCP access. Free is not listed as eligible. If the account is on Free, the server can still be used from local MCP clients (including the already configured Claude Code connection), but ChatGPT will not offer the custom-server connection until the account/workspace is eligible. Setup is web-only.
+ChatGPT custom MCP connections require a remote HTTPS endpoint; the local stdio command above cannot be entered directly. **Do not choose “No authentication” for this endpoint:** remote `/mcp` requires a Bearer token. Use only a client connection flow that explicitly supports the required Bearer-token authentication, and store the token in that client's secure credential field. Never put the token in a URL, README, source file or screenshot. If the selected ChatGPT connection flow does not offer a compatible authentication method, do not expose the MCP endpoint without authentication as a workaround; continue using the already configured local Claude Code MCP connection until a supported secure connection method is available.
 
 ## Claude Code (Windows PowerShell)
 
@@ -104,7 +103,8 @@ Restart Claude Desktop after saving the configuration.
 - BCP running-year and house-activation calculations reuse the existing engine.
 - The chakra-swami sequence remains provisional.
 - BSP predictive candidates remain disabled until source verification and validation.
-- Birth-data ephemeris calculation is not implemented. Caller-supplied sidereal positions can be mapped to signs and whole-sign houses without validating their astronomical source. A complete horoscope is not implemented.
+- Birth-data chart calculation is available through `calculate_birth_chart_tool`, but is approximate: Astronomy Engine 2.1.19, approximate Lahiri polynomial, Mean Nodes and Whole Sign houses, with D1/D9 mapping. It is not validated for JHora parity. True Node, selectable ayanamsha variants and alternative bhava systems are not implemented in the in-repository engine.
+- Caller-supplied sidereal positions can separately be mapped to signs and whole-sign houses without validating their astronomical source. The chart layer does not enable BSP predictions; BSP candidates remain disabled.
 - Birthplace lookup uses OpenStreetMap Nominatim and retains its attribution.
 - Local stdio use needs no API key or cloud service. Remote MCP uses the existing API deployment.
 

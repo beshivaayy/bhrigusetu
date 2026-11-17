@@ -40,7 +40,7 @@ This table describes the implementation on the `main` branch—not planned work.
 | BCP trigger-point dates | Disabled | Degree-to-day interpretation needs source clarification |
 | BSP rule catalogue | Research stage | Five source-linked candidates; predictive matching disabled |
 | BSP-7 Kakshya | Implemented utility | Eight divisions of 3°45′; lookup only, not a standalone prediction |
-| Birth-chart calculation | Not available on main | No planetary positions or houses are calculated from birth details |
+| Birth-chart calculation | Implemented, approximate | Astronomy Engine 2.1.19; approximate Lahiri polynomial, mean nodes, whole-sign houses and D1/D9; not JHora parity |
 | Manual chart import | Implemented | Maps caller-supplied sidereal longitudes; does not verify their ephemeris |
 | MCP interface | Implemented | Exposes existing calculation and research functions |
 
@@ -70,12 +70,40 @@ Before a rule can be enabled, it needs a traceable source and exact location, cl
 
 Calculation conventions materially affect chart results. BhriguSetu treats birth date, local civil time, coordinates, IANA timezone, UTC conversion and calculation-provider settings as explicit inputs.
 
-**Jagannatha Hora (JHora) is the intended reference target for chart-calculation validation.** The `main` branch does not claim JHora parity or provide a complete birth-chart engine. A separate chart-engine branch remains under review. Any future provider integration must expose only verified settings, preserve the exact calculation profile and reject unsupported options rather than silently substituting defaults.
+**Jagannatha Hora (JHora) is the intended reference target for chart-calculation validation.** The `main` branch contains an initial approximate birth-chart engine, but it does not claim JHora parity. The in-repo engine uses Astronomy Engine 2.1.19, an approximate Lahiri polynomial, Mean Nodes and Whole Sign houses; True Node, alternative ayanamsha modes and alternative bhava systems are not implemented in that engine. Any provider integration must expose only verified settings, preserve the exact calculation profile and reject unsupported options rather than silently substituting defaults.
 
 - [JHora public REST API](https://jagannathahora.com/api-mcp)
 - [JHora public MCP guide](https://jagannathahora.com/api-mcp/mcp-usage)
 
 The public API/MCP service is a separate provider; it must not be described as the desktop JHora application itself.
+
+## Acknowledgements & source credits
+
+BhriguSetu is built with gratitude to the teachers, authors, researchers and knowledge traditions from which its creator has learned. The project aims to acknowledge intellectual contributions clearly and respectfully.
+
+### Teachers and guiding influences
+
+Our special gratitude goes to:
+
+- **Sunil John** — for the teachings, guidance and knowledge that have helped shape the creator's understanding and research into Bhrigu Chakra Paddhati (BCP) and Bhrigu Saral Paddhati (BSP).
+- **Deepanshu Giri** — for sharing Jyotish knowledge, practical insights and teaching that have contributed to the creator's learning and continued study.
+- **Sanjay Rath** — for his extensive contributions to Jyotish education, traditional study and the wisdom that has informed the creator's learning and research approach.
+
+These acknowledgements express gratitude for learning and intellectual influence. They do not imply endorsement of BhriguSetu, collaboration, affiliation or review by the individuals named. Their teachings and authored materials remain theirs; BhriguSetu does not claim ownership over them.
+
+### Other teachers, authors and researchers
+
+We are also grateful to every other Jyotish teacher, author, scholar and researcher whose publicly shared or properly accessed work informs a specific part of this project. They will be credited by name alongside the relevant research entry, with a source link and—where available—a lecture timestamp, publication, page or chapter reference. No contributor should be represented as a source for a rule unless that attribution has been verified.
+
+### Classical knowledge and information sources
+
+BhriguSetu also acknowledges the authorship, preservation, translation and scholarship associated with classical Jyotish works, including *Brihat Parashara Hora Shastra*, *Phaladeepika*, *Laghu Parashari* and *Jaimini Sutras*. Specific editions, translators, editors and shloka references will be identified wherever they are used; traditional knowledge is not claimed as original project intellectual property.
+
+Software libraries, ephemeris/calculation providers, APIs, datasets, documentation, open-source maintainers and other information providers will be credited in the relevant notices or source registers according to their licences and attribution terms. The [Source matrix](research/SOURCE_MATRIX.md) records research references and evidence status.
+
+**Our principle:** give credit where knowledge came from, distinguish quotation from interpretation and distinguish both from BhriguSetu's own implementation or analysis. If a source or contributor is missing or incorrectly attributed, please open an issue so the record can be corrected.
+
+See [Acknowledgements and attribution policy](ACKNOWLEDGEMENTS.md) for the full credit standard.
 
 ## Architecture
 
@@ -171,10 +199,18 @@ Never commit API keys, tokens, passwords or local environment files. Use HTTPS f
 
 The intended split deployment is **Vercel** for the frontend (root directory `frontend/`) and **Render** for the backend (repository Render configuration and backend Dockerfile). Configuration files do not guarantee that a service is deployed or healthy. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and verify the deployed commit, health checks, CORS and logs.
 
+## Ownership and distribution
+
+BhriguSetu follows a **hybrid product model**: the hosted product and selected public interfaces may be accessible, while the proprietary calculation, research and service implementation is intended to remain private. The repository is currently public; the private-core separation is a migration target, not yet completed. See [Ownership and distribution policy](docs/OWNERSHIP_AND_DISTRIBUTION.md).
+
+**Current source status:** no project-level software licence has been added. The absence of a licence does not make the project open source; default copyright applies to original project code. GitHub users can still view and fork a public repository under GitHub's platform terms. Public visibility also means the existing source, branches and history have already been exposed; changing visibility later cannot recall existing public forks or local copies.
+
+Do not treat third-party libraries, public-domain/classical texts, teacher-authored material, public API providers or user-supplied data as BhriguSetu-owned intellectual property. Their respective rights, licences, terms and attribution requirements remain separate.
+
 ## External services, privacy & licensing
 
 - Birthplace lookup uses OpenStreetMap Nominatim. Attribution is displayed; follow its usage policy and do not turn one-shot lookup into uncontrolled autocomplete.
-- The `main` branch does not include a production ephemeris chart engine. See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md).
+- The `main` branch includes an approximate ephemeris chart engine; it is not validated for JHora parity or precision-sensitive predictions. See [Astronomy and licensing](research/ASTRONOMY_AND_LICENSING.md).
 - Swiss Ephemeris is not bundled. Its dual-licensing requirements need an explicit AGPL-compliance or professional-licence decision before integration.
 - Birth date, time and location are personal data. Review hosting and external-provider privacy terms before sending them to third-party services.
 - No project-level `LICENSE` file is currently present; reuse and redistribution terms have not been formally declared. Third-party dependencies retain their own licences.
@@ -183,6 +219,7 @@ The intended split deployment is **Vercel** for the frontend (root directory `fr
 
 | Document | Description |
 | --- | --- |
+| [Acknowledgements](ACKNOWLEDGEMENTS.md) | Gratitude to teachers and point-of-use attribution for research, classical, technical and community sources |
 | [Architecture](docs/ARCHITECTURE.md) | Application layers and responsibility boundaries |
 | [MCP server](docs/MCP_SERVER.md) | Available tools, transports and client setup |
 | [Deployment](docs/DEPLOYMENT.md) | Render, Vercel, CORS and release verification |
@@ -199,7 +236,7 @@ The intended split deployment is **Vercel** for the frontend (root directory `fr
 
 ## Contributing
 
-Contributions are welcome in source research, reproducible examples, calculation tests, documentation and engineering. A BCP/BSP rule proposal must include its source, exact location, preconditions, worked example, expected output and regression test. Unattributed predictions should not be submitted as established doctrine.
+Until the private-core split and contributor terms are in place, use public issues and pull requests for documentation corrections, reproducible bug reports and discussion; do not assume a code contribution grants or transfers intellectual-property rights. Contributions to proprietary components require a written contributor/IP agreement before acceptance. A BCP/BSP research proposal must include its source, exact location, preconditions, worked example, expected output and regression test. Unattributed predictions should not be submitted as established doctrine.
 
 ---
 
