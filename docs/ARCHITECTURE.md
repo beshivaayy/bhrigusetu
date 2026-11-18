@@ -32,7 +32,7 @@ flowchart TD
 - **BSP layer:** reads source-controlled research candidates. Predictive rules remain disabled until provenance, preconditions, worked examples and regression tests are verified.
 - **Chart layer:** the primary integrated chart path is the independent Jagannatha Hora public REST API. The in-repository Astronomy Engine calculation remains approximate and must be selected explicitly; it is not desktop-JHora parity.
 - **Manual chart mapping:** maps caller-supplied sidereal longitudes; it does not calculate or independently verify their astronomical source.
-- **MCP layer:** exposes existing BhriguSetu functions through local stdio and authenticated remote Streamable HTTP. An optional Gemini second-opinion tool sends only explicitly supplied task/context to Google; it does not automatically export birth/chart data.
+- **MCP layer:** exposes existing BhriguSetu functions through local stdio and authenticated remote Streamable HTTP.
 
 ## Calculation provider boundary
 
@@ -53,8 +53,6 @@ Desktop-JHora parity is not established. It requires authorized desktop referenc
 - `CORS_ORIGINS`: comma-separated allowed frontend origins.
 - `NEXT_PUBLIC_API_BASE_URL`: frontend API base URL.
 - `BHRIGUSETU_MCP_TOKEN`: Bearer token required by the remote MCP route.
-- `GEMINI_API_KEY`: optional Google Gemini Developer API key for `consult_gemini_tool`.
-- `GEMINI_MODEL`: optional Gemini model override (default `gemini-3.8-flash`).
 - `JHORA_API_BASE_URL`: optional override for the Jagannatha Hora public REST API endpoint.
 
 ## Astronomy dependency and release gate
