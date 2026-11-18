@@ -18,7 +18,6 @@ from .chart.analysis import analyze_chart_context
 from .astronomy.ephemeris import calculate_natal_chart
 from .astronomy.jhora_provider import JHoraChartRequest, calculate_with_jhora
 from .mcp_server.server import mcp as bhrigusetu_mcp
-from .ai_workspace import router as ai_workspace_router
 
 # Mount the same MCP tool registry under /mcp on the existing API service.
 # Local stdio clients continue to use: python -m app.mcp_server
@@ -160,10 +159,6 @@ async def calculate_jhora_birth_chart(request: JHoraChartRequest):
 def manual_chart_analysis(chart: SuppliedChartInput):
     """Map externally supplied sidereal longitudes; does not calculate an ephemeris."""
     return analyze_supplied_chart(chart)
-
-
-# Mount the authenticated Gemini workspace REST route before the MCP catch-all.
-app.include_router(ai_workspace_router)
 
 # Mount last so existing FastAPI routes keep precedence.
 app.mount("/", mcp_http_app)
