@@ -56,6 +56,8 @@ class JHoraChartRequest(BirthDetails):
             raise ValueError("ayanamsa_value is required when ayanamsa_mode is SIDM_USER")
         if self.ayanamsa_mode != "SIDM_USER" and self.ayanamsa_value is not None:
             raise ValueError("ayanamsa_value is only valid with ayanamsa_mode SIDM_USER")
+        if not 1800 <= self.date_of_birth.year <= 2100:
+            raise ValueError("Jagannatha Hora API supports birth dates from 1800 through 2100")
         return self
 
 
