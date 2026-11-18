@@ -27,3 +27,84 @@
 .provider-note{display:flex;flex-direction:column;gap:6px;padding:13px 15px;background:#f3eee3;border-left:3px solid #a77e43;color:#4f4a3f}.provider-note strong{font-size:11px;color:#243d32}.provider-note span{font-size:10px;line-height:1.7;color:#756d5d}
 
 
+
+
+/* Sacred-geometry treatment: CSS-drawn ornament, no stock photography or remote images. */
+.heritage-v2{
+  position:relative;
+  isolation:isolate;
+  background-color:var(--hv-paper);
+  background-image:
+    radial-gradient(ellipse at 12% 18%,rgba(167,126,67,.075),transparent 34%),
+    radial-gradient(ellipse at 88% 48%,rgba(36,61,50,.045),transparent 38%);
+}
+.heritage-v2::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  opacity:.34;
+  background-image:
+    repeating-conic-gradient(from 0deg at 50% 50%,rgba(142,106,58,.2) 0deg .35deg,transparent .35deg 15deg),
+    radial-gradient(circle at 50% 50%,transparent 0 16%,rgba(142,106,58,.22) 16.1% 16.25%,transparent 16.4% 28%,rgba(121,62,53,.15) 28.1% 28.25%,transparent 28.4% 42%,rgba(142,106,58,.2) 42.1% 42.25%,transparent 42.4% 57%,rgba(142,106,58,.17) 57.1% 57.25%,transparent 57.4% 72%,rgba(121,62,53,.13) 72.1% 72.25%,transparent 72.4%);
+  background-size:560px 560px;
+  background-repeat:no-repeat;
+  background-position:right -120px top 105px;
+  mask-image:linear-gradient(180deg,#000 0%,#000 48%,transparent 88%);
+}
+.heritage-v2>*{position:relative;z-index:1}
+.hv2-hero{
+  isolation:isolate;
+  background:
+    radial-gradient(ellipse at 78% 46%,rgba(167,126,67,.105),transparent 47%),
+    linear-gradient(115deg,rgba(250,247,239,.48),rgba(242,236,221,.12) 54%,rgba(233,223,202,.26));
+}
+.hv2-hero::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  width:min(58vw,690px);
+  aspect-ratio:1;
+  right:-165px;
+  top:-18px;
+  border:1px solid rgba(167,126,67,.26);
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.76;
+  background:
+    repeating-conic-gradient(from -7.5deg,rgba(167,126,67,.25) 0deg .45deg,transparent .45deg 15deg),
+    radial-gradient(circle,transparent 0 22%,rgba(167,126,67,.3) 22.1% 22.35%,transparent 22.5% 36%,rgba(121,62,53,.22) 36.1% 36.3%,transparent 36.5% 50%,rgba(167,126,67,.27) 50.1% 50.3%,transparent 50.5% 64%,rgba(167,126,67,.22) 64.1% 64.3%,transparent 64.5% 78%,rgba(121,62,53,.18) 78.1% 78.3%,transparent 78.5%);
+  mask-image:radial-gradient(circle,transparent 0 8%,#000 8.5% 78%,transparent 78.5%);
+}
+.hv2-hero-copy,.hv2-folio-wrap{z-index:2}
+.hv2-folio{background-color:#e9dec7;background-image:repeating-linear-gradient(0deg,rgba(116,83,43,.025) 0,rgba(116,83,43,.025) 1px,transparent 1px,transparent 5px)}
+.hv2-ribbon{background-image:linear-gradient(90deg,rgba(255,255,255,.025),transparent 28%,rgba(215,185,130,.08) 50%,transparent 72%,rgba(255,255,255,.025))}
+.hv2-section-head>p,.hv2-research-body>p{max-width:590px}
+.hv2-tradition-list button:focus-visible,.hv2-nav a:focus-visible,.hv2-nav button:focus-visible,.hv2-button:focus-visible,.hv2-textlink:focus-visible,.hv2-pillar-grid a:focus-visible{
+  outline:2px solid var(--hv-red);
+  outline-offset:4px;
+}
+.hv2-tradition-list button{transition:background .18s,border-color .18s,transform .18s}
+.hv2-tradition-list button:hover{background:rgba(233,223,202,.58)}
+.hv2-pillar-grid article{transition:background .2s,transform .2s}
+.hv2-pillar-grid article:hover{background:rgba(233,223,202,.28)}
+.hv2-library{background-image:radial-gradient(circle at 18% 48%,rgba(167,126,67,.12),transparent 34%),linear-gradient(135deg,rgba(255,255,255,.16),transparent 55%)}
+.hv2-library-art{filter:drop-shadow(0 12px 24px rgba(53,42,26,.08))}
+.hv2-library-stamp{font-size:11px;letter-spacing:.08em}
+.hv2-closing{background-image:radial-gradient(circle at 50% 0%,rgba(190,153,91,.18),transparent 58%),repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 9px)}
+.hv2-footer{border-top:1px solid rgba(167,126,67,.2)}
+@media(max-width:900px){
+  .hv2-hero::after{width:620px;right:-265px;top:18px;opacity:.48}
+  .heritage-v2::before{background-size:430px 430px;background-position:right -170px top 100px;opacity:.24}
+}
+@media(max-width:650px){
+  .hv2-hero::after{width:430px;right:-245px;top:90px;opacity:.24}
+  .heritage-v2::before{background-size:330px 330px;background-position:right -190px top 90px;opacity:.18}
+  .hv2-hero{background:linear-gradient(180deg,rgba(250,247,239,.46),rgba(242,236,221,.1))}
+  .hv2-proofline{line-height:1.8}
+  .hv2-library-stamp{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .hv2-tradition-list button,.hv2-pillar-grid article{transition:none}
+}
