@@ -76,6 +76,14 @@ def test_mcp_tools_explicitly_advertise_read_only_behavior():
     assert by_name["analyze_bcp_tool"].annotations.open_world_hint is False
 
 
+def test_jhora_mcp_tool_exposes_optional_gender_setting():
+    tools = asyncio.run(mcp.list_tools())
+    by_name = {tool.name: tool for tool in tools}
+    schema = by_name["calculate_jhora_chart_tool"].inputSchema
+    assert "gender" in schema["properties"]
+    assert schema["properties"]["gender"]["anyOf"][0]["enum"] == ["male", "female"]
+
+
 def test_mcp_birth_chart_tool_returns_d1_d9_and_whole_sign_houses():
     result = calculate_birth_chart_tool(
         "2000-01-01", "00:00:00", 0.0, 0.0, "UTC"
