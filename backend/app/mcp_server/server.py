@@ -286,7 +286,7 @@ def get_system_status_tool() -> dict:
     }
 
 
-@mcp.tool(annotations=_READ_ONLY)
+@mcp.tool(annotations=_EXTERNAL_READ_ONLY)
 async def consult_gemini_tool(
     task: str,
     context: str = "",
