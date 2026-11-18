@@ -184,3 +184,14 @@ def test_jhora_cache_separates_calculation_settings(monkeypatch):
     assert calls[0]["node_type"] == "mean"
     assert calls[1]["node_type"] == "true"
     jhora_provider._clear_jhora_cache()
+
+
+def test_jhora_timezone_mode_defaults_to_automatic_historical_lookup():
+    request = JHoraChartRequest(
+        date_of_birth=date(2000, 1, 1),
+        time_of_birth=time(9, 40),
+        latitude=22.1765,
+        longitude=75.5805,
+    )
+    assert request.timezone_mode == "auto"
+    assert _request_payload(request)["timezone_mode"] == "auto"

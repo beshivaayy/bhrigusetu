@@ -66,7 +66,7 @@ export default function Home() {
   const [timezoneOptions,setTimezoneOptions]=useState<string[]>([]); const [timeFold,setTimeFold]=useState("");
   const [ayanamsha,setAyanamsha]=useState("LAHIRI"); const [customAyanamsha,setCustomAyanamsha]=useState("");
   const [node,setNode]=useState("mean"); const [calcMethod,setCalcMethod]=useState("drik"); const [bhava,setBhava]=useState("5");
-  const [timezoneMode,setTimezoneMode]=useState("file"); const [language,setLanguage]=useState("en");
+  const [timezoneMode,setTimezoneMode]=useState("auto"); const [language,setLanguage]=useState("en");
   const [loading,setLoading]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
   const [result,setResult]=useState<RecordValue|null>(null); const [activeSection,setActiveSection]=useState<SectionKey>("chart");
   const [selectedVarga,setSelectedVarga]=useState("D-1_rasi"); const [showSettings,setShowSettings]=useState(false);
@@ -147,6 +147,7 @@ export default function Home() {
           <label>Timezone calculation<select value={timezoneMode} onChange={e=>setTimezoneMode(e.target.value)}><option value="file">Resolved timezone</option><option value="auto">Automatic historical lookup</option></select></label>
           <label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="en">English</option><option value="hi">Hindi</option><option value="ka">Kannada</option><option value="ta">Tamil</option><option value="te">Telugu</option></select></label>
         </div>}
+        <div className="provider-note place-field"><strong>Provider: Jagannatha Hora public REST API</strong><span>Independent external API — not the desktop application. Selected settings are sent explicitly; provider-applied settings and any fallback notes appear in the calculation receipt. Desktop-JHora parity is not established.</span></div>
         <button className="calculate-button" disabled={loading||!dob||!tob||!place||!lat||!lon||!tz}>{loading?"Calculating horoscope…":"Calculate horoscope"} <span>→</span></button>
       </form>
       {error&&<p className="inline-error">{error}</p>}
@@ -175,6 +176,7 @@ export default function Home() {
       {activeSection!=="chart"&&activeSection!=="grahas"&&<div className="section-content">
         {Object.entries(sectionData[activeSection]).filter(([,v])=>v!==undefined&&v!==null).map(([title,value])=><DataPanel key={title} title={title} value={value}/>)}
       </div>}
+      <DataPanel title="Calculation receipt · Jagannatha Hora public REST API" value={{provider:result.provider,engine_revision:result.engine_revision,desktop_jhora_parity:result.desktop_jhora_parity,requested_settings:result.requested_settings,applied_settings:result.applied_settings,request_notes:result.request_notes,timezone_used:result.timezone_used,timezone_source:result.timezone_source,warnings:result.warnings}}/>
       <div className="birth-summary"><span>{result.result?.birth_details?.date||dob} · {result.result?.birth_details?.time||tob}</span><span>{lat}, {lon} · {tz}</span></div>
     </section>}
     <footer className="app-footer"><span>BhriguSetu</span><span>Jyotish calculation workspace</span><small>Place search © OpenStreetMap contributors</small></footer>

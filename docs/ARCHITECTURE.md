@@ -4,37 +4,41 @@
 
 ~~~mermaid
 flowchart TD
-    UI["Next.js interface"] --> API["FastAPI API"]
+    USER["User / MCP client"] --> UI["Next.js interface"]
+    UI --> API["FastAPI API"]
     API --> TIME["Birth-time and timezone validation"]
     API --> BCP["BCP calculation layer"]
     API --> BSP["BSP research catalogue"]
     API --> CHART["Chart calculation layer"]
-    CHART --> LOCAL["In-repo approximate astronomy engine"]
-    CHART -. planned adapter .-> JH["External JHora API / MCP"]
+    CHART --> JH["Jagannatha Hora public REST API"]
+    CHART --> LOCAL["Approximate Astronomy Engine fallback (explicit only)"]
+    UI --> LIB["Granthalaya catalogue"]
     BCP --> EVIDENCE["Source and evidence records"]
     BSP --> EVIDENCE
-    CHART --> REPORT["Result metadata and warnings"]
-    EVIDENCE --> REPORT
+    CHART --> RECEIPT["Calculation receipt and limitations"]
+    EVIDENCE --> REPORT["Structured result"]
+    RECEIPT --> REPORT
     REPORT --> UI
     MCP["MCP tool registry"] --> API
 ~~~
 
 ## Component responsibilities
 
-- **Frontend:** collects birth details, displays results and exposes user-facing controls. It is not the calculation source of truth.
+- **Frontend:** Next.js homepage, Jyotisha calculator workspace and Granthalaya catalogue. It collects inputs and displays provider receipts; it is not the calculation source of truth.
+- **Granthalaya:** first searchable catalogue release with source-aware classical text records, project research notes and a curated study path. External Archive.org catalogue searches are not represented as verified full-text editions. Persistent accounts, reading progress, bookmarks, full-text hosting and editorial publishing workflows remain future work.
 - **FastAPI:** validates requests, resolves birth-time context and orchestrates calculation modules.
 - **Time layer:** resolves local civil time using an IANA timezone. Nonexistent DST wall times are rejected; repeated times require an explicit fold choice. The API returns local and UTC instants for reproducibility.
-- **BCP layer:** calculates running year and the current 12-house activation arithmetic. This is not a complete predictive interpretation.
-- **BSP layer:** reads source-controlled research candidates. Predictive rules remain disabled until provenance, preconditions and worked examples are verified.
-- **Chart layer:** currently calculates an approximate sidereal D1/D9 chart using Astronomy Engine 2.1.19, an approximate Lahiri polynomial, mean lunar node and whole-sign houses.
+- **BCP layer:** calculates running year and current 12-house activation arithmetic. This is not a complete predictive interpretation.
+- **BSP layer:** reads source-controlled research candidates. Predictive rules remain disabled until provenance, preconditions, worked examples and regression tests are verified.
+- **Chart layer:** the primary integrated chart path is the independent Jagannatha Hora public REST API. The in-repository Astronomy Engine calculation remains approximate and must be selected explicitly; it is not desktop-JHora parity.
 - **Manual chart mapping:** maps caller-supplied sidereal longitudes; it does not calculate or independently verify their astronomical source.
 - **MCP layer:** exposes existing BhriguSetu functions through local stdio and authenticated remote Streamable HTTP.
 
-## Calculation authority and provider boundary
+## Calculation provider boundary
 
-Jagannatha Hora is the project's target reference for chart-calculation validation. The public JHora API/MCP service is being evaluated as an external provider; it is separate from the desktop software and must be labelled accurately.
+The Jagannatha Hora public REST API is an external calculation provider, separate from the desktop astrology application and its author. BhriguSetu preserves requested settings, provider-applied settings, engine revision, timezone receipt and request notes where returned. The default timezone mode is automatic historical lookup. Unsupported settings must be rejected or marked unavailable, never silently replaced.
 
-A provider adapter must preserve exact request settings and provider revision. Unsupported options must be rejected or marked unavailable, never silently replaced. A JHora parity claim requires reference fixtures and documented angular-error comparisons.
+Desktop-JHora parity is not established. It requires authorized desktop reference exports with identical birth inputs and settings, plus documented angular-error comparisons for graha longitudes, Lagna, ayanamsha, nakshatra/pada, vargas and Bhava Chalit.
 
 ## Research and evidence boundaries
 
@@ -46,19 +50,17 @@ A provider adapter must preserve exact request settings and provider revision. U
 
 ## Configuration
 
-- CORS_ORIGINS: comma-separated allowed frontend origins.
-- NEXT_PUBLIC_API_BASE_URL: frontend API base URL.
-- BHRIGUSETU_MCP_TOKEN: Bearer token required by the remote MCP route.
-
-Local development defaults to http://localhost:8000.
+- `CORS_ORIGINS`: comma-separated allowed frontend origins.
+- `NEXT_PUBLIC_API_BASE_URL`: frontend API base URL.
+- `BHRIGUSETU_MCP_TOKEN`: Bearer token required by the remote MCP route.
+- `JHORA_API_BASE_URL`: optional override for the Jagannatha Hora public REST API endpoint.
 
 ## Astronomy dependency and release gate
 
-The current chart engine is approximate and is not certified against desktop JHora. Swiss Ephemeris is not installed; its AGPL-versus-professional licensing decision must be resolved before integration.
+The in-repo chart engine uses Astronomy Engine 2.1.19 and an approximate Lahiri model. Swiss Ephemeris is not installed; its AGPL-versus-professional licensing decision must be resolved before integration. Do not describe the approximate engine as an authoritative replacement for the external provider.
 
-Before promoting a calculation provider to authoritative status:
-
-1. Record the engine, version, time scale and coordinate conventions.
+Before promoting any calculation provider to a precision claim:
+1. Record engine, version, time scale and coordinate conventions.
 2. Record ayanamsha, node, observer, position and house-system settings.
 3. Compare longitudes and ascendant against controlled reference charts.
 4. Test nakshatra, pada, sign and varga boundaries.
