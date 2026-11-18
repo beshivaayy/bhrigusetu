@@ -8,4 +8,3 @@ timezonefinder==9.2.0
 timezonefinder-data==4.2026.6
 mcp>=2.0,<3
 astronomy-engine==2.1.19
-google-genai>=1.0,<3
