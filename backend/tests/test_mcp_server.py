@@ -81,7 +81,11 @@ def test_jhora_mcp_tool_exposes_optional_gender_setting():
     by_name = {tool.name: tool for tool in tools}
     schema = by_name["calculate_jhora_chart_tool"].inputSchema
     assert "gender" in schema["properties"]
-    assert schema["properties"]["gender"]["anyOf"][0]["enum"] == ["male", "female"]
+    gender_schema = schema["properties"]["gender"]
+    gender_values = set(gender_schema.get("enum", []))
+    for branch in gender_schema.get("anyOf", []):
+        gender_values.update(branch.get("enum", []))
+    assert gender_values == {"male", "female"}
 
 
 def test_mcp_birth_chart_tool_returns_d1_d9_and_whole_sign_houses():
