@@ -21,8 +21,6 @@ The same tool registry is available locally over stdio and remotely over Streama
 - `search_birthplace_tool` — existing OSM Nominatim search.
 - `resolve_birth_timezone_tool` — existing DST-safe local birth-time resolution.
 - `get_system_status_tool` — capability and methodology status.
-- `consult_gemini_tool` — optional Gemini second-opinion tool; only caller-supplied task/context is sent to Google.
-- `POST /api/ai/gemini` — authenticated REST entry point used by the BhriguSetu Gemini Workspace; accepts only explicit task/context and reuses the same Gemini service.
 
 ### Manual chart tool example
 
@@ -153,21 +151,3 @@ python -m pytest -q
 ~~~
 
 For manual chart input details, see [MANUAL_CHART_IMPORT.md](MANUAL_CHART_IMPORT.md). For calculation precision and licensing, see [ASTRONOMY_AND_LICENSING.md](../research/ASTRONOMY_AND_LICENSING.md).
-
-
-## Gemini second-opinion integration
-
-BhriguSetu can optionally call the Gemini Developer API through the official Google GenAI Python SDK. Configure `GEMINI_API_KEY` on the backend service and optionally `GEMINI_MODEL` (default: `gemini-3.8-flash`). The MCP tool is named `consult_gemini_tool`.
-
-The tool is deliberately explicit: only its caller-supplied `task` and optional `context` are sent to Google. It does not automatically attach birth details, chart outputs, repository files, API credentials or other BhriguSetu data. Do not include secrets or personal birth data unless you have a clear reason and accept Google's applicable data terms. Gemini output is an independent model response, not verified source evidence, a calculation result or an authorized code change. Review all suggestions before implementation.
-
-If `GEMINI_API_KEY` is absent, the tool reports `not_configured` and does not make a network request. Keep the key in the Render service's environment settings; never commit it or pass it as an MCP argument.
-
-
-## Gemini AI Workspace
-
-The frontend route `/ai-workspace` provides a direct Gemini conversation interface. It calls `POST /api/ai/gemini` through the same-origin `/backend-api` rewrite. The endpoint is protected by the existing `BHRIGUSETU_MCP_TOKEN` bearer token; it does not introduce a second secret or expose the Google API key.
-
-Open the workspace, enter the existing MCP bearer token in the password field, and send a task. The token is held only in component memory and is not written to localStorage/sessionStorage. The conversation is held in page memory for that browser session. Gemini receives the task, the optional context explicitly entered by the user, and the visible recent conversation transcript. Repository files are not attached automatically.
-
-Gemini responses are independent suggestions. This interface cannot read or modify GitHub files, create commits, or deploy code. Review and implement any suggested changes separately. Never paste the Google Gemini API key into the workspace; it remains server-side as `GEMINI_API_KEY`.
