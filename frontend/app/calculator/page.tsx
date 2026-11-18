@@ -64,7 +64,7 @@ export default function Home() {
   const [placeResults,setPlaceResults]=useState<PlaceResult[]>([]); const [selectedPlaceId,setSelectedPlaceId]=useState("");
   const [lat,setLat]=useState(""); const [lon,setLon]=useState(""); const [tz,setTz]=useState("Asia/Kolkata");
   const [timezoneOptions,setTimezoneOptions]=useState<string[]>([]); const [timeFold,setTimeFold]=useState("");
-  const [ayanamsha,setAyanamsha]=useState("LAHIRI"); const [customAyanamsha,setCustomAyanamsha]=useState("");
+  const [ayanamsha,setAyanamsha]=useState("LAHIRI"); const [customAyanamsha,setCustomAyanamsha]=useState(""); const [gender,setGender]=useState("");
   const [node,setNode]=useState("mean"); const [calcMethod,setCalcMethod]=useState("drik"); const [bhava,setBhava]=useState("5");
   const [timezoneMode,setTimezoneMode]=useState("auto"); const [language,setLanguage]=useState("en");
   const [loading,setLoading]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
@@ -93,7 +93,7 @@ export default function Home() {
       const response=await fetch(`${API_BASE}/api/chart/jhora`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
         date_of_birth:dob,time_of_birth:tob.length===5?`${tob}:00`:tob,time_fold:timeFold===""?null:Number(timeFold),
         place_name:place||null,latitude:Number(lat),longitude:Number(lon),timezone:tz,
-        ayanamsa_mode:ayanamsha,ayanamsa_value:ayanamsha==="SIDM_USER"?Number(customAyanamsha):null,
+        ayanamsa_mode:ayanamsha,ayanamsa_value:ayanamsha==="SIDM_USER"?Number(customAyanamsha):null,gender:gender||null,
         node_type:node,calculation_type:calcMethod,bhava_madhya_method:Number(bhava),timezone_mode:timezoneMode,language
       })});
       const payload=await response.json();
@@ -139,6 +139,7 @@ export default function Home() {
         <label>Timezone<select value={tz} onChange={e=>setTz(e.target.value)} required>{tz&&!timezoneOptions.includes(tz)&&<option value={tz}>{tz}</option>}{(timezoneOptions.length?timezoneOptions:["Asia/Kolkata","UTC","Europe/London","America/New_York"]).map(z=><option key={z} value={z}>{z}</option>)}</select></label>
         <label>Repeated local time<select value={timeFold} onChange={e=>setTimeFold(e.target.value)}><option value="">Not specified</option><option value="0">Earlier occurrence</option><option value="1">Later occurrence</option></select></label>
         {showSettings&&<div className="settings-grid place-field">
+          <label>Gender-specific yogas<select value={gender} onChange={e=>setGender(e.target.value)}><option value="">Not specified</option><option value="male">Male</option><option value="female">Female</option></select></label>
           <label>Ayanamsha<select value={ayanamsha} onChange={e=>setAyanamsha(e.target.value)}>{["LAHIRI","TRUE_CITRA","TRUE_LAHIRI","KP","FAGAN","RAMAN","USHASHASHI","YUKTESHWAR","SURYASIDDHANTA","SURYASIDDHANTA_MSUN","ARYABHATA","ARYABHATA_MSUN","SS_CITRA","TRUE_REVATI","SS_REVATI","TRUE_PUSHYA","TRUE_MULA","KP-SENTHIL","SENTHIL","SIDM_USER"].map(v=><option key={v} value={v}>{v.replaceAll("_"," ")}</option>)}</select></label>
           {ayanamsha==="SIDM_USER"&&<label>Custom ayanamsha °<input type="number" step="any" value={customAyanamsha} onChange={e=>setCustomAyanamsha(e.target.value)} required/></label>}
           <label>Nodes<select value={node} onChange={e=>setNode(e.target.value)}><option value="mean">Mean node</option><option value="true">True node</option></select></label>

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
+from typing import Literal
 
 from mcp.server import MCPServer
 from mcp.types import ToolAnnotations
@@ -218,6 +219,7 @@ async def calculate_jhora_chart_tool(
     time_fold: int | None = None,
     ayanamsa_mode: str = "LAHIRI",
     ayanamsa_value: float | None = None,
+    gender: Literal["male", "female"] | None = None,
     node_type: str = "mean",
     calculation_type: str = "drik",
     bhava_madhya_method: int = 5,
@@ -239,6 +241,7 @@ async def calculate_jhora_chart_tool(
         time_fold=time_fold,
         ayanamsa_mode=ayanamsa_mode,
         ayanamsa_value=ayanamsa_value,
+        gender=gender,
         node_type=node_type,
         calculation_type=calculation_type,
         bhava_madhya_method=bhava_madhya_method,

@@ -35,6 +35,44 @@ def test_jhora_payload_preserves_selected_settings_and_local_utc_offset():
     assert "ayanamsa_value" not in payload
 
 
+def test_jhora_request_uses_explicit_placeholder_when_place_name_is_missing():
+    request = JHoraChartRequest(
+        date_of_birth=date(2000, 1, 1),
+        time_of_birth=time(9, 40),
+        latitude=22.1765,
+        longitude=75.5805,
+    )
+    assert _request_payload(request)["place"] == "Manual coordinates"
+
+
+def test_jhora_gender_is_optional_and_sent_only_when_selected():
+    base = {
+        "date_of_birth": date(2000, 1, 1),
+        "time_of_birth": time(9, 40),
+        "latitude": 22.1765,
+        "longitude": 75.5805,
+    }
+    unspecified = JHoraChartRequest(**base)
+    male = JHoraChartRequest(**base, gender="male")
+    female = JHoraChartRequest(**base, gender="female")
+
+    assert "gender" not in _request_payload(unspecified)
+    assert _request_payload(male)["gender"] == "male"
+    assert _request_payload(female)["gender"] == "female"
+
+
+def test_jhora_rejects_birth_dates_outside_provider_supported_range():
+    base = {
+        "time_of_birth": time(9, 40),
+        "latitude": 22.1765,
+        "longitude": 75.5805,
+    }
+    with pytest.raises(ValidationError):
+        JHoraChartRequest(**base, date_of_birth=date(1799, 12, 31))
+    with pytest.raises(ValidationError):
+        JHoraChartRequest(**base, date_of_birth=date(2101, 1, 1))
+
+
 def test_custom_ayanamsha_requires_value():
     with pytest.raises(ValidationError):
         JHoraChartRequest(

@@ -43,6 +43,7 @@ class JHoraChartRequest(BirthDetails):
         "KP-SENTHIL", "SENTHIL", "SIDM_USER",
     ] = "LAHIRI"
     ayanamsa_value: float | None = Field(default=None, ge=-30, le=30)
+    gender: Literal["male", "female"] | None = None
     node_type: Literal["mean", "true"] = "mean"
     calculation_type: Literal["drik", "ss"] = "drik"
     bhava_madhya_method: Literal[1, 2, 3, 4, 5] = 5
@@ -55,6 +56,8 @@ class JHoraChartRequest(BirthDetails):
             raise ValueError("ayanamsa_value is required when ayanamsa_mode is SIDM_USER")
         if self.ayanamsa_mode != "SIDM_USER" and self.ayanamsa_value is not None:
             raise ValueError("ayanamsa_value is only valid with ayanamsa_mode SIDM_USER")
+        if not 1800 <= self.date_of_birth.year <= 2100:
+            raise ValueError("Jagannatha Hora API supports birth dates from 1800 through 2100")
         return self
 
 
@@ -66,7 +69,7 @@ def _request_payload(request: JHoraChartRequest) -> dict:
     payload = {
         "date": request.date_of_birth.isoformat(),
         "time": request.time_of_birth.isoformat(timespec="seconds"),
-        "place": request.place_name or "",
+        "place": request.place_name or "Manual coordinates",
         "latitude": request.latitude,
         "longitude": request.longitude,
         "timezone": offset.total_seconds() / 3600,
@@ -78,6 +81,8 @@ def _request_payload(request: JHoraChartRequest) -> dict:
         "timezone_mode": request.timezone_mode,
         "language": request.language,
     }
+    if request.gender is not None:
+        payload["gender"] = request.gender
     if request.ayanamsa_mode == "SIDM_USER":
         payload["ayanamsa_value"] = request.ayanamsa_value
     return payload
@@ -219,6 +224,7 @@ async def calculate_with_jhora(request: JHoraChartRequest) -> dict:
             "bhava_madhya_method": request.bhava_madhya_method,
             "timezone_mode": request.timezone_mode,
             "language": request.language,
+            "gender": request.gender,
         },
         "applied_settings": birth_details.get("request_settings"),
         "request_notes": horoscope.get("request_notes"),
