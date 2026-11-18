@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BhriguSetu | Jyotish Software",
-  description: "Vedic astrology chart calculations, divisional charts, planetary positions, dashas and strength calculations.",
+  title: "BhriguSetu | Jyotish Research & Calculation",
+  description: "A research-first workspace for Bhrigu Chakra Paddhati, Bhrigu Saral Paddhati and transparent Jyotish calculations.",
   applicationName: "BhriguSetu",
 };
 

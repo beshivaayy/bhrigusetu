@@ -25,6 +25,12 @@ BhriguSetu is a research-first software project for **Bhrigu Chakra Paddhati (BC
 
 The project keeps these layers separate so users can inspect how a result was produced, which assumptions were used and what remains uncertain.
 
+## User interface
+
+- `/` is the public BhriguSetu landing page and explains the platform's implemented capabilities, research standards and planned scope.
+- `/jyotish` opens the Jyotish calculation workspace. The interface defaults to English; supported provider output languages are optional calculation settings.
+- Planned traditions are labelled as planned and are not presented as implemented features.
+
 ## Current capabilities
 
 This table describes the implementation on the `main` branch—not planned work.
