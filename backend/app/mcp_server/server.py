@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
+from typing import Literal
 
 from mcp.server import MCPServer
 from mcp.types import ToolAnnotations
