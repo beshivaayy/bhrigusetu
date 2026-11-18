@@ -7,7 +7,7 @@ from ..bsp.engine import analyze_bsp
 
 SIGNS = ("Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces")
 PLANETS = frozenset({"Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Rahu", "Ketu"})
-CYCLE_SOURCE = "M. Imran, Bhrigu Chakra with Cycle Rulers: https://saptarishisastrology.com/bhrigu-chakra-with-cycle-rulers-by-m-imran/"
+CYCLE_SOURCE = "M. Imran, Bhrigu Chakra with Cycle Rulers (published secondary extension; not verified as core BCP): https://saptarishisastrology.com/bhrigu-chakra-with-cycle-rulers-by-m-imran/"
 
 
 class SuppliedChartInput(BaseModel):
@@ -66,7 +66,7 @@ def analyze_supplied_chart(chart: SuppliedChartInput) -> dict:
     swami = CHAKRA_SWAMIS.get(cycle)
     reference = {"status": "unavailable_cycle_outside_secondary_sequence", "cycle": cycle,
                  "chakra_swami": swami, "source": CYCLE_SOURCE,
-                 "note": "Nine-cycle ruler sequence has secondary-source support only; cycle 10+ is not inferred."}
+                 "note": "M. Imran's nine-cycle ruler sequence is a published secondary extension, not verified as core BCP; cycle 10+ is not inferred."}
     if swami:
         reference["status"] = "cycle_lord_position_not_supplied"
         if swami in planets:
@@ -83,8 +83,8 @@ def analyze_supplied_chart(chart: SuppliedChartInput) -> dict:
     if reference["status"] == "provisional_secondary_source_only":
         bcp["reference_basis"] = "natal_lagna_plus_provisional_cycle_lord"
         bcp["cycle_ruler_reference_note"] = (
-            "Mapped from caller-supplied positions using a secondary-source method; "
-            "provisional pending primary-source verification."
+            "Mapped from caller-supplied positions using M. Imran's published secondary extension; "
+            "not verified as core BCP and remains provisional."
         )
     elif reference["status"] == "cycle_lord_position_not_supplied":
         bcp["cycle_ruler_reference_note"] = "The provisional cycle lord's natal position was not supplied."
@@ -112,7 +112,7 @@ def analyze_supplied_chart(chart: SuppliedChartInput) -> dict:
                 else "Ayanamsha was not specified by the caller; no sidereal frame can be verified."
             ),
             "Whole-sign houses only map the supplied positions.",
-            "BCP cycle-ruler reference is secondary-source-only and provisional.",
+            "BCP cycle-ruler reference follows M. Imran's published secondary extension; it is not verified as core BCP and remains provisional.",
             "No BSP production rules or event predictions are enabled."
         ]
     }

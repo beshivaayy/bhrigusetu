@@ -181,7 +181,7 @@ def analyze_birth_details_tool(
         "chart": chart,
         "warnings": [
             "Research foundation only; not a complete horoscope or prediction.",
-            "BCP chakra-swami mapping remains provisional pending primary-source verification.",
+            "BCP chakra-swami labels follow M. Imran's published secondary extension and are not verified as core/original BCP.",
             "No BSP production prediction rules are enabled.",
         ],
     }
@@ -275,7 +275,7 @@ def get_system_status_tool() -> dict:
     return {
         "service": "BhriguSetu MCP",
         "status": "operational",
-        "bcp": "running-year and 12-house activation available; cycle labels provisional",
+        "bcp": "running-year and 12-house activation available; cycle-ruler labels are a provisional secondary extension, not verified as core BCP",
         "bsp": "research catalog available; predictive matching disabled",
         "kakshya": "3°45′ lookup and same-degree comparison available",
         "birthplace": "OSM Nominatim search and timezone candidate lookup available",
@@ -294,12 +294,12 @@ def methodology_resource() -> str:
         "BhriguSetu is a research-first BCP/BSP application. Running year is "
         "completed calendar years + 1. BCP house activation is "
         "((running_year - 1) % 12) + 1; cycle is ((running_year - 1) // 12) + 1. "
-        "The chakra-swami sequence is provisional pending primary-source "
-        "verification. BSP candidates remain disabled until their sources, "
+        "The chakra-swami sequence is M. Imran's published secondary extension, "
+        "not verified as core/original BCP. BSP candidates remain disabled until their sources, "
         "preconditions and validation cases are verified. Kakshya lookup is "
         "a deterministic 3°45′ slot lookup. Planetary positions, ascendant, "
-        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings."
-        "whole-sign D1/D9 chart calculation is available with explicit precision and ayanamsha warnings. A separate tool can call the independent Jagannatha Hora public REST API with explicit supported settings; this does not establish desktop-JHora parity."
+        "and whole-sign D1/D9 charts are available with explicit precision and ayanamsha warnings. "
+        "A separate tool can call the independent Jagannatha Hora public REST API with explicit supported settings; this does not establish desktop-JHora parity."
     )
 
 

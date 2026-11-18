@@ -136,7 +136,7 @@ def analyze(birth: BirthDetails):
         "chart": chart,
         "warnings": [
             "This is a research foundation, not a complete horoscope or prediction.",
-            "BCP house activation follows the current working arithmetic; chakra-swami mapping still requires primary-source verification.",
+            "BCP house activation follows the documented 12-house rotation; the chakra-swami label is M. Imran's published secondary extension and is not verified as core BCP.",
             "No BSP prediction rules are enabled.",
             "Chart uses Astronomy Engine with an approximate Lahiri ayanamsha; review chart warnings before precision-sensitive use.",
         ],

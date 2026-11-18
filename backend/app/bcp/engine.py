@@ -1,12 +1,14 @@
 """BCP date/house activation layer.
 
 This implements the project's documented running-year and 12-house rotation
-convention. Chakra-swami labels remain provisional pending primary citations.
+convention. Chakra-swami labels come from M. Imran's published 2023 extension;
+they are provisional and are not verified as part of core/original BCP.
 No astrological predictions are generated here.
 """
 from __future__ import annotations
 from datetime import date
 
+# Provisional secondary extension by M. Imran (2023); not verified as core BCP.
 CHAKRA_SWAMIS = {
     1: "Moon", 2: "Mercury", 3: "Venus", 4: "Sun", 5: "Mars",
     6: "Jupiter", 7: "Saturn", 8: "Rahu", 9: "Ketu",
@@ -29,7 +31,7 @@ def calculate_running_year(dob: date, on_date: date) -> int:
     return completed + 1
 
 def analyze_bcp(running_year: int) -> dict:
-    """Calculate documented 12-house activation and provisional cycle label."""
+    """Calculate documented 12-house activation and a provisional secondary-extension label."""
     if running_year < 1:
         raise ValueError("running_year must be a positive integer.")
     cycle = ((running_year - 1) // 12) + 1
