@@ -95,6 +95,7 @@ def test_gemini_mcp_tool_is_registered_and_read_only():
     by_name = {tool.name: tool for tool in tools}
     assert "consult_gemini_tool" in by_name
     assert by_name["consult_gemini_tool"].annotations.read_only_hint is True
+    assert by_name["consult_gemini_tool"].annotations.open_world_hint is True
 
 
 def test_gemini_tool_reports_missing_server_key_without_exposing_secrets(monkeypatch):
