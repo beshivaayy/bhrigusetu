@@ -11,7 +11,6 @@ POST /api/chart/manual with:
   "running_year": 27,
   "lagna_longitude": 285.5,
   "ayanamsha": "Lahiri",
-  "ayanamsha": "Lahiri",
   "planetary_longitudes": {
     "Sun": 245.2, "Moon": 195.4, "Mars": 303.8,
     "Mercury": 250.1, "Jupiter": 1.4, "Venus": 217.3,
@@ -26,7 +25,7 @@ An ayanamsha name such as Lahiri is a **caller-declared label**, not a verified 
 
 ## BCP cycle-ruler reference
 
-For cycles 1–9 only, if the relevant cycle lord is supplied, the API exposes the parallel year-counting reference described by M. Imran's secondary-source article. Its status is provisional_secondary_source_only. It is not a verified BCP rule. Cycle 10+ is unavailable rather than wrapped.
+For cycles 1–9 only, if the relevant cycle ruler is supplied, the API exposes the parallel year-counting reference described in M. Imran's published secondary extension: https://saptarishisastrology.com/bhrigu-chakra-with-cycle-rulers-by-m-imran/. The article frames the sequence as an effort to expand Bhrigu Chakra; it is not verified as core/original BCP. The API status is `provisional_secondary_source_only`; this mapping is not used to generate predictions. Cycle 10+ is unavailable rather than wrapped.
 
 ## BSP safeguards
 
