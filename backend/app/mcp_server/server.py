@@ -286,28 +286,6 @@ def get_system_status_tool() -> dict:
     }
 
 
-@mcp.tool(annotations=_EXTERNAL_READ_ONLY)
-async def consult_gemini_tool(
-    task: str,
-    context: str = "",
-    model: str | None = None,
-    max_output_tokens: int = 2048,
-) -> dict:
-    """Ask Gemini for an independent research, implementation or review perspective.
-
-    Only the task and optional context supplied to this tool are sent to Google.
-    No birth details, repository files or other BhriguSetu data are attached automatically.
-    """
-    from app.gemini import consult_gemini
-
-    return await consult_gemini(
-        task=task,
-        context=context,
-        model=model,
-        max_output_tokens=max_output_tokens,
-    )
-
-
 @mcp.resource("bhrigusetu://methodology")
 def methodology_resource() -> str:
     """Describe calculation boundaries and evidence status."""
