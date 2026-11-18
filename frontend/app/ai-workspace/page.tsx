@@ -18,8 +18,8 @@ export default function AIWorkspacePage() {
   const [showSettings, setShowSettings] = useState(true);
 
   const conversationContext = useMemo(() => {
-    const recent = messages.slice(-10).map((m) => `${m.role === "user" ? "User" : "Gemini"}: ${m.text}`).join("\\n\\n");
-    return [starter, context.trim() ? `User-provided project context:\\n${context.trim()}` : "", recent ? `Conversation so far:\\n${recent}` : ""].filter(Boolean).join("\\n\\n");
+    const recent = messages.slice(-10).map((m) => `${m.role === "user" ? "User" : "Gemini"}: ${m.text}`).join("\n\n");
+    return [starter, context.trim() ? `User-provided project context:\n${context.trim()}` : "", recent ? `Conversation so far:\n${recent}` : ""].filter(Boolean).join("\n\n");
   }, [context, messages]);
 
   async function send(event: FormEvent<HTMLFormElement>) {
