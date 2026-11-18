@@ -46,7 +46,7 @@ class JHoraChartRequest(BirthDetails):
     node_type: Literal["mean", "true"] = "mean"
     calculation_type: Literal["drik", "ss"] = "drik"
     bhava_madhya_method: Literal[1, 2, 3, 4, 5] = 5
-    timezone_mode: Literal["auto", "file"] = "file"
+    timezone_mode: Literal["auto", "file"] = "auto"
     language: Literal["en", "hi", "ka", "ta", "te"] = "en"
 
     @model_validator(mode="after")

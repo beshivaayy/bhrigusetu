@@ -41,7 +41,8 @@ This table describes the implementation on the `main` branch—not planned work.
 | BSP rule catalogue | Research stage | Five source-linked candidates; predictive matching disabled |
 | BSP-7 Kakshya | Implemented utility | Eight divisions of 3°45′; lookup only, not a standalone prediction |
 | Birth-chart calculation | Implemented, approximate | Astronomy Engine 2.1.19; approximate Lahiri polynomial, mean nodes, whole-sign houses and D1/D9; not JHora parity |
-| JHora public REST provider | Implemented as explicit API/MCP option | Configurable ayanamsha, Mean/True node, Drik/SS and Bhava methods; separate provider, not desktop-JHora parity |
+| JHora public REST provider | Implemented as explicit API/MCP option | Configurable ayanamsha, Mean/True node, Drik/SS and Bhava methods; calculation receipt records applied settings; separate provider, not desktop-JHora parity |
+| Granthalaya catalogue | Implemented — first release | Searchable catalogue with classical text records, BCP/BSP research notes and a study path; edition verification and persistent reading tools remain future work |
 | Manual chart import | Implemented | Maps caller-supplied sidereal longitudes; does not verify their ephemeris |
 | MCP interface | Implemented | Exposes existing calculation and research functions |
 
