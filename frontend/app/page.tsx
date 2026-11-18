@@ -14,7 +14,7 @@ const traditions = [
 
 const pillars = [
   {no:"१",title:"गणना",en:"Calculate",copy:"खगोलीय आधार, समय, स्थान और पुनरुत्पादित किए जा सकने वाले परिणाम।",href:"/calculator",link:"ज्योतिष कार्यक्षेत्र खोलें"},
-  {no:"२",title:"अध्ययन",en:"Study",copy:"मूल ग्रन्थ, भाष्य, आधुनिक पुस्तकें, शब्दावली और क्रमबद्ध अध्ययन।",href:"#granthalaya",link:"ग्रन्थालय देखें"},
+  {no:"२",title:"अध्ययन",en:"Study",copy:"मूल ग्रन्थ, भाष्य, आधुनिक पुस्तकें, शब्दावली और क्रमबद्ध अध्ययन।",href:"/granthalaya",link:"ग्रन्थालय खोलें"},
   {no:"३",title:"अनुसन्धान",en:"Research",copy:"स्रोत-समीक्षा, पद्धति-तुलना, प्रमाण और खुले प्रश्न।",href:"#anusandhan",link:"अनुसन्धान दृष्टि"},
   {no:"४",title:"विवेचन",en:"Understand",copy:"हर परम्परा के अपने नियमों पर आधारित व्याख्या — बिना पद्धतियों को मिलाए।",href:"#siddhant",link:"हमारी कार्य-पद्धति"},
 ];
@@ -29,7 +29,7 @@ export default function Home() {
         <span className="hv2-emblem" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><circle cx="26" cy="26" r="18"/><path d="M26 9c5 7 5 12 0 17-5-5-5-10 0-17Zm0 34c-5-7-5-12 0-17 5 5 5 10 0 17ZM9 26c7-5 12-5 17 0-5 5-10 5-17 0Zm34 0c-7 5-12 5-17 0 5-5 10-5 17 0Z"/><path d="M20 20h12v12H20z"/></svg><b>भृ</b></span>
         <span className="hv2-brand-type"><strong>BhriguSetu</strong><small>ज्योतिष · ग्रन्थ · अनुसन्धान</small></span>
       </Link>
-      <nav className="hv2-nav" aria-label="Main navigation"><a href="#parampara">परम्पराएँ</a><a href="#granthalaya">ग्रन्थालय</a><a href="#anusandhan">अनुसन्धान</a><Link href="/calculator" className="hv2-nav-cta">ज्योतिष कार्यक्षेत्र <span>↗</span></Link></nav>
+      <nav className="hv2-nav" aria-label="Main navigation"><a href="#parampara">परम्पराएँ</a><Link href="/granthalaya">ग्रन्थालय</Link><a href="#anusandhan">अनुसन्धान</a><Link href="/calculator" className="hv2-nav-cta">ज्योतिष कार्यक्षेत्र <span>↗</span></Link></nav>
     </header>
 
     <section className="hv2-hero">
@@ -90,7 +90,7 @@ export default function Home() {
       </div>
       <div className="hv2-library-copy"><p className="hv2-kicker">ग्रन्थ · पुस्तक · लेख</p><h2>ज्ञान का<br/><em>जीवित ग्रन्थालय।</em></h2><p>मूल ग्रन्थों से आधुनिक शोध तक — पढ़ने, संदर्भ खोजने और विषय को क्रमबद्ध ढंग से सीखने का एक स्थान। हर सामग्री के साथ लेखक, संस्करण, अनुवाद और स्रोत की जानकारी देने का लक्ष्य है।</p>
         <div className="hv2-library-list"><article><span>०१</span><div><strong>शास्त्रीय ग्रन्थ</strong><small>मूल पाठ, भाष्य, टीका और अनुवाद</small></div><b>↗</b></article><article><span>०२</span><div><strong>पुस्तकें एवं संस्करण</strong><small>लेखक, प्रकाशक और bibliographic विवरण</small></div><b>↗</b></article><article><span>०३</span><div><strong>लेख एवं अनुसन्धान</strong><small>विषय-आधारित लेख, समीक्षा और सन्दर्भ</small></div><b>↗</b></article><article><span>०४</span><div><strong>अध्ययन-पथ</strong><small>प्रारम्भिक आधार से उन्नत अध्ययन तक</small></div><b>↗</b></article></div>
-        <p className="hv2-library-status">ग्रन्थालय का catalogue और reading experience चरणबद्ध रूप से विकसित होगा।</p>
+        <p className="hv2-library-status">प्रारम्भिक searchable catalogue उपलब्ध है; स्रोत और संस्करण की जाँच के साथ इसका विस्तार किया जा रहा है।</p><Link href="/granthalaya" className="hv2-button">ग्रन्थालय में प्रवेश करें <span>→</span></Link>
       </div>
     </section>
 
