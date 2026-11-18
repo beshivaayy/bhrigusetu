@@ -108,3 +108,4 @@
 @media(prefers-reduced-motion:reduce){
   .hv2-tradition-list button,.hv2-pillar-grid article{transition:none}
 }
+.house-system-note{margin:18px 0 20px}

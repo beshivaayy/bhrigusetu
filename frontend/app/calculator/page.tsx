@@ -56,7 +56,7 @@ function ChartGrid({chart,asc,title}:{chart:RecordValue;asc?:string;title:string
     Sagittarius:{row:4,col:2},Capricorn:{row:4,col:1},Aquarius:{row:3,col:1},Pisces:{row:2,col:1}
   };
   const signs=useMemo(()=>SIGN_ORDER.map(sign=>({sign,house:houseFromSign(sign,asc),planets:Object.entries(chart||{}).filter(([name,p]:[string,any])=>name!=="Ascendant"&&p?.sign===sign)})),[chart,asc]);
-  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" style={{gridRow:positions[item.sign].row,gridColumn:positions[item.sign].col}} key={item.sign}><span className="rashi-house">House {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">—</span>}</div></article>)}<div className="chart-center"><span className="overline">{title}</span><strong>{asc||"—"}</strong><small>Lagna</small></div></div>;
+  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" style={{gridRow:positions[item.sign].row,gridColumn:positions[item.sign].col}} key={item.sign}><span className="rashi-house">Sign house {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">—</span>}</div></article>)}<div className="chart-center"><span className="overline">{title}</span><strong>{asc||"—"}</strong><small>Lagna</small></div></div>;
 }
 
 export default function Home() {
@@ -108,10 +108,11 @@ export default function Home() {
   const divisionKeys=Object.keys(divisions);
   const selectedChart=divisions[selectedVarga]||{};
   const asc=selectedChart?.Ascendant?.sign||divisions["D-1_rasi"]?.Ascendant?.sign;
+  const bhavaMethodLabel=({"1":"Equal · Lagna middle","2":"Equal · Lagna start","3":"Sripati","4":"KP / Placidus","5":"Whole Sign"} as Record<string,string>)[bhava]||`Method ${bhava}`;
   const d1=divisions["D-1_rasi"]||{};
   const planetRows=GRAHAS.filter(name=>d1[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,...d1[name],house:houseFromSign(d1[name].sign,d1.Ascendant?.sign)}));
   const sectionData:Record<Exclude<SectionKey,"chart"|"grahas">,RecordValue> = {
-    bhava:{ "Bhava chart":horoscope.bhava_chart,"House relationships":horoscope.house_relationships,"House relationships by Varga":horoscope.house_relationships_by_varga,"Bhava bala":horoscope.bhava_bala,"House varnadas":horoscope.house_varnadas },
+    bhava:{ [`Provider Bhava output · ${bhavaMethodLabel}`]:horoscope.bhava_chart,"House relationships":horoscope.house_relationships,"House relationships by Varga":horoscope.house_relationships_by_varga,"Bhava bala":horoscope.bhava_bala,"House varnadas":horoscope.house_varnadas },
     panchanga:{"Calendar":horoscope.calendar_info,"Julian day":horoscope.julian_day,"Nakshatra & Pada":horoscope.nakshatra_pada,"Amsa rulers":horoscope.amsa_rulers},
     yoga:{"Yogas":horoscope.yogas,"Doshas":horoscope.doshas},
     strength:{"Shad bala":horoscope.shad_bala,"Required Shad bala":horoscope.shad_bala_required,"Bhava bala":horoscope.bhava_bala,"Other bala":horoscope.other_bala,"Vimsopaka bala":horoscope.vimsopaka_bala,"Vaiseshikamsa bala":horoscope.vaiseshikamsa_bala,"Planetary states":horoscope.planetary_states},
@@ -161,15 +162,16 @@ export default function Home() {
       {activeSection==="chart"&&<div className="section-content">
         <div className="subheading"><div><span className="overline">DIVISIONAL CHARTS</span><h3>{pretty(selectedVarga)}</h3></div><select className="varga-select" value={selectedVarga} onChange={e=>setSelectedVarga(e.target.value)}>{divisionKeys.map(k=><option key={k} value={k}>{pretty(k)}</option>)}</select></div>
         <ChartGrid chart={selectedChart} asc={asc} title={selectedVarga.split("_")[0]}/>
+        <div className="provider-note house-system-note"><strong>House numbering in this chart</strong><span>The number shown in each sign is derived by counting signs from Lagna (Whole Sign). It is not a substitute for the provider’s Bhava output. If you selected Whole Sign, the house system is the same; other Bhava methods may assign houses differently. Inspect the provider’s output in the Bhava tab.</span></div>
         <Table rows={GRAHAS.filter(name=>selectedChart[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,sign:selectedChart[name].sign,longitude:selectedChart[name].longitude,house:houseFromSign(selectedChart[name].sign,asc)}))} columns={[
-          {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Degree",render:v=>degree(v)},{key:"house",label:"House"}
+          {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Degree",render:v=>degree(v)},{key:"house",label:"Sign-based house"}
         ]}/>
         <div className="varga-shortcuts">{divisionKeys.map(k=><button key={k} className={selectedVarga===k?"selected":""} onClick={()=>setSelectedVarga(k)}>{k.split("_")[0]}</button>)}</div>
       </div>}
 
       {activeSection==="grahas"&&<div className="section-content"><div className="subheading"><div><span className="overline">D1 · RASHI</span><h3>Planetary positions</h3></div></div>
         <Table rows={planetRows} columns={[
-          {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Longitude",render:v=>degree(v)},{key:"house",label:"House"},
+          {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Longitude",render:v=>degree(v)},{key:"house",label:"Sign-based house"},
         ]}/>
         <div className="data-panels"><DataPanel title="Nakshatra & Pada" value={horoscope.nakshatra_pada}/><DataPanel title="Planetary states" value={horoscope.planetary_states}/><DataPanel title="Chara Karakas" value={horoscope.chara_karakas}/></div>
       </div>}
