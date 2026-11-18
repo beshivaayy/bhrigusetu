@@ -47,12 +47,14 @@ For a second pass, pass ChatGPT's revised proposal and the unresolved review poi
 
 ChatGPT's current Help Center documents custom MCP server connections for Business and Enterprise/Edu workspaces on ChatGPT web. It does not list the Free plan as eligible, and custom MCP server setup is not available from the ChatGPT mobile app. Availability and plan rules can change; check the current ChatGPT Plugins / Apps settings before attempting setup.
 
+There is also an authentication integration gap: this BhriguSetu endpoint currently validates a static Bearer token, while ChatGPT's documented custom-server flow lists OAuth, no authentication, or OAuth-or-no-auth. This repository does not yet implement an OAuth authorization server for the MCP endpoint. Therefore, do not assume the existing static token can be entered into ChatGPT, and do not choose unauthenticated access. A secure OAuth-compatible auth layer must be implemented and tested before direct ChatGPT custom-MCP connection can be called complete.
+
 When the account and surface support custom MCP connections:
 
 1. Open ChatGPT on the web and open Plugins / Apps.
 2. Choose Add custom MCP server.
 3. Enter the remote MCP URL above.
-4. Configure Bearer-token authentication using the Render value of `BHRIGUSETU_MCP_TOKEN`; never choose unauthenticated access.
+4. Use the supported OAuth flow after BhriguSetu's OAuth-compatible MCP authentication layer has been implemented; never choose unauthenticated access.
 5. Review the discovered tool list and enable only the required Gemini consultation tool.
 6. Start a new conversation, select the BhriguSetu app, and ask ChatGPT to call `consult_gemini_tool`.
 
