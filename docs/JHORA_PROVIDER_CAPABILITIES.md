@@ -34,10 +34,10 @@ The provider documentation says locations beyond approximately 66.5° north or s
 | Lunar node | mean / true | **Exposed** |
 | Calculation tradition | drik / ss (Surya Siddhanta) | **Exposed** |
 | Bhava method | 1 equal (Lagna middle); 2 equal (Lagna start); 3 Sripati; 4 KP/Placidus; 5 Whole Sign | **Exposed**; BhriguSetu defaults to 5 explicitly, not provider default 1 |
-| Historical timezone | auto / file | **Exposed** |
+| Historical timezone | auto / file | **Exposed**; calculator and REST-model default is `auto`, while the MCP tool currently defaults to `file` |
 | Output language | en / hi / ka / ta / te | **Exposed** |
 | Gender-conditioned yogas | Optional male / female; provider omits those yogas when unspecified | **Exposed as optional input**; no gender is inferred |
-| Elevation | Optional metres, default 0 | Not exposed; provider default applies |
+| Elevation | Optional metres, default 0 | Not user-selectable; BhriguSetu currently sends `0` metres explicitly |
 | Pravesha type | 0 natal, 1 annual, 2 tithi-pravesha | Not exposed; provider default 0 applies |
 | Dasha scope | Query parameter: all / vimsottari | Not exposed; provider default applies |
 | Varga range | Provider documentation describes 23 divisional charts, D-1 through D-144 | Documented by provider; actual returned keys and placement conventions still need captured fixtures |
