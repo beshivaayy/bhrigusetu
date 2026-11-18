@@ -174,3 +174,6 @@ Gemini responses are independent suggestions. This interface cannot read or modi
 
 
 For the complete ChatGPT-to-Gemini delegation workflow, custom MCP connection requirements and privacy boundaries, see [CHATGPT_GEMINI_COLLABORATION.md](CHATGPT_GEMINI_COLLABORATION.md).
+
+
+For the live Jagannatha Hora REST contract, exposed settings, unsupported calculation modes and outstanding parity tests, see [JHORA_PROVIDER_CAPABILITIES.md](JHORA_PROVIDER_CAPABILITIES.md).
