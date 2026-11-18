@@ -171,3 +171,6 @@ The frontend route `/ai-workspace` provides a direct Gemini conversation interfa
 Open the workspace, enter the existing MCP bearer token in the password field, and send a task. The token is held only in component memory and is not written to localStorage/sessionStorage. The conversation is held in page memory for that browser session. Gemini receives the task, the optional context explicitly entered by the user, and the visible recent conversation transcript. Repository files are not attached automatically.
 
 Gemini responses are independent suggestions. This interface cannot read or modify GitHub files, create commits, or deploy code. Review and implement any suggested changes separately. Never paste the Google Gemini API key into the workspace; it remains server-side as `GEMINI_API_KEY`.
+
+
+For the complete ChatGPT-to-Gemini delegation workflow, custom MCP connection requirements and privacy boundaries, see [CHATGPT_GEMINI_COLLABORATION.md](CHATGPT_GEMINI_COLLABORATION.md).
