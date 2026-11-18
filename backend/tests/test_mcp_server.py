@@ -79,7 +79,7 @@ def test_mcp_tools_explicitly_advertise_read_only_behavior():
 def test_jhora_mcp_tool_exposes_optional_gender_setting():
     tools = asyncio.run(mcp.list_tools())
     by_name = {tool.name: tool for tool in tools}
-    schema = by_name["calculate_jhora_chart_tool"].inputSchema
+    schema = by_name["calculate_jhora_chart_tool"].input_schema
     assert "gender" in schema["properties"]
     gender_schema = schema["properties"]["gender"]
     gender_values = set(gender_schema.get("enum", []))
