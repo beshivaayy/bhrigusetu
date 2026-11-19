@@ -32,10 +32,10 @@ function Field({ label, name, type = "text", value, onChange, required = true, s
 }
 
 export default function AstrologersDeskPage() {
-  const [dob, setDob] = useState("1990-01-01");
-  const [tob, setTob] = useState("12:00");
-  const [lat, setLat] = useState("22.175");
-  const [lon, setLon] = useState("75.585");
+  const [dob, setDob] = useState("");
+  const [tob, setTob] = useState("");
+  const [lat, setLat] = useState("");
+  const [lon, setLon] = useState("");
   const [timezone, setTimezone] = useState("Asia/Kolkata");
   const [asOf, setAsOf] = useState("");
   const [place, setPlace] = useState("");
@@ -76,7 +76,7 @@ export default function AstrologersDeskPage() {
   const bsp = result?.bsp;
 
   return <main className="desk-page">
-    <div className="desk-topline"><span>॥ श्री गणेशाय नमः ॥</span><span>BH RIGUSETU / ASTROLOGER'S WORKSPACE</span><span>गणित · शास्त्र · अनुसन्धान</span></div>
+    <div className="desk-topline"><span>॥ श्री गणेशाय नमः ॥</span><span>BHRIGUSETU / ASTROLOGER'S WORKSPACE</span><span>गणित · शास्त्र · अनुसन्धान</span></div>
     <header className="desk-header">
       <Link href="/" className="desk-brand"><span className="desk-seal">भृ</span><span><strong>BhriguSetu</strong><small>THE ASTROLOGER'S WORKSPACE</small></span></Link>
       <nav aria-label="Workspace navigation"><Link href="/">Home</Link><Link href="/calculator">Chart calculator</Link><Link href="/granthalaya">Granthalaya</Link><span className="desk-nav-current">Astrologer's desk</span></nav>
