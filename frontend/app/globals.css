@@ -495,3 +495,93 @@ body{background:#0c0a14}
 .heritage-v2 .hv2-pillar-grid article:nth-child(2):before{content:"▤"}
 .heritage-v2 .hv2-pillar-grid article:nth-child(3):before{content:"✳"}
 .heritage-v2 .hv2-pillar-grid article:nth-child(4):before{content:"◌"}
+.hv2-celestial-atlas{max-width:1240px;margin:0 auto;padding:88px 42px 96px;display:grid;grid-template-columns:minmax(360px,1.02fr) minmax(320px,.98fr);align-items:center;gap:clamp(38px,7vw,100px);position:relative;overflow:hidden}
+.hv2-celestial-atlas:before{content:"";position:absolute;left:50%;top:10%;width:1px;height:80%;background:linear-gradient(transparent,rgba(215,183,122,.3),transparent)}
+.hv2-atlas-art{position:relative;isolation:isolate;min-width:0}.hv2-atlas-art:before{content:"";position:absolute;inset:14%;border-radius:50%;background:rgba(158,104,183,.12);filter:blur(44px);z-index:-1}
+.hv2-atlas-art img{display:block;width:100%;max-width:590px;margin:auto;filter:drop-shadow(0 24px 45px rgba(0,0,0,.28));animation:atlas-breathe 12s ease-in-out infinite}
+.hv2-atlas-coordinate,.hv2-atlas-index{position:absolute;color:#c9ad7a;font:600 8px 'DM Sans',Arial,sans-serif;letter-spacing:.18em}.hv2-atlas-coordinate{top:2%;left:4%}.hv2-atlas-index{bottom:2%;right:4%}.hv2-atlas-index i{color:#8c6a9d;font-style:normal}
+.hv2-atlas-copy{position:relative;z-index:1}.hv2-atlas-copy h2{margin:0;color:#f2e9df;font:500 clamp(42px,4.5vw,62px)/1.12 Georgia,'Noto Serif Devanagari',serif;letter-spacing:-.04em}.hv2-atlas-copy h2 em{color:#d6b274;font-style:normal}.hv2-atlas-copy>p:not(.hv2-kicker){max-width:490px;color:#bdb1c5;font:13px/2 'DM Sans',Arial,sans-serif;margin:22px 0 26px}
+.hv2-atlas-facts{display:flex;gap:0;border-top:1px solid rgba(212,174,112,.25);border-bottom:1px solid rgba(212,174,112,.25);margin:0 0 24px}.hv2-atlas-facts div{min-width:105px;padding:14px 22px 14px 0;margin-right:22px;border-right:1px solid rgba(212,174,112,.2);display:flex;flex-direction:column;gap:3px}.hv2-atlas-facts div:last-child{border:0}.hv2-atlas-facts b{color:#e0c184;font:26px Georgia,serif}.hv2-atlas-facts span{color:#a99bb5;font:9px 'DM Sans',Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.hv2-celestial-atlas .hv2-textlink{color:#eadcc8}.hv2-celestial-atlas .hv2-textlink span{color:#e0bd7d}
+.hv2-reveal{opacity:1;transform:none;animation:observatory-section-enter .8s ease both}.hv2-reveal.is-visible{opacity:1;transform:none}
+@keyframes atlas-breathe{0%,100%{transform:rotate(-1deg) scale(.985)}50%{transform:rotate(1deg) scale(1.015)}}
+@media(max-width:760px){.hv2-celestial-atlas{grid-template-columns:1fr;padding:62px 22px 68px;gap:20px}.hv2-celestial-atlas:before{display:none}.hv2-atlas-art{max-width:480px;margin:auto}.hv2-atlas-copy h2{font-size:42px}.hv2-atlas-copy>p:not(.hv2-kicker){font-size:11px}.hv2-atlas-coordinate,.hv2-atlas-index{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.hv2-atlas-art img,.hv2-reveal{animation:none!important;opacity:1;transform:none;transition:none}}
+/* Granthalaya: archival reading-room interactions. */
+.grantha-hero{position:relative;isolation:isolate;overflow:hidden}
+.grantha-hero:after{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background:url('/patterns/jyotisha-mandala.svg') 8% 50%/min(48vw,560px) auto no-repeat;opacity:.07;mask-image:linear-gradient(90deg,#000,transparent 72%)}
+.grantha-hero>*{position:relative;z-index:1}
+.grantha-hero-art{filter:drop-shadow(0 24px 35px rgba(0,0,0,.34));animation:grantha-art-float 10s ease-in-out infinite}
+.grantha-controls{position:relative;box-shadow:0 18px 48px rgba(0,0,0,.16);transition:border-color .25s,box-shadow .25s}
+.grantha-controls:focus-within{border-color:rgba(212,174,112,.48);box-shadow:0 20px 52px rgba(0,0,0,.2),0 0 0 1px rgba(212,174,112,.08)}
+.grantha-results>button{position:relative;transition:background .2s,padding .2s,transform .2s}
+.grantha-results>button:hover{padding-left:21px;background:#261a30}
+.grantha-results>button.selected{box-shadow:inset 3px 0 #d8b978,0 5px 18px rgba(0,0,0,.13)}
+.grantha-detail{animation:grantha-reading-enter .42s cubic-bezier(.2,.7,.2,1) both}
+.grantha-detail h2{text-wrap:balance}
+.grantha-topics span{transition:transform .2s,border-color .2s,background .2s}
+.grantha-topics span:hover{transform:translateY(-2px);border-color:rgba(212,174,112,.4)}
+.grantha-source a{transition:transform .2s,box-shadow .2s,filter .2s}
+.grantha-source a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.2);filter:brightness(1.08)}
+.grantha-next{position:relative;overflow:hidden}
+.grantha-next:after{content:"";position:absolute;right:-100px;top:-170px;width:360px;height:360px;border:1px solid rgba(167,126,67,.15);border-radius:50%;box-shadow:0 0 0 25px rgba(167,126,67,.035),0 0 0 60px rgba(167,126,67,.025);pointer-events:none}
+@keyframes grantha-reading-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.grantha-hero-art,.grantha-detail{animation:none!important}.grantha-results>button,.grantha-topics span,.grantha-source a{transition:none!important}}
+/* A restrained motion system: scroll reveals, celestial drift and tactile controls. */
+html.hv2-motion-ready .hv2-reveal:not(.is-visible){opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s cubic-bezier(.2,.72,.2,1)}
+html.hv2-motion-ready .hv2-reveal.is-visible{opacity:1;transform:translateY(0)}
+.hv2-hero{isolation:isolate}
+.hv2-hero:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.25;background-image:radial-gradient(1px 1px at 8% 22%,#f5e2bd 98%,transparent),radial-gradient(1px 1px at 72% 16%,#e3c8f0 98%,transparent),radial-gradient(2px 2px at 91% 72%,#e4c98e 98%,transparent),radial-gradient(1px 1px at 45% 82%,#f5e2bd 98%,transparent);background-size:220px 210px,310px 260px,410px 330px,270px 240px;animation:hero-stars-drift 42s linear infinite}
+.hv2-hero>*{position:relative;z-index:1}
+.hv2-observatory-stage img{transform-origin:50% 50%;animation:observatory-drift 48s linear infinite;will-change:transform}
+.hv2-observatory-glow{animation:observatory-pulse 8s ease-in-out infinite}
+.hv2-orbit-label{animation:orbit-label-glint 5s ease-in-out infinite alternate}
+.hv2-label-two{animation-delay:1.3s}.hv2-label-three{animation-delay:2.2s}
+.hv2-nav a,.hv2-nav button{position:relative;transition:color .2s,background .2s,transform .2s}
+.hv2-nav a:not(.hv2-nav-cta):after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:#d7b779;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.hv2-nav a:hover:after{transform:scaleX(1)}
+.hv2-button{position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s,filter .22s}
+.hv2-button:after{content:"";position:absolute;top:-80%;left:-35%;width:22%;height:260%;transform:rotate(24deg);background:rgba(255,255,255,.2);transition:left .55s}
+.hv2-button:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.hv2-button:hover:after{left:125%}
+.hv2-atlas-art img{animation:atlas-breathe 12s ease-in-out infinite,atlas-turn 100s linear infinite}
+.hv2-atlas-art:after{content:"";position:absolute;inset:12%;border:1px solid rgba(215,183,122,.16);border-radius:50%;pointer-events:none;animation:atlas-ring 24s linear infinite}
+.hv2-tradition-list button,.hv2-pillar-grid article,.hv2-library-list article{transition:transform .25s,border-color .25s,background .25s,box-shadow .25s}
+.hv2-tradition-list button:hover{transform:translateX(4px)}
+.hv2-pillar-grid article:hover{transform:translateY(-5px);border-color:rgba(215,183,122,.5);box-shadow:0 18px 42px rgba(0,0,0,.2)}
+.hv2-library-list article:hover{transform:translateX(5px);border-color:rgba(215,183,122,.35)}
+.hv2-ribbon{overflow:hidden}
+.hv2-ribbon span{animation:ribbon-shimmer 7s ease-in-out infinite alternate}
+.hv2-ribbon span:nth-of-type(2){animation-delay:1s}.hv2-ribbon span:nth-of-type(3){animation-delay:2s}.hv2-ribbon span:nth-of-type(4){animation-delay:3s}
+@keyframes hero-stars-drift{from{background-position:0 0,0 0,0 0,0 0}to{background-position:220px 210px,-310px 260px,410px -330px,-270px 240px}}
+@keyframes observatory-drift{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes observatory-pulse{0%,100%{opacity:.48;transform:scale(.96)}50%{opacity:.9;transform:scale(1.06)}}
+@keyframes orbit-label-glint{from{opacity:.55}to{opacity:1}}
+@keyframes atlas-turn{from{rotate:0deg}to{rotate:360deg}}
+@keyframes atlas-ring{from{transform:rotate(0) scale(.96)}to{transform:rotate(-360deg) scale(1.04)}}
+@keyframes ribbon-shimmer{from{opacity:.62}to{opacity:1}}
+/* Two chart conventions share the same returned sign and graha positions. */
+.chart-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.chart-style-toggle{display:flex;padding:3px;border:1px solid rgba(212,174,112,.25);background:#130f1c;gap:3px}
+.chart-style-toggle button{padding:9px 11px;border:0;background:transparent;color:#bcaec8;font-size:9px;cursor:pointer;white-space:nowrap}
+.chart-style-toggle button.active{background:#49334f;color:#f3dfb8;box-shadow:inset 0 0 0 1px rgba(212,174,112,.35)}
+.north-chart-wrap{width:min(100%,680px);margin:22px auto 26px;padding:16px;background:#171020;border:1px solid rgba(212,174,112,.3);box-shadow:0 20px 48px rgba(0,0,0,.22)}
+.north-chart{display:block;width:100%;height:auto;overflow:visible}
+.north-border{fill:#1c1426;stroke:#c8a66d;stroke-width:1.3}
+.north-lines{fill:none;stroke:#c8a66d;stroke-width:1.2;stroke-opacity:.78}
+.north-house{text-anchor:middle}
+.north-house-no{fill:#ad8ec4;font:10px Arial,sans-serif}
+.north-sign{fill:#f0d9ad;font:12px Georgia,serif}
+.north-graha{fill:#c9b9d3;font:8px Arial,sans-serif}
+.north-center{fill:#c7a46b;font:9px Arial,sans-serif;letter-spacing:2px;text-anchor:middle}
+.north-chart-caption{padding-top:12px;border-top:1px solid rgba(212,174,112,.18);color:#b9a9c3;font-size:9px;text-align:center;letter-spacing:.04em}
+.grantha-results>button{padding-left:76px;min-height:94px}
+.grantha-results>button:before{content:"";position:absolute;left:15px;top:50%;width:44px;height:62px;transform:translateY(-50%);border:1px solid rgba(212,174,112,.55);background:linear-gradient(145deg,#60445d,#25172f 72%);box-shadow:3px 3px 0 rgba(212,174,112,.12),inset 0 0 0 4px rgba(212,174,112,.08)}
+.grantha-results>button:after{content:"✧";position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#e0c28a;font:18px Georgia,serif;pointer-events:none}
+.grantha-results>button:nth-of-type(3n+2):before{background:linear-gradient(145deg,#786044,#302018 72%)}
+.grantha-results>button:nth-of-type(3n):before{background:linear-gradient(145deg,#415b59,#172b2a 72%)}
+.grantha-results>button:hover:before{box-shadow:3px 3px 0 rgba(212,174,112,.2),0 0 18px rgba(212,174,112,.1),inset 0 0 0 4px rgba(212,174,112,.1)}
+.grantha-hero-art{position:relative;z-index:1}
+.grantha-hero:after{background-size:min(42vw,500px) auto;opacity:.12}
+@media(max-width:760px){.chart-tools{width:100%;justify-content:flex-start}.chart-style-toggle button{padding:8px 9px;font-size:8px}.north-chart-wrap{padding:8px}.north-graha{font-size:7px}.grantha-results>button{padding-left:68px;min-height:84px}.grantha-results>button:before{left:12px;width:39px;height:56px}.grantha-results>button:after{left:24px}}
+@media(prefers-reduced-motion:reduce){.hv2-hero:before,.hv2-observatory-stage img,.hv2-observatory-glow,.hv2-orbit-label,.hv2-atlas-art img,.hv2-atlas-art:after,.hv2-ribbon span{animation:none!important}.hv2-button,.hv2-tradition-list button,.hv2-pillar-grid article,.hv2-library-list article{transition:none!important}html.hv2-motion-ready .hv2-reveal:not(.is-visible){opacity:1;transform:none}}
