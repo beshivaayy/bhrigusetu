@@ -249,3 +249,18 @@
 .hv2-library-list article:hover{padding-left:8px;background:rgba(255,255,255,.18)}
 @media(max-width:650px){.hv2-library-art:before{inset:0 -12px}.hv2-library-art{min-height:290px}}
 @media(prefers-reduced-motion:reduce){.hv2-library-art:before,.hv2-tradition-detail{animation:none!important}.hv2-tradition-list button,.hv2-pillar-grid article,.hv2-library-list article{transition:none!important}}
+
+/* Granthalaya hero: editorial manuscript composition */
+.grantha-hero{position:relative;isolation:isolate;overflow:hidden;text-align:left;padding:70px max(calc((100% - 1240px)/2),5%) 58px;min-height:390px}
+.grantha-hero>*:not(.grantha-hero-art){position:relative;z-index:2}
+.grantha-hero>p:first-child,.grantha-hero>span,.grantha-hero h1,.grantha-hero h2,.grantha-intro,.grantha-stats{max-width:660px;margin-left:0;margin-right:0}
+.grantha-hero>span{letter-spacing:.2em}
+.grantha-hero h1{font-size:clamp(54px,7vw,82px);letter-spacing:-.035em}
+.grantha-intro{max-width:570px}
+.grantha-stats{justify-content:flex-start;gap:28px;flex-wrap:wrap}
+.grantha-hero-art{position:absolute;z-index:1;right:2%;top:50%;width:min(46%,570px);transform:translateY(-48%);opacity:.92;filter:drop-shadow(0 22px 26px rgba(0,0,0,.22));animation:grantha-art-float 9s ease-in-out infinite;pointer-events:none}
+@keyframes grantha-art-float{0%,100%{transform:translateY(-48%)}50%{transform:translateY(-52%)}}
+.grantha-hero:after{content:"";position:absolute;right:0;top:0;width:62%;height:100%;z-index:0;background:radial-gradient(ellipse at 70% 50%,rgba(193,157,105,.17),transparent 62%);pointer-events:none}
+@media(max-width:900px){.grantha-hero{padding:55px 28px 45px}.grantha-hero-art{right:-5%;width:48%;opacity:.45}.grantha-stats{gap:18px}}
+@media(max-width:640px){.grantha-hero{text-align:left;padding:43px 18px 30px;min-height:0}.grantha-hero-art{position:relative;top:auto;right:auto;transform:none!important;animation:none;width:min(100%,370px);display:block;margin:-20px auto -18px;opacity:.82}.grantha-hero>p:first-child,.grantha-hero>span,.grantha-hero h1,.grantha-hero h2,.grantha-intro,.grantha-stats{margin-left:0;margin-right:0}.grantha-hero h1{font-size:54px}.grantha-stats{gap:14px}.grantha-stats span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.grantha-hero-art{animation:none}}

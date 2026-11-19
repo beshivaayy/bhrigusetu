@@ -26,7 +26,7 @@ export default function GranthalayaPage(){
       <Link href="/" className="grantha-brand"><span>भृ</span><strong>BhriguSetu</strong></Link>
       <nav><Link href="/">{en?"Home":"मुखपृष्ठ"}</Link><Link href="/calculator">{en?"Jyotisha calculator":"ज्योतिष गणना"}</Link><b>{en?"Granthalaya":"ग्रन्थालय"}</b><button type="button" className="grantha-language" onClick={()=>setLanguage(en?"hi":"en")}>{en?"हिन्दी":"English"}</button></nav>
     </header>
-    <section className="grantha-hero">
+    <section className="grantha-hero"><img className="grantha-hero-art" src="/artwork/granthalaya-manuscript.svg" alt="Illustrated manuscript folios and classical study text" />
       <p>॥ {en?"SVADHYAYA · SHASTRA · PRAMANA":"स्वाध्याय · शास्त्र · प्रमाण"} ॥</p>
       <span>THE BHRIGUSETU LIBRARY</span>
       <h1>{en?"Granthalaya":"ग्रन्थालय"}</h1>
