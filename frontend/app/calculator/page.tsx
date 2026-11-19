@@ -83,10 +83,10 @@ export default function Home() {
     try {
       const response=await fetch(`${API_BASE}/api/places/search?q=${encodeURIComponent(place.trim())}`);
       const payload=await response.json();
-      if(!response.ok) throw new Error(payload.detail||"Place search unavailable.");
+      if(!response.ok) throw new Error("Place search unavailable.");
       setPlaceResults(payload.results||[]);
       if(!payload.results?.length) setPlaceError("No matching places found.");
-    } catch(e) { setPlaceError(e instanceof Error?e.message:"Unable to search place."); }
+    } catch { setPlaceError("We couldn’t find that place just now. Please try another search."); }
   }
   function choosePlace(id:string) {
     setSelectedPlaceId(id); const p=placeResults.find(x=>String(x.place_id)===id); if(!p)return;
@@ -103,9 +103,9 @@ export default function Home() {
         node_type:node,calculation_type:calcMethod,bhava_madhya_method:Number(bhava),timezone_mode:timezoneMode,language
       })});
       const payload=await response.json();
-      if(!response.ok){const d=typeof payload.detail==="string"?payload.detail:payload.detail?.message||JSON.stringify(payload.detail);throw new Error(d||"Calculation failed.");}
+      if(!response.ok) throw new Error("Calculation failed.");
       setResult(payload);setActiveSection("chart");setSelectedVarga("D-1_rasi");
-    } catch(e) {setError(e instanceof Error?e.message:"Calculation failed.");}
+    } catch {setError("We couldn’t calculate this chart just now. Please check the birth details and try again.");}
     finally {setLoading(false);}
   }
 
@@ -118,7 +118,7 @@ export default function Home() {
   const d1=divisions["D-1_rasi"]||{};
   const planetRows=GRAHAS.filter(name=>d1[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,...d1[name],house:houseFromSign(d1[name].sign,d1.Ascendant?.sign)}));
   const sectionData:Record<Exclude<SectionKey,"chart"|"grahas">,RecordValue> = {
-    bhava:{ [`Provider Bhava output · ${bhavaMethodLabel}`]:horoscope.bhava_chart,"House relationships":horoscope.house_relationships,"House relationships by Varga":horoscope.house_relationships_by_varga,"Bhava bala":horoscope.bhava_bala,"House varnadas":horoscope.house_varnadas },
+    bhava:{ [`Bhava details · ${bhavaMethodLabel}`]:horoscope.bhava_chart,"House relationships":horoscope.house_relationships,"House relationships by Varga":horoscope.house_relationships_by_varga,"Bhava bala":horoscope.bhava_bala,"House varnadas":horoscope.house_varnadas },
     panchanga:{"Calendar":horoscope.calendar_info,"Julian day":horoscope.julian_day,"Nakshatra & Pada":horoscope.nakshatra_pada,"Amsa rulers":horoscope.amsa_rulers},
     yoga:{"Yogas":horoscope.yogas,"Doshas":horoscope.doshas},
     strength:{"Shad bala":horoscope.shad_bala,"Required Shad bala":horoscope.shad_bala_required,"Bhava bala":horoscope.bhava_bala,"Other bala":horoscope.other_bala,"Vimsopaka bala":horoscope.vimsopaka_bala,"Vaiseshikamsa bala":horoscope.vaiseshikamsa_bala,"Planetary states":horoscope.planetary_states},
@@ -129,12 +129,12 @@ export default function Home() {
 
   return <main className="app-shell">
     <header className="app-header">
-      <a className="app-brand" href="/"><span className="brand-symbol">ॐ</span><span><strong>BhriguSetu</strong><small>JYOTISH SOFTWARE</small></span></a>
-      <nav className="calc-nav" aria-label="Workspace navigation"><a href="/">Home</a><a href="/granthalaya">Granthalaya</a></nav><div className="header-right"><span className="header-label">HOROSCOPE WORKSPACE</span><span className="header-dot"/></div>
+      <a className="app-brand" href="/"><span className="brand-symbol">ॐ</span><span><strong>BhriguSetu</strong><small>JYOTISHA · STUDY · TRADITION</small></span></a>
+      <nav className="calc-nav" aria-label="Workspace navigation"><a href="/">Home</a><a href="/granthalaya">Granthalaya</a></nav><div className="header-right"><span className="header-label">YOUR CHART</span><span className="header-dot"/></div>
     </header>
 
     <section className="calc-intro">
-      <div className="calc-intro-copy"><span className="overline">JYOTISHA · CALCULATION STUDIO</span><h2>Precision begins<br/><em>with the birth data.</em></h2><p>Build a chart with explicit time, place and calculation settings. Then inspect the returned vargas, graha positions, bhava output and supporting data without hiding the method.</p></div>
+      <div className="calc-intro-copy"><span className="overline">YOUR BIRTH CHART</span><h2>Precision begins<br/><em>with the birth data.</em></h2><p>Enter the birth details and choose the calculation settings you use. Your chart and its details will appear below.</p></div>
       <div className="calc-intro-index" aria-label="Calculation workflow"><span><b>01</b><small>INPUT</small></span><i></i><span><b>02</b><small>CALCULATE</small></span><i></i><span><b>03</b><small>INSPECT</small></span></div>
     </section>
 
@@ -160,7 +160,7 @@ export default function Home() {
           <label>Timezone calculation<select value={timezoneMode} onChange={e=>setTimezoneMode(e.target.value)}><option value="file">Resolved timezone</option><option value="auto">Automatic historical lookup</option></select></label>
           <label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="en">English</option><option value="hi">Hindi</option><option value="ka">Kannada</option><option value="ta">Tamil</option><option value="te">Telugu</option></select></label>
         </div>}
-        <div className="provider-note place-field"><strong>Provider: Jagannatha Hora public REST API</strong><span>Independent external API — not the desktop application. Selected settings are sent explicitly; provider-applied settings and any fallback notes appear in the calculation receipt. Desktop-JHora parity is not established.</span></div>
+        
         <button className="calculate-button" disabled={loading||!dob||!tob||!place||!lat||!lon||!tz}>{loading?"Calculating horoscope…":"Calculate horoscope"} <span>→</span></button>
       </form>
       {error&&<p className="inline-error">{error}</p>}
@@ -173,7 +173,7 @@ export default function Home() {
       {activeSection==="chart"&&<div className="section-content">
         <div className="subheading"><div><span className="overline">DIVISIONAL CHARTS</span><h3>{pretty(selectedVarga)}</h3></div><div className="chart-tools"><div className="chart-style-toggle" role="group" aria-label="Chart style"><button type="button" aria-pressed={chartStyle==="north"} className={chartStyle==="north"?"active":""} onClick={()=>setChartStyle("north")}>North Indian</button><button type="button" aria-pressed={chartStyle==="south"} className={chartStyle==="south"?"active":""} onClick={()=>setChartStyle("south")}>South Indian</button></div><select className="varga-select" value={selectedVarga} onChange={e=>setSelectedVarga(e.target.value)}>{divisionKeys.map(k=><option key={k} value={k}>{pretty(k)}</option>)}</select></div></div>
          <ChartGrid chart={selectedChart} asc={asc} title={selectedVarga.split("_")[0]} style={chartStyle}/>
-        <div className="provider-note house-system-note"><strong>House numbering in this chart</strong><span>The number shown in each sign is derived by counting signs from Lagna (Whole Sign). It is not a substitute for the provider’s Bhava output. If you selected Whole Sign, the house system is the same; other Bhava methods may assign houses differently. Inspect the provider’s output in the Bhava tab.</span></div>
+        <div className="provider-note house-system-note"><strong>About the house numbers</strong><span>The numbers shown in the chart count signs from the Lagna. If you choose a different Bhava method, the house boundaries may differ; see the Bhava section for those details.</span></div>
         <Table rows={GRAHAS.filter(name=>selectedChart[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,sign:selectedChart[name].sign,longitude:selectedChart[name].longitude,house:houseFromSign(selectedChart[name].sign,asc)}))} columns={[
           {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Degree",render:v=>degree(v)},{key:"house",label:"Sign-based house"}
         ]}/>
@@ -190,10 +190,10 @@ export default function Home() {
       {activeSection!=="chart"&&activeSection!=="grahas"&&<div className="section-content">
         {Object.entries(sectionData[activeSection]).filter(([,v])=>v!==undefined&&v!==null).map(([title,value])=><DataPanel key={title} title={title} value={value}/>)}
       </div>}
-      <DataPanel title="Calculation receipt · Jagannatha Hora public REST API" value={{provider:result.provider,engine_revision:result.engine_revision,desktop_jhora_parity:result.desktop_jhora_parity,requested_settings:result.requested_settings,applied_settings:result.applied_settings,request_notes:result.request_notes,timezone_used:result.timezone_used,timezone_source:result.timezone_source,warnings:result.warnings}}/>
+
       <div className="birth-summary"><span>{result.result?.birth_details?.date||dob} · {result.result?.birth_details?.time||tob}</span><span>{lat}, {lon} · {tz}</span></div>
     </section>}
-    <footer className="app-footer"><span>BhriguSetu</span><span>Jyotish calculation workspace</span><small>Place search © OpenStreetMap contributors</small></footer>
+    <footer className="app-footer"><span>BhriguSetu</span><span>Made for the study of Jyotisha</span><small>Place search © OpenStreetMap contributors</small></footer>
   </main>;
 }
 
