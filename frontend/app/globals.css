@@ -207,3 +207,32 @@
   .grantha-language{padding:7px 9px}
 }
 @media(max-width:360px){.grantha-top nav{justify-content:flex-start;column-gap:13px;row-gap:9px}}
+/* Observatory hero — custom engraved artwork with restrained orbital motion. */
+.hv2-hero{grid-template-columns:minmax(0,.92fr) minmax(440px,1.08fr);gap:clamp(24px,4vw,72px);min-height:740px}
+.hv2-observatory{position:relative;z-index:2;width:100%;max-width:700px;justify-self:end;padding:18px 12px 20px}
+.hv2-observatory-caption,.hv2-observatory-foot{display:flex;justify-content:space-between;gap:12px;color:#d2b77f;font:600 8px 'DM Sans',Arial,sans-serif;letter-spacing:.16em}
+.hv2-observatory-stage{position:relative;isolation:isolate;min-height:520px;display:grid;place-items:center}
+.hv2-observatory-stage:before,.hv2-observatory-stage:after{content:"";position:absolute;inset:7% 4%;border:1px solid rgba(221,190,128,.19);border-radius:50%;transform:rotate(-13deg) scaleY(.78);animation:orbit-spin 90s linear infinite}
+.hv2-observatory-stage:after{inset:12% 10%;border:1px dashed rgba(221,190,128,.16);transform:rotate(24deg) scaleY(.78);animation-duration:125s;animation-direction:reverse}
+.hv2-observatory-stage img{position:relative;z-index:1;display:block;width:min(100%,650px);height:auto;filter:drop-shadow(0 22px 36px rgba(0,0,0,.26));animation:observatory-float 9s ease-in-out infinite}
+.hv2-observatory-glow{position:absolute;z-index:0;width:65%;aspect-ratio:1;border-radius:50%;background:rgba(199,151,78,.13);filter:blur(50px);animation:observatory-glow 8s ease-in-out infinite}
+.hv2-orbit-label{position:absolute;z-index:2;color:#e7cf9d;font:600 8px 'DM Sans',Arial,sans-serif;letter-spacing:.18em;text-shadow:0 2px 12px #10231e}
+.hv2-label-one{top:13%;left:7%}.hv2-label-two{right:1%;top:45%}.hv2-label-three{left:8%;bottom:15%}
+.hv2-observatory-index{position:absolute;z-index:2;right:7%;bottom:12%;color:#e4c58c;font:22px Georgia,serif;letter-spacing:.1em}
+.hv2-observatory-index i{font-style:normal;color:#a77e43;font-size:12px}
+.hv2-observatory-foot{padding:0 6px;color:#d0bd98;font-size:8px}
+.hv2-orbit-note{position:absolute;z-index:3;right:-6px;bottom:56px;width:208px;padding:16px 18px;background:#e8d5ad;color:#24372d;box-shadow:0 16px 35px rgba(0,0,0,.22);transform:rotate(1.4deg)}
+.hv2-orbit-note>span,.hv2-orbit-note>small{display:block;color:#86643d;font:600 7px 'DM Sans',Arial,sans-serif;letter-spacing:.17em}
+.hv2-orbit-note strong{display:block;margin:9px 0 8px;font:500 16px/1.4 'Playfair Display',Georgia,serif}
+.hv2-orbit-note>small{font-weight:400;letter-spacing:.02em}
+@keyframes observatory-float{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-9px) rotate(.5deg)}}
+@keyframes observatory-glow{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes orbit-spin{to{transform:rotate(360deg)}}
+.hv2-hero .hv2-hero-copy{animation:hero-copy-in .85s cubic-bezier(.2,.7,.2,1) both}
+.hv2-observatory{animation:hero-art-in 1.05s .12s cubic-bezier(.2,.7,.2,1) both}
+@keyframes hero-copy-in{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hero-art-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:1050px){.hv2-hero{grid-template-columns:minmax(0,.95fr) minmax(350px,1.05fr);gap:18px;padding-left:4%;padding-right:4%}.hv2-observatory-stage{min-height:430px}.hv2-orbit-note{right:-3px;bottom:35px}}
+@media(max-width:760px){.hv2-hero{display:flex;flex-direction:column;align-items:stretch;min-height:0;padding:54px 22px 48px;gap:10px}.hv2-hero-copy{max-width:650px}.hv2-observatory{max-width:590px;align-self:center;margin-top:12px;padding:12px 4px 18px}.hv2-observatory-stage{min-height:0}.hv2-observatory-stage img{width:100%}.hv2-orbit-note{right:0;bottom:34px;width:180px;padding:12px 14px}.hv2-orbit-note strong{font-size:14px}.hv2-observatory-caption,.hv2-observatory-foot{font-size:7px}.hv2-orbit-label{font-size:6px}.hv2-observatory-index{font-size:17px}}
+@media(max-width:420px){.hv2-observatory{margin-left:-6px;margin-right:-6px}.hv2-observatory-stage{margin:0 -5px}.hv2-orbit-note{bottom:24px;width:154px;padding:10px}.hv2-orbit-note strong{font-size:12px}.hv2-label-one,.hv2-label-three{left:3%}.hv2-observatory-index{right:3%;bottom:8%}.hv2-observatory-caption,.hv2-observatory-foot{letter-spacing:.08em;font-size:6px}}
+@media(prefers-reduced-motion:reduce){.hv2-observatory-stage:before,.hv2-observatory-stage:after,.hv2-observatory-stage img,.hv2-observatory-glow,.hv2-hero .hv2-hero-copy,.hv2-observatory{animation:none!important}}
