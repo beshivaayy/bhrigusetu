@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import "../methods.css";
 
 type Result=Record<string,any>;
@@ -20,13 +20,13 @@ export default function BspWorkspace() {
 
   useEffect(()=>{let live=true;(async()=>{try{const response=await fetch(`${API}/api/bsp/catalog`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"BSP register is unavailable.");if(live)setCatalog(payload);}catch(e){if(live)setLoadError(e instanceof Error?e.message:"BSP register is unavailable.");}})();return()=>{live=false;};},[]);
 
-  async function lookupKakshya(event:React.FormEvent<HTMLFormElement>){
+  async function lookupKakshya(event:FormEvent<HTMLFormElement>){
     event.preventDefault();setBusy(true);setUtilityError("");setKakshya(null);
     try{const response=await fetch(`${API}/api/bsp/kakshya?degree_in_sign=${encodeURIComponent(degree)}`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"Kakshya lookup failed.");setKakshya(payload);}
     catch(e){setUtilityError(e instanceof Error?e.message:"Kakshya lookup failed.");}finally{setBusy(false);}
   }
 
-  async function compareDegrees(event:React.FormEvent<HTMLFormElement>){
+  async function compareDegrees(event:FormEvent<HTMLFormElement>){
     event.preventDefault();setBusy(true);setUtilityError("");setSame(null);
     try{const params=new URLSearchParams({first_degree:first,second_degree:second});const response=await fetch(`${API}/api/bsp/same-degree?${params}`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"Degree comparison failed.");setSame(payload);}
     catch(e){setUtilityError(e instanceof Error?e.message:"Degree comparison failed.");}finally{setBusy(false);}
