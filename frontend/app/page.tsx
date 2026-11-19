@@ -26,9 +26,10 @@ export default function Home() {
   useEffect(()=>{
     const nodes=Array.from(document.querySelectorAll<HTMLElement>(".hv2-reveal"));
     if(!("IntersectionObserver" in window)){nodes.forEach(n=>n.classList.add("is-visible"));return;}
+    document.documentElement.classList.add("hv2-motion-ready");
     const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}}),{threshold:.12,rootMargin:"0px 0px -45px 0px"});
     nodes.forEach(node=>observer.observe(node));
-    return ()=>observer.disconnect();
+    return ()=>{observer.disconnect();document.documentElement.classList.remove("hv2-motion-ready");};
   },[]);
   const selected=traditions.find(x=>x.id===active) || traditions[0];
   if(language==="en") return <main className="heritage-v2" lang="en">
