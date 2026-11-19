@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, ReactNode, useMemo, useState } from "react";
+import "./calculator.css";
 
 type PlaceResult = { place_id: number; display_name: string; latitude: number; longitude: number; timezone: string | null; timezone_candidates: string[] };
 type Position = { sign?: string; longitude?: number };

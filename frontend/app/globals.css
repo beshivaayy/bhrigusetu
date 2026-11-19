@@ -198,3 +198,12 @@
 @media(prefers-reduced-motion:reduce){
   .hv2-mobile-menu-toggle,.hv2-nav{transition:none!important}
 }
+
+/* Narrow-screen Granthalaya header: preserve every destination without horizontal overflow. */
+@media(max-width:640px){
+  .grantha-top{height:auto;min-height:64px;padding:12px 15px;display:flex;flex-wrap:wrap;gap:10px}
+  .grantha-top nav{width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:7px;min-width:0}
+  .grantha-top nav>*{font-size:9px;white-space:nowrap}
+  .grantha-language{padding:7px 9px}
+}
+@media(max-width:360px){.grantha-top nav{justify-content:flex-start;column-gap:13px;row-gap:9px}}

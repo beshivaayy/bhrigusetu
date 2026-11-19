@@ -6,9 +6,9 @@ BhriguSetu should feel like a serious Jyotisha study room joined to an astronomi
 
 The visual language is **manuscript, observatory and shastra**:
 - Warm manuscript paper for reading and catalogue surfaces.
-- Deep forest green for primary navigation, focus areas and important actions.
+- Ink-plum / observatory violet for primary navigation, deep hero surfaces and focused workspace areas.
 - Antique brass for rules, indices, diagrams and restrained emphasis.
-- Vermilion only as a secondary accent.
+- Muted burgundy for secondary emphasis; lavender for active mobile controls and selected states.
 - Original geometric linework, nakshatra-like star points and chart diagrams instead of stock photography.
 - Sanskrit terminology is retained where it is meaningful; English remains the default interface language, with Hindi available as a deliberate alternate.
 
@@ -30,12 +30,13 @@ The following Figma Community pages were read on 19 November 2026. These are ref
 | Manuscript | `#F2ECDD` | Main reading canvas |
 | Light folio | `#FAF7EF` | Cards and document surfaces |
 | Aged paper | `#E9DFCA` | Secondary panels |
-| Forest | `#243D32` | Brand and structural surfaces |
-| Deep observatory | `#142A23` | Homepage hero |
-| Forest shade | `#1B352B` | Hero depth |
+| Ink plum | `#211333` | Primary navigation and structural surfaces |
+| Deep observatory | `#171023` | Homepage hero and mobile workspace |
+| Aubergine | `#321A36` | Atmospheric depth and secondary panels |
 | Antique brass | `#A77E43` | Lines, indices, ornamental detail |
 | Warm gold | `#D9B879` | Hero highlights |
-| Vermilion | `#793E35` | Small accent only |
+| Burgundy | `#783B46` | Small editorial accent only |
+| Lavender | `#BDA4F3` | Active mobile controls and focus states |
 | Ink | `#29271F` | Main text |
 | Muted ink | `#706B5E` | Supporting text |
 
@@ -88,3 +89,10 @@ Do not copy assets from the Figma files into production until the actual file, a
 - 320px narrow mobile: no horizontal page overflow.
 - Keyboard: menu button and nav links are reachable and visibly focused.
 - Reduced motion: no nonessential motion is required to understand the page.
+
+## Implementation notes ? November 2026
+
+- The calculator is a mobile-first workspace: dark plum masthead, manuscript-white input panels, lavender focus/selection states, clear calculation-settings disclosure, horizontally scrollable result tabs and compact chart/data cards.
+- The North Indian chart remains data-led and the calculation receipt/provider disclosure stays visible; styling must not obscure the distinction between sign-based houses and provider Bhava output.
+- Granthalaya shares the plum/burgundy observatory identity while retaining a light reading canvas for dense bibliographic content.
+- Responsive checks target 1440px, 390px and 320px widths. Avoid horizontal page overflow; data tables may scroll within their own container.
