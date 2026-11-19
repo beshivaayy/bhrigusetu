@@ -207,7 +207,7 @@
   .grantha-language{padding:7px 9px}
 }
 @media(max-width:360px){.grantha-top nav{justify-content:flex-start;column-gap:13px;row-gap:9px}}
-/* Observatory hero — custom engraved artwork with restrained orbital motion. */
+/* Observatory hero ï¿½ custom engraved artwork with restrained orbital motion. */
 .hv2-hero{grid-template-columns:minmax(0,.92fr) minmax(440px,1.08fr);gap:clamp(24px,4vw,72px);min-height:740px}
 .hv2-observatory{position:relative;z-index:2;width:100%;max-width:700px;justify-self:end;padding:18px 12px 20px}
 .hv2-observatory-caption,.hv2-observatory-foot{display:flex;justify-content:space-between;gap:12px;color:#d2b77f;font:600 8px 'DM Sans',Arial,sans-serif;letter-spacing:.16em}
