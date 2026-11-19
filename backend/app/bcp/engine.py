@@ -1,0 +1,56 @@
+"""BCP date/house activation layer.
+
+This implements the project's documented running-year and 12-house rotation
+convention. Chakra-swami labels come from M. Imran's published 2023 extension;
+they are provisional and are not verified as part of core/original BCP.
+No astrological predictions are generated here.
+"""
+from __future__ import annotations
+from datetime import date
+
+# Provisional secondary extension by M. Imran (2023); not verified as core BCP.
+CHAKRA_SWAMIS = {
+    1: "Moon", 2: "Mercury", 3: "Venus", 4: "Sun", 5: "Mars",
+    6: "Jupiter", 7: "Saturn", 8: "Rahu", 9: "Ketu",
+}
+
+def _anniversary_in_year(dob: date, year: int) -> date:
+    """Use March 1 for a Feb 29 birthday in a non-leap year."""
+    try:
+        return dob.replace(year=year)
+    except ValueError:
+        return date(year, 3, 1)
+
+def calculate_running_year(dob: date, on_date: date) -> int:
+    """Return completed calendar years + 1, using the local calendar date."""
+    if on_date < dob:
+        raise ValueError("The analysis date cannot be before the date of birth.")
+    completed = on_date.year - dob.year
+    if on_date < _anniversary_in_year(dob, on_date.year):
+        completed -= 1
+    return completed + 1
+
+def analyze_bcp(running_year: int) -> dict:
+    """Calculate documented 12-house activation and a provisional secondary-extension label."""
+    if running_year < 1:
+        raise ValueError("running_year must be a positive integer.")
+    cycle = ((running_year - 1) // 12) + 1
+    activated_house = ((running_year - 1) % 12) + 1
+    chakra_swami = CHAKRA_SWAMIS.get(cycle)
+    return {
+        "status": "calculated_provisional",
+        "running_year": running_year,
+        "activated_house": activated_house,
+        "cycle": cycle,
+        "chakra_swami": chakra_swami,
+        "chakra_swami_status": "pending_primary_source_verification" if chakra_swami else "not_defined_in_current_sequence",
+        "formula": {
+            "activated_house": "((running_year - 1) % 12) + 1",
+            "cycle": "((running_year - 1) // 12) + 1",
+        },
+        "interpretation_status": "not_enabled_pending_rule_verification",
+        "reference_basis": "natal_lagna_only",
+        "cycle_ruler_reference_status": "not_calculated_chart_data_required",
+        "cycle_ruler_reference_note": "A secondary BCP cycle-ruler article describes parallel year counting from the natal sign of the cycle lord. This additional reference point is not calculated until primary-source confirmation and chart data are available.",
+        "message": "House activation is calculated; predictive interpretation remains disabled pending source verification.",
+    }

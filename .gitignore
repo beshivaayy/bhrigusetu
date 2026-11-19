@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.env*
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.vscode/
+.idea/
+
+# Keep safe environment templates in version control
+!.env.example
+!**/.env.example

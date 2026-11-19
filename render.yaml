@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bhrigusetu-api
+    runtime: docker
+    numInstances: 1
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    envVars:
+      - key: CORS_ORIGINS
+        sync: false

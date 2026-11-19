@@ -1,0 +1,60 @@
+Business Source License 1.1
+
+License text copyright (c) 2017 MariaDB Corporation Ab, All Rights Reserved.
+"Business Source License" is a trademark of MariaDB Corporation Ab.
+
+Licensed Work: BhriguSetu
+               The Licensed Work is (c) 2026 beshivaayy.
+
+Change Date:  2030-11-18
+
+Change License:  GNU General Public License v3.0 or later (GPLv3-or-later)
+
+Additional Use Grant: You may use, copy, modify and distribute the
+Licensed Work for non-commercial research, education and personal study,
+including in academic publications and course material, provided that
+BhriguSetu is credited as the source. You may run the Licensed Work for
+your own personal, non-commercial Jyotish study.
+
+The following uses are NOT granted by this license:
+  (a) operating the Licensed Work, or a modified version of it, as a hosted
+      or paid service;
+  (b) commercial redistribution, sale, sublicensing or inclusion in a
+      commercial product.
+
+Terms
+
+The Licensor hereby grants you the right to copy, modify, create derivative
+works, redistribute, and make non-production use of the Licensed Work. The
+Licensor may make an Additional Use Grant, above, permitting limited
+production use.
+
+Effective on the Change Date, or the fourth anniversary of the first publicly
+available distribution of a specific version of the Licensed Work under this
+License, whichever comes first, the Licensor hereby grants you rights under
+the terms of the Change License, and the Additional Use Grant (if granted,
+per its terms) automatically terminates.
+
+If your use of the Licensed Work does not comply with the requirements
+currently in effect as described in this License, you must purchase a
+commercial license from the Licensor, its affiliated entities, or authorized
+resellers, or refrain from using the Licensed Work.
+
+All copies of the original and modified Licensed Work, and derivative works
+of the Licensed Work, are subject to this License. This License applies
+separately for each version of the Licensed Work. This License gives no
+rights under the trademark "BhriguSetu" even if such marks are included in
+the Licensed Work. This License does not grant any rights in the patents,
+trademarks, or trade secrets of the Licensor.
+
+THE LICENSED WORK IS PROVIDED "AS IS". LICENSOR HEREBY DISCLAIMS ALL
+WARRANTIES AND CONDITIONS, EXPRESS AND IMPLIED, INCLUDING (WITHOUT
+LIMITATION) WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, NON-INFRINGEMENT, AND TITLE.
+
+Licensor: beshivaayy
+
+The above applies to original BhriguSetu project code only. Third-party
+libraries, datasets, classical texts, teacher-authored material and external
+calculation providers retain their own licences and terms — see
+research/SOURCE_MATRIX.md and ACKNOWLEDGEMENTS.md.
