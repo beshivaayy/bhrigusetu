@@ -109,3 +109,101 @@
   .hv2-tradition-list button,.hv2-pillar-grid article{transition:none}
 }
 .house-system-note{margin:18px 0 20px}
+
+/* BhriguSetu observatory treatment — original vector ornament, no photography. */
+.heritage-v2{
+  background-color:#f2ecdd;
+  background-image:
+    radial-gradient(ellipse at 8% 12%,rgba(167,126,67,.11),transparent 30%),
+    radial-gradient(ellipse at 92% 68%,rgba(36,61,50,.075),transparent 36%),
+    repeating-linear-gradient(0deg,rgba(104,82,49,.018) 0,rgba(104,82,49,.018) 1px,transparent 1px,transparent 5px);
+}
+.heritage-v2::before{
+  background-image:url('/patterns/jyotisha-mandala.svg');
+  background-repeat:no-repeat;
+  background-size:min(62vw,760px) auto;
+  background-position:right 2vw top 5.5rem;
+  opacity:.19;
+  mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 74%);
+}
+.hv2-header{position:relative;z-index:30}
+.hv2-hero{
+  max-width:none;
+  min-height:700px;
+  padding:clamp(62px,7.2vw,104px) max(calc((100% - 1320px)/2),5.2%);
+  color:#f4ecd9;
+  background-color:#142a23;
+  background-image:
+    radial-gradient(ellipse at 78% 48%,rgba(167,126,67,.22),transparent 42%),
+    radial-gradient(ellipse at 12% 95%,rgba(121,62,53,.18),transparent 42%),
+    linear-gradient(112deg,#142a23 0%,#1b352b 54%,#10231e 100%);
+  overflow:hidden;
+}
+.hv2-hero::after{
+  width:min(76vw,980px);
+  right:-210px;
+  top:-125px;
+  border:0;
+  border-radius:0;
+  opacity:.68;
+  background:url('/patterns/jyotisha-mandala.svg') center/contain no-repeat;
+  mask-image:radial-gradient(circle,transparent 0 3%,#000 10% 68%,transparent 78%);
+}
+.hv2-hero-copy{max-width:660px}
+.hv2-hero .hv2-overline{color:#d9bd84}
+.hv2-hero .hv2-overline>span{background:#c28e54}
+.hv2-hero .hv2-sanskrit{color:#e2c58d}
+.hv2-hero h1{color:#f5eddb}
+.hv2-hero h1 em{color:#d9b879}
+.hv2-hero .hv2-lede{color:#d9d4c7}
+.hv2-hero .hv2-proofline{color:#d7c9aa}
+.hv2-hero .hv2-proofline i{background:#d9b879}
+.hv2-hero .hv2-button{background:#ddc18b;color:#1a3027!important;box-shadow:3px 3px 0 #80653c}
+.hv2-hero .hv2-button span{color:#793e35}
+.hv2-hero .hv2-textlink{color:#eee4cf}
+.hv2-hero .hv2-textlink span{color:#dfbd7b}
+.hv2-folio{box-shadow:14px 16px 0 rgba(0,0,0,.12),0 24px 54px rgba(0,0,0,.22)}
+.hv2-ribbon{background:#e8dfcd;border-bottom:1px solid #d3c4a7;border-top:1px solid #d3c4a7}
+.hv2-mobile-menu-toggle{
+  display:none;align-items:center;gap:7px;padding:9px 11px;border:1px solid #bda984;
+  background:transparent;color:#243d32;font:600 10px 'Noto Sans Devanagari','DM Sans',sans-serif;
+  cursor:pointer
+}
+.hv2-mobile-menu-toggle>span{display:block;width:13px;height:1px;background:#793e35}
+.hv2-mobile-menu-toggle>b{font-weight:600}
+.hv2-nav-cta{cursor:pointer}
+.hv2-nav a:focus-visible,.hv2-nav button:focus-visible,.hv2-mobile-menu-toggle:focus-visible{
+  outline:2px solid #a77e43;outline-offset:3px
+}
+@media(max-width:900px){
+  .hv2-hero{min-height:650px;padding:64px 38px}
+  .hv2-hero::after{width:700px;right:-290px;top:-35px;opacity:.5}
+  .heritage-v2::before{background-size:520px auto;background-position:right -180px top 100px;opacity:.15}
+  .hv2-nav{gap:16px}
+}
+@media(max-width:650px){
+  .hv2-header{z-index:40}
+  .hv2-mobile-menu-toggle{display:flex}
+  .hv2-nav{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;align-items:stretch;gap:0;padding:10px 16px 16px;background:#faf7ef;border-top:1px solid #e1d4bd;border-bottom:1px solid #c9b895;box-shadow:0 14px 24px rgba(30,39,31,.14)}
+  .hv2-nav.is-open{display:flex}
+  .hv2-nav>a:not(.hv2-nav-cta){display:block;padding:13px 4px;border-bottom:1px solid #e8decd;font-size:11px}
+  .hv2-nav-cta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding:12px 13px;font-size:10px}
+  .hv2-hero{min-height:0;padding:54px 21px 42px;background-image:radial-gradient(ellipse at 82% 58%,rgba(167,126,67,.2),transparent 52%),linear-gradient(160deg,#142a23,#1b352b 62%,#10231e)}
+  .hv2-hero::after{width:470px;right:-230px;top:130px;opacity:.32}
+  .heritage-v2::before{background-size:360px auto;background-position:right -205px top 100px;opacity:.12}
+  .hv2-hero h1{color:#f5eddb}
+  .hv2-hero .hv2-lede{color:#ded8c9}
+  .hv2-proofline{line-height:1.9}
+}
+@media(prefers-reduced-motion:reduce){
+  .hv2-mobile-menu-toggle,.hv2-nav{transition:none!important}
+}
+
+/* Narrow-screen Granthalaya header: preserve every destination without horizontal overflow. */
+@media(max-width:640px){
+  .grantha-top{height:auto;min-height:64px;padding:12px 15px;display:flex;flex-wrap:wrap;gap:10px}
+  .grantha-top nav{width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:7px;min-width:0}
+  .grantha-top nav>*{font-size:9px;white-space:nowrap}
+  .grantha-language{padding:7px 9px}
+}
+@media(max-width:360px){.grantha-top nav{justify-content:flex-start;column-gap:13px;row-gap:9px}}
