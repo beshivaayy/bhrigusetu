@@ -507,3 +507,23 @@ body{background:#0c0a14}
 @keyframes atlas-breathe{0%,100%{transform:rotate(-1deg) scale(.985)}50%{transform:rotate(1deg) scale(1.015)}}
 @media(max-width:760px){.hv2-celestial-atlas{grid-template-columns:1fr;padding:62px 22px 68px;gap:20px}.hv2-celestial-atlas:before{display:none}.hv2-atlas-art{max-width:480px;margin:auto}.hv2-atlas-copy h2{font-size:42px}.hv2-atlas-copy>p:not(.hv2-kicker){font-size:11px}.hv2-atlas-coordinate,.hv2-atlas-index{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.hv2-atlas-art img,.hv2-reveal{animation:none!important;opacity:1;transform:none;transition:none}}
+/* Granthalaya: archival reading-room interactions. */
+.grantha-hero{position:relative;isolation:isolate;overflow:hidden}
+.grantha-hero:after{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background:url('/patterns/jyotisha-mandala.svg') 8% 50%/min(48vw,560px) auto no-repeat;opacity:.07;mask-image:linear-gradient(90deg,#000,transparent 72%)}
+.grantha-hero>*{position:relative;z-index:1}
+.grantha-hero-art{filter:drop-shadow(0 24px 35px rgba(0,0,0,.34));animation:grantha-art-float 10s ease-in-out infinite}
+.grantha-controls{position:relative;box-shadow:0 18px 48px rgba(0,0,0,.16);transition:border-color .25s,box-shadow .25s}
+.grantha-controls:focus-within{border-color:rgba(212,174,112,.48);box-shadow:0 20px 52px rgba(0,0,0,.2),0 0 0 1px rgba(212,174,112,.08)}
+.grantha-results>button{position:relative;transition:background .2s,padding .2s,transform .2s}
+.grantha-results>button:hover{padding-left:21px;background:#261a30}
+.grantha-results>button.selected{box-shadow:inset 3px 0 #d8b978,0 5px 18px rgba(0,0,0,.13)}
+.grantha-detail{animation:grantha-reading-enter .42s cubic-bezier(.2,.7,.2,1) both}
+.grantha-detail h2{text-wrap:balance}
+.grantha-topics span{transition:transform .2s,border-color .2s,background .2s}
+.grantha-topics span:hover{transform:translateY(-2px);border-color:rgba(212,174,112,.4)}
+.grantha-source a{transition:transform .2s,box-shadow .2s,filter .2s}
+.grantha-source a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.2);filter:brightness(1.08)}
+.grantha-next{position:relative;overflow:hidden}
+.grantha-next:after{content:"";position:absolute;right:-100px;top:-170px;width:360px;height:360px;border:1px solid rgba(167,126,67,.15);border-radius:50%;box-shadow:0 0 0 25px rgba(167,126,67,.035),0 0 0 60px rgba(167,126,67,.025);pointer-events:none}
+@keyframes grantha-reading-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.grantha-hero-art,.grantha-detail{animation:none!important}.grantha-results>button,.grantha-topics span,.grantha-source a{transition:none!important}}

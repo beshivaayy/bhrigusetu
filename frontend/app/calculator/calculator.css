@@ -157,3 +157,30 @@
  .header-label{display:none}
  .header-right{margin-left:0}
 }
+/* Calculation studio: tactile instrument controls and chart reveal. */
+.app-shell{position:relative;isolation:isolate;overflow:hidden}
+.app-shell:before{content:"";position:absolute;z-index:-1;pointer-events:none;top:90px;right:-190px;width:560px;aspect-ratio:1;border:1px solid rgba(214,181,116,.09);border-radius:50%;box-shadow:0 0 0 28px rgba(214,181,116,.018),0 0 0 70px rgba(167,105,179,.018),0 0 0 118px rgba(214,181,116,.012)}
+.calc-intro{position:relative}
+.calc-intro:after{content:"";position:absolute;right:5%;top:-24px;width:110px;height:110px;border:1px solid rgba(212,174,112,.14);border-radius:50%;box-shadow:inset 0 0 0 12px rgba(212,174,112,.025),0 0 0 12px rgba(212,174,112,.025);pointer-events:none}
+.input-panel{position:relative;overflow:hidden;animation:calc-panel-arrive .75s cubic-bezier(.2,.7,.2,1) both}
+.input-panel:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#8e668e,#e0bd7a 48%,#8e668e);transform-origin:left;animation:calc-line-draw 1.1s .2s ease both}
+.input-panel .panel-title{position:relative}
+.birth-form label{transition:color .2s}
+.birth-form input,.birth-form select{transition:border-color .2s,box-shadow .2s,background .2s}
+.birth-form input:focus,.birth-form select:focus{border-color:#c8a76e!important;box-shadow:0 0 0 3px rgba(200,167,110,.12);background:#15101e}
+.settings-grid{animation:calc-settings-open .32s ease both}
+.calculate-button{transition:transform .22s,box-shadow .22s,filter .22s}
+.calculate-button:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(205,169,105,.17);filter:brightness(1.06)}
+.horoscope-workspace{animation:calc-result-arrive .6s cubic-bezier(.2,.7,.2,1) both}
+.section-tabs button{position:relative;transition:color .2s,background .2s}
+.section-tabs button:after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:2px;background:#dfbd7b;transform:scaleX(0);transform-origin:left;transition:transform .24s}
+.section-tabs button.active:after{transform:scaleX(1)}
+.rashi-cell{position:relative;overflow:hidden;transition:transform .22s,border-color .22s,background .22s,box-shadow .22s}
+.rashi-cell:after{content:"";position:absolute;width:80px;height:80px;right:-42px;top:-42px;border:1px solid rgba(212,174,112,.16);border-radius:50%;pointer-events:none}
+.rashi-cell:hover{transform:translateY(-3px);border-color:rgba(212,174,112,.55);background:#21172d;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.data-panel,.chart-card,.section-content>.provider-note{animation:calc-result-arrive .48s ease both}
+@keyframes calc-panel-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes calc-line-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes calc-settings-open{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes calc-result-arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.input-panel,.input-panel:before,.settings-grid,.horoscope-workspace,.data-panel,.chart-card,.section-content>.provider-note{animation:none!important}.birth-form input,.birth-form select,.calculate-button,.section-tabs button,.rashi-cell{transition:none!important}}
