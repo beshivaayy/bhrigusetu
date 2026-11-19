@@ -51,4 +51,3 @@ def test_bsp_same_degree_endpoint_does_not_match_adjacent_integer_degrees():
     })
     assert response.status_code == 200
     assert response.json()["same_degree_number"] is False
-}
