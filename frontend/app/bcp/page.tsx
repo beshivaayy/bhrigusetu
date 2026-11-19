@@ -30,8 +30,9 @@ export default function BcpWorkspace() {
           as_of_date:asOf||null
         })
       });
-      const payload=await response.json();
-      if(!response.ok) throw new Error(payload?.detail||"BCP calculation could not be completed.");
+      const payload=await response.json().catch(()=>null);
+      if(!response.ok) throw new Error(payload?.detail||`BCP calculation failed (HTTP ${response.status}).`);
+      if(!payload) throw new Error("The BCP service returned an unreadable response.");
       setResult(payload);
     } catch(e) { setError(e instanceof Error?e.message:"The calculation service is unavailable."); }
     finally { setLoading(false); }

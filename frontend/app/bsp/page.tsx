@@ -18,17 +18,17 @@ export default function BspWorkspace() {
   const [utilityError,setUtilityError]=useState("");
   const [busy,setBusy]=useState(false);
 
-  useEffect(()=>{let live=true;(async()=>{try{const response=await fetch(`${API}/api/bsp/catalog`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"BSP register is unavailable.");if(live)setCatalog(payload);}catch(e){if(live)setLoadError(e instanceof Error?e.message:"BSP register is unavailable.");}})();return()=>{live=false;};},[]);
+  useEffect(()=>{let live=true;(async()=>{try{const response=await fetch(`${API}/api/bsp/catalog`);const payload=await response.json().catch(()=>null);if(!response.ok)throw new Error(payload?.detail||`BSP register API is not available on the connected backend yet (HTTP ${response.status}).`);if(!payload)throw new Error("The BSP register returned an unreadable response.");if(live)setCatalog(payload);}catch(e){if(live)setLoadError(e instanceof Error?e.message:"BSP register is unavailable.");}})();return()=>{live=false;};},[]);
 
   async function lookupKakshya(event:FormEvent<HTMLFormElement>){
     event.preventDefault();setBusy(true);setUtilityError("");setKakshya(null);
-    try{const response=await fetch(`${API}/api/bsp/kakshya?degree_in_sign=${encodeURIComponent(degree)}`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"Kakshya lookup failed.");setKakshya(payload);}
+    try{const response=await fetch(`${API}/api/bsp/kakshya?degree_in_sign=${encodeURIComponent(degree)}`);const payload=await response.json().catch(()=>null);if(!response.ok)throw new Error(payload?.detail||`Kakshya API is not available on the connected backend yet (HTTP ${response.status}).`);if(!payload)throw new Error("The Kakshya service returned an unreadable response.");setKakshya(payload);}
     catch(e){setUtilityError(e instanceof Error?e.message:"Kakshya lookup failed.");}finally{setBusy(false);}
   }
 
   async function compareDegrees(event:FormEvent<HTMLFormElement>){
     event.preventDefault();setBusy(true);setUtilityError("");setSame(null);
-    try{const params=new URLSearchParams({first_degree:first,second_degree:second});const response=await fetch(`${API}/api/bsp/same-degree?${params}`);const payload=await response.json();if(!response.ok)throw new Error(payload?.detail||"Degree comparison failed.");setSame(payload);}
+    try{const params=new URLSearchParams({first_degree:first,second_degree:second});const response=await fetch(`${API}/api/bsp/same-degree?${params}`);const payload=await response.json().catch(()=>null);if(!response.ok)throw new Error(payload?.detail||`Degree comparison API is not available on the connected backend yet (HTTP ${response.status}).`);if(!payload)throw new Error("The degree comparison service returned an unreadable response.");setSame(payload);}
     catch(e){setUtilityError(e instanceof Error?e.message:"Degree comparison failed.");}finally{setBusy(false);}
   }
 
