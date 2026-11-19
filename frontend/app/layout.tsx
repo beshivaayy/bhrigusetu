@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BhriguSetu | Jyotisha Calculation & Research",
-  description: "A research workspace for Jyotisha chart calculation, BCP and BSP method study, and a source-linked Granthalaya catalogue. Inspect calculation settings and research status.",
+  title: "BhriguSetu | The Astrologer’s Workspace",
+  description: "A professional Jyotisha workspace for chart calculation, Bhrigu Chakra Paddhati, Bhrigu Saral Paddhati, distinct astrology traditions and source-linked research.",
   applicationName: "BhriguSetu",
 };
 
