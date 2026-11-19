@@ -34,3 +34,27 @@
 @media(max-width:360px){
   .grantha-top nav{justify-content:flex-start;column-gap:13px;row-gap:9px}
 }
+
+/* Calculator workspace refinement: calmer hierarchy, deliberate focus and result transitions */
+.app-shell{background:radial-gradient(ellipse at 85% 12%,rgba(189,164,243,.12),transparent 34%),#f6f3f0}
+.app-header{position:relative;overflow:hidden;background:linear-gradient(115deg,#211333,#302044 68%,#211333)}
+.app-header:after{content:"";position:absolute;right:-70px;top:-130px;width:320px;height:320px;border:1px solid rgba(189,164,243,.15);border-radius:50%;box-shadow:0 0 0 36px rgba(189,164,243,.035),0 0 0 72px rgba(189,164,243,.025);pointer-events:none}
+.input-panel,.horoscope-workspace{border-radius:8px;box-shadow:0 10px 38px rgba(39,24,57,.045);transition:box-shadow .25s,border-color .25s}
+.input-panel:hover,.horoscope-workspace:hover{box-shadow:0 16px 48px rgba(39,24,57,.075)}
+.input-panel{border-top-width:4px;border-top-color:#a98bdc}
+.birth-form label{letter-spacing:.025em}
+.birth-form input,.birth-form select{border-radius:5px;transition:border-color .18s,box-shadow .18s,background .18s}
+.birth-form input:hover,.birth-form select:hover{border-color:#c4b1df}
+.settings-toggle,.outline-button{border-radius:5px;transition:background .18s,border-color .18s,transform .18s}
+.settings-toggle:hover,.outline-button:hover{transform:translateY(-1px)}
+.calculate-button{border-radius:5px;position:relative;overflow:hidden;transition:background .2s,transform .2s,box-shadow .2s}
+.calculate-button:not(:disabled):hover{box-shadow:0 7px 18px rgba(33,19,51,.18)}
+.section-tabs button,.varga-shortcuts button{border-radius:4px;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.section-tabs button:hover,.varga-shortcuts button:hover{transform:translateY(-1px)}
+.data-panel,.rashi-cell,.data-cell{border-radius:4px;transition:border-color .18s,box-shadow .18s,background .18s}
+.data-panel:hover{border-color:#d8c9ee;box-shadow:0 6px 20px rgba(39,24,57,.04)}
+.rashi-cell:hover{background:#f5f0fb}
+.calc-table th{position:sticky;top:0;z-index:1}
+.app-footer{line-height:1.7}
+.app-brand:focus-visible,.section-tabs button:focus-visible,.varga-shortcuts button:focus-visible,.settings-toggle:focus-visible,.outline-button:focus-visible,.calculate-button:focus-visible{outline:2px solid #9c7acb;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.input-panel,.horoscope-workspace,.birth-form input,.birth-form select,.settings-toggle,.outline-button,.calculate-button,.section-tabs button,.varga-shortcuts button,.data-panel,.rashi-cell,.data-cell{transition:none!important}}

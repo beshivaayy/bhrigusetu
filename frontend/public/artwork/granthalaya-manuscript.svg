@@ -1,0 +1,24 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 560">
+<defs>
+ <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4e6c8"/><stop offset=".55" stop-color="#d9c39a"/><stop offset="1" stop-color="#b89566"/></linearGradient>
+ <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#49604a"/><stop offset="1" stop-color="#1b3429"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a85e43"/><stop offset="1" stop-color="#693b31"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="13"/></filter>
+ <pattern id="fibres" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M0 7H34M0 24H34" stroke="#876b45" stroke-opacity=".12"/><circle cx="7" cy="15" r=".7" fill="#806341" fill-opacity=".2"/></pattern>
+</defs>
+<ellipse cx="410" cy="466" rx="325" ry="46" fill="#281d14" opacity=".22" filter="url(#shadow)"/>
+<g transform="translate(95 72) rotate(-5 310 190)">
+ <path d="M20 55Q165 20 310 72Q450 19 600 55V395Q450 356 310 410Q165 356 20 395Z" fill="url(#cover)" stroke="#b58b50" stroke-width="5"/>
+ <path d="M34 68Q172 38 302 83V385Q170 346 34 378Z" fill="url(#paper)" stroke="#a37a48" stroke-width="2"/>
+ <path d="M318 83Q452 38 586 68V378Q450 346 318 385Z" fill="url(#paper)" stroke="#a37a48" stroke-width="2"/>
+ <path d="M34 68Q172 38 302 83V385Q170 346 34 378Z M318 83Q452 38 586 68V378Q450 346 318 385Z" fill="url(#fibres)" opacity=".9"/>
+ <path d="M310 72V407" stroke="#8b6842" stroke-width="8"/><path d="M310 75V403" stroke="#e8d4aa" stroke-width="1.5"/>
+ <g stroke="#9a7445" stroke-width="1" opacity=".65"><path d="M65 115Q172 89 270 119M65 143Q172 117 270 147M65 171Q172 145 270 175M65 199Q172 173 270 203M65 227Q172 201 270 231M65 255Q172 229 270 259M65 283Q172 257 270 287M65 311Q172 285 270 315M350 115Q450 89 555 115M350 143Q450 117 555 143M350 171Q450 145 555 171M350 199Q450 173 555 199M350 227Q450 201 555 227M350 255Q450 229 555 255M350 283Q450 257 555 283M350 311Q450 285 555 311"/></g>
+ <g fill="#7d4b37" font-family="Georgia,serif" text-anchor="middle"><text x="167" y="101" font-size="16" letter-spacing="3">बृहत् · सिद्धान्त</text><text x="450" y="101" font-size="16" letter-spacing="3">ज्योतिष · गणित</text></g>
+ <g transform="translate(166 242)" stroke="#9c7440" fill="none"><circle r="49" stroke-width="2"/><circle r="38"/><path d="M0-47V47M-47 0H47M-33-33L33 33M33-33L-33 33"/><path d="M0-29L8-8L29 0L8 8L0 29L-8 8L-29 0L-8-8Z" fill="#a45d42" fill-opacity=".25"/></g>
+ <g transform="translate(450 242)" stroke="#9c7440" fill="none"><circle r="49" stroke-width="2"/><circle r="38"/><path d="M0-47V47M-47 0H47M-33-33L33 33M33-33L-33 33"/><path d="M0-29L8-8L29 0L8 8L0 29L-8 8L-29 0L-8-8Z" fill="#a45d42" fill-opacity=".25"/></g>
+ <path d="M20 55Q165 20 310 72Q450 19 600 55" stroke="#d6b477" stroke-width="2" fill="none"/>
+</g>
+<g transform="translate(565 330) rotate(17)"><path d="M0 0Q74-34 142 2L133 108Q70 74 8 111Z" fill="url(#red)" stroke="#d2ad6e" stroke-width="3"/><path d="M12 13Q72-13 130 15L123 94Q70 69 15 97Z" fill="#e4d0a7"/><g stroke="#a17b4d" opacity=".7"><path d="M28 35L111 32M25 48L108 45M22 61L105 58M19 74L102 71"/></g></g>
+<g fill="#e8cf9e" font-family="Georgia,serif" letter-spacing="3"><text x="92" y="500" font-size="11">GRANTHA-PATRA · MANUSCRIPT STUDY</text></g>
+</svg>
