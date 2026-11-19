@@ -125,8 +125,13 @@ export default function Home() {
   return <main className="app-shell">
     <header className="app-header">
       <a className="app-brand" href="/"><span className="brand-symbol">ॐ</span><span><strong>BhriguSetu</strong><small>JYOTISH SOFTWARE</small></span></a>
-      <div className="header-right"><span className="header-label">HOROSCOPE WORKSPACE</span><span className="header-dot"/></div>
+      <nav className="calc-nav" aria-label="Workspace navigation"><a href="/">Home</a><a href="/granthalaya">Granthalaya</a></nav><div className="header-right"><span className="header-label">HOROSCOPE WORKSPACE</span><span className="header-dot"/></div>
     </header>
+
+    <section className="calc-intro">
+      <div className="calc-intro-copy"><span className="overline">JYOTISHA · CALCULATION STUDIO</span><h2>Precision begins<br/><em>with the birth data.</em></h2><p>Build a chart with explicit time, place and calculation settings. Then inspect the returned vargas, graha positions, bhava output and supporting data without hiding the method.</p></div>
+      <div className="calc-intro-index" aria-label="Calculation workflow"><span><b>01</b><small>INPUT</small></span><i></i><span><b>02</b><small>CALCULATE</small></span><i></i><span><b>03</b><small>INSPECT</small></span></div>
+    </section>
 
     <section className="input-panel">
       <div className="panel-title"><div><span className="overline">NEW HOROSCOPE</span><h1>Birth details</h1></div><button type="button" className="settings-toggle" onClick={()=>setShowSettings(v=>!v)}>{showSettings?"Hide settings":"Calculation settings"} <span>{showSettings?"−":"＋"}</span></button></div>
