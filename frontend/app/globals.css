@@ -495,3 +495,15 @@ body{background:#0c0a14}
 .heritage-v2 .hv2-pillar-grid article:nth-child(2):before{content:"▤"}
 .heritage-v2 .hv2-pillar-grid article:nth-child(3):before{content:"✳"}
 .heritage-v2 .hv2-pillar-grid article:nth-child(4):before{content:"◌"}
+.hv2-celestial-atlas{max-width:1240px;margin:0 auto;padding:88px 42px 96px;display:grid;grid-template-columns:minmax(360px,1.02fr) minmax(320px,.98fr);align-items:center;gap:clamp(38px,7vw,100px);position:relative;overflow:hidden}
+.hv2-celestial-atlas:before{content:"";position:absolute;left:50%;top:10%;width:1px;height:80%;background:linear-gradient(transparent,rgba(215,183,122,.3),transparent)}
+.hv2-atlas-art{position:relative;isolation:isolate;min-width:0}.hv2-atlas-art:before{content:"";position:absolute;inset:14%;border-radius:50%;background:rgba(158,104,183,.12);filter:blur(44px);z-index:-1}
+.hv2-atlas-art img{display:block;width:100%;max-width:590px;margin:auto;filter:drop-shadow(0 24px 45px rgba(0,0,0,.28));animation:atlas-breathe 12s ease-in-out infinite}
+.hv2-atlas-coordinate,.hv2-atlas-index{position:absolute;color:#c9ad7a;font:600 8px 'DM Sans',Arial,sans-serif;letter-spacing:.18em}.hv2-atlas-coordinate{top:2%;left:4%}.hv2-atlas-index{bottom:2%;right:4%}.hv2-atlas-index i{color:#8c6a9d;font-style:normal}
+.hv2-atlas-copy{position:relative;z-index:1}.hv2-atlas-copy h2{margin:0;color:#f2e9df;font:500 clamp(42px,4.5vw,62px)/1.12 Georgia,'Noto Serif Devanagari',serif;letter-spacing:-.04em}.hv2-atlas-copy h2 em{color:#d6b274;font-style:normal}.hv2-atlas-copy>p:not(.hv2-kicker){max-width:490px;color:#bdb1c5;font:13px/2 'DM Sans',Arial,sans-serif;margin:22px 0 26px}
+.hv2-atlas-facts{display:flex;gap:0;border-top:1px solid rgba(212,174,112,.25);border-bottom:1px solid rgba(212,174,112,.25);margin:0 0 24px}.hv2-atlas-facts div{min-width:105px;padding:14px 22px 14px 0;margin-right:22px;border-right:1px solid rgba(212,174,112,.2);display:flex;flex-direction:column;gap:3px}.hv2-atlas-facts div:last-child{border:0}.hv2-atlas-facts b{color:#e0c184;font:26px Georgia,serif}.hv2-atlas-facts span{color:#a99bb5;font:9px 'DM Sans',Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.hv2-celestial-atlas .hv2-textlink{color:#eadcc8}.hv2-celestial-atlas .hv2-textlink span{color:#e0bd7d}
+.hv2-reveal{opacity:1;transform:none;animation:observatory-section-enter .8s ease both}.hv2-reveal.is-visible{opacity:1;transform:none}
+@keyframes atlas-breathe{0%,100%{transform:rotate(-1deg) scale(.985)}50%{transform:rotate(1deg) scale(1.015)}}
+@media(max-width:760px){.hv2-celestial-atlas{grid-template-columns:1fr;padding:62px 22px 68px;gap:20px}.hv2-celestial-atlas:before{display:none}.hv2-atlas-art{max-width:480px;margin:auto}.hv2-atlas-copy h2{font-size:42px}.hv2-atlas-copy>p:not(.hv2-kicker){font-size:11px}.hv2-atlas-coordinate,.hv2-atlas-index{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.hv2-atlas-art img,.hv2-reveal{animation:none!important;opacity:1;transform:none;transition:none}}
