@@ -236,3 +236,16 @@
 @media(max-width:760px){.hv2-hero{display:flex;flex-direction:column;align-items:stretch;min-height:0;padding:54px 22px 48px;gap:10px}.hv2-hero-copy{max-width:650px}.hv2-observatory{max-width:590px;align-self:center;margin-top:12px;padding:12px 4px 18px}.hv2-observatory-stage{min-height:0}.hv2-observatory-stage img{width:100%}.hv2-orbit-note{right:0;bottom:34px;width:180px;padding:12px 14px}.hv2-orbit-note strong{font-size:14px}.hv2-observatory-caption,.hv2-observatory-foot{font-size:7px}.hv2-orbit-label{font-size:6px}.hv2-observatory-index{font-size:17px}}
 @media(max-width:420px){.hv2-observatory{margin-left:-6px;margin-right:-6px}.hv2-observatory-stage{margin:0 -5px}.hv2-orbit-note{bottom:24px;width:154px;padding:10px}.hv2-orbit-note strong{font-size:12px}.hv2-label-one,.hv2-label-three{left:3%}.hv2-observatory-index{right:3%;bottom:8%}.hv2-observatory-caption,.hv2-observatory-foot{letter-spacing:.08em;font-size:6px}}
 @media(prefers-reduced-motion:reduce){.hv2-observatory-stage:before,.hv2-observatory-stage:after,.hv2-observatory-stage img,.hv2-observatory-glow,.hv2-hero .hv2-hero-copy,.hv2-observatory{animation:none!important}}
+/* Manuscript study artwork and editorial section motion. */
+.hv2-library-art{isolation:isolate;overflow:visible}
+.hv2-library-art:before{content:"";position:absolute;inset:0;background:url('/artwork/granthalaya-manuscript.svg') center/contain no-repeat;filter:drop-shadow(0 22px 28px rgba(53,42,26,.16));z-index:2;animation:folio-drift 11s ease-in-out infinite}
+.hv2-library-art>*{opacity:0}
+@keyframes folio-drift{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-7px) rotate(.4deg)}}
+.hv2-tradition-detail{animation:detail-enter .38s ease both}
+@keyframes detail-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hv2-tradition-list button:hover{transform:translateX(3px)}
+.hv2-pillar-grid article:hover{transform:translateY(-4px)}
+.hv2-library-list article{transition:padding .2s,background .2s}
+.hv2-library-list article:hover{padding-left:8px;background:rgba(255,255,255,.18)}
+@media(max-width:650px){.hv2-library-art:before{inset:0 -12px}.hv2-library-art{min-height:290px}}
+@media(prefers-reduced-motion:reduce){.hv2-library-art:before,.hv2-tradition-detail{animation:none!important}.hv2-tradition-list button,.hv2-pillar-grid article,.hv2-library-list article{transition:none!important}}
