@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .models import BirthDetails
 from .bcp.engine import calculate_running_year
+from .bsp.kakshya import KAKSHYA_LORDS, KAKSHYA_WIDTH, calculate_kakshya, same_degree_number
 from .rules import load_catalog, enabled_rules
 from .places import InvalidPlaceQuery, search_places
 from .chart.manual import SuppliedChartInput, analyze_supplied_chart
@@ -140,6 +141,55 @@ def analyze(birth: BirthDetails):
             "No BSP prediction rules are enabled.",
             "Chart uses Astronomy Engine with an approximate Lahiri ayanamsha; review chart warnings before precision-sensitive use.",
         ],
+    }
+
+
+@app.get("/api/bsp/catalog")
+def bsp_catalog():
+    """Return the source-controlled BSP research register without enabling predictions."""
+    catalog = load_catalog()
+    active = enabled_rules()
+    return {
+        "method": catalog["method"],
+        "policy": catalog["policy"],
+        "status": "research_pending" if not active else "rules_available",
+        "total_rules": len(catalog["rules"]),
+        "enabled_rules": len(active),
+        "rules": catalog["rules"],
+        "kakshya": {
+            "width_degrees": KAKSHYA_WIDTH,
+            "slots": [
+                {
+                    "index": index + 1,
+                    "lord": lord,
+                    "start_degree": index * KAKSHYA_WIDTH,
+                    "end_degree": (index + 1) * KAKSHYA_WIDTH,
+                    "boundary_policy": "start_inclusive_end_exclusive",
+                }
+                for index, lord in enumerate(KAKSHYA_LORDS)
+            ],
+        },
+    }
+
+
+@app.get("/api/bsp/kakshya")
+def bsp_kakshya(degree_in_sign: float = Query(ge=0, lt=30)):
+    """Look up the source-transcribed 3°45′ Kakshya slot for a sign degree."""
+    return calculate_kakshya(degree_in_sign)
+
+
+@app.get("/api/bsp/same-degree")
+def bsp_same_degree(
+    first_degree: float = Query(ge=0, lt=30),
+    second_degree: float = Query(ge=0, lt=30),
+):
+    """Compare whole-degree numbers using the BSP-7 source example convention."""
+    return {
+        "first_degree": first_degree,
+        "second_degree": second_degree,
+        "same_degree_number": same_degree_number(first_degree, second_degree),
+        "comparison": "integer_degree_within_sign",
+        "status": "source_transcribed_utility_not_prediction",
     }
 
 

@@ -11,8 +11,8 @@ type Analysis = Record<string, any>;
 const systems = [
   { group: "Vedic Jyotisha", name: "Parashari", detail: "Rashi, bhava, shodashvarga, yoga, dasha, bala and ashtakavarga.", state: "Foundation available", href: "/calculator" },
   { group: "Vedic Jyotisha", name: "Jaimini", detail: "Chara karaka, rashi drishti, arudha, upapada and Jaimini dasha.", state: "Planned module" },
-  { group: "Bhrigu traditions", name: "Bhrigu Chakra Paddhati", detail: "Running year and 12-house activation; interpretation remains source-gated.", state: "Working calculation", href: "#bcp" },
-  { group: "Bhrigu traditions", name: "Bhrigu Saral Paddhati", detail: "Source-linked rule register and Kakshya utility; predictive matching is not enabled.", state: "Research foundation", href: "#bsp" },
+  { group: "Bhrigu traditions", name: "Bhrigu Chakra Paddhati", detail: "Running year, 12-house activation, calculation record and year sequence.", state: "Working calculation", href: "/bcp" },
+  { group: "Bhrigu traditions", name: "Bhrigu Saral Paddhati", detail: "Source-linked research register, Kakshya lookup and whole-degree utility.", state: "Research foundation", href: "/bsp" },
   { group: "Bhrigu traditions", name: "Bhrigu Nandi Nadi", detail: "Planetary linkage, progression and event-validation workflows.", state: "Planned module" },
   { group: "Other Vedic systems", name: "KP Astrology", detail: "Cusps, sub-lords, significators and ruling planets.", state: "Planned module" },
   { group: "Other Vedic systems", name: "Tajika · Varshaphala · Lal Kitab", detail: "Independent calculation and interpretation methods.", state: "Planned module" },
