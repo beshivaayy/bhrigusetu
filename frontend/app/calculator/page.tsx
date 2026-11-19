@@ -50,14 +50,19 @@ function Table({rows,columns}:{rows:RecordValue[];columns:{key:string;label:stri
   return <div className="table-scroll"><table className="calc-table"><thead><tr>{columns.map(c=><th key={c.key}>{c.label}</th>)}</tr></thead><tbody>{rows.map((row,i)=><tr key={i}>{columns.map(c=><td key={c.key}>{c.render ? c.render(row[c.key],row) : <DataView value={row[c.key]}/>}</td>)}</tr>)}</tbody></table></div>;
 }
 
-function ChartGrid({chart,asc,title}:{chart:RecordValue;asc?:string;title:string}) {
+function ChartGrid({chart,asc,title,style}:{chart:RecordValue;asc?:string;title:string;style:"south"|"north"}) {
   const positions:Record<string,{row:number;col:number}> = {
     Aries:{row:1,col:1},Taurus:{row:1,col:2},Gemini:{row:1,col:3},Cancer:{row:1,col:4},
     Leo:{row:2,col:4},Virgo:{row:3,col:4},Libra:{row:4,col:4},Scorpio:{row:4,col:3},
     Sagittarius:{row:4,col:2},Capricorn:{row:4,col:1},Aquarius:{row:3,col:1},Pisces:{row:2,col:1}
   };
   const signs=useMemo(()=>SIGN_ORDER.map(sign=>({sign,house:houseFromSign(sign,asc),planets:Object.entries(chart||{}).filter(([name,p]:[string,any])=>name!=="Ascendant"&&p?.sign===sign)})),[chart,asc]);
-  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" style={{gridRow:positions[item.sign].row,gridColumn:positions[item.sign].col}} key={item.sign}><span className="rashi-house">Sign house {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">—</span>}</div></article>)}<div className="chart-center"><span className="overline">{title}</span><strong>{asc||"—"}</strong><small>Lagna</small></div></div>;
+  if(style==="north"){
+    const ascIndex=signIndex(asc);
+    const cells=[{h:1,x:210,y:74},{h:2,x:105,y:88},{h:3,x:74,y:154},{h:4,x:74,y:210},{h:5,x:74,y:266},{h:6,x:105,y:332},{h:7,x:210,y:346},{h:8,x:315,y:332},{h:9,x:346,y:266},{h:10,x:346,y:210},{h:11,x:346,y:154},{h:12,x:315,y:88}];
+    return <div className="north-chart-wrap"><svg className="north-chart" viewBox="0 0 420 420" role="img" aria-label="North Indian diamond horoscope chart"><rect x="16" y="16" width="388" height="388" className="north-border"/><path d="M16 16L404 404M404 16L16 404M210 16L404 210L210 404L16 210Z" className="north-lines"/>{cells.map(cell=>{const sign=SIGN_ORDER[(Math.max(0,ascIndex)+cell.h-1)%12];const item=signs.find(x=>x.sign===sign);return <g key={cell.h} className="north-house" transform={"translate("+cell.x+" "+cell.y+")"}><text className="north-house-no" y="-13">{cell.h}</text><text className="north-sign" y="3">{sign}</text>{(item?.planets||[]).slice(0,3).map(([name,p]:[string,any],i)=><text className="north-graha" y={19+i*12} key={name}>{name} {degree(p.longitude)}</text>)}</g>})}<text x="210" y="210" className="north-center">BHRIGUSETU</text></svg><div className="north-chart-caption">{title} · {asc||"Lagna"} ascendant · Sign placements from returned chart data</div></div>;
+  }
+  return <div className="rashi-grid">{signs.map(item=><article className="rashi-cell" style={{gridRow:positions[item.sign].row,gridColumn:positions[item.sign].col}} key={item.sign}><span className="rashi-house">Sign house {item.house}</span><strong>{item.sign}</strong><div>{item.planets.length ? item.planets.map(([name,p]:[string,any])=><span className="graha-chip" key={name}>{name} <small>{degree(p.longitude)}</small></span>) : <span className="muted">-</span>}</div></article>)}<div className="chart-center"><span className="overline">{title}</span><strong>{asc||"-"}</strong><small>Lagna</small></div></div>;
 }
 
 export default function Home() {
@@ -70,7 +75,7 @@ export default function Home() {
   const [timezoneMode,setTimezoneMode]=useState("auto"); const [language,setLanguage]=useState("en");
   const [loading,setLoading]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
   const [result,setResult]=useState<RecordValue|null>(null); const [activeSection,setActiveSection]=useState<SectionKey>("chart");
-  const [selectedVarga,setSelectedVarga]=useState("D-1_rasi"); const [showSettings,setShowSettings]=useState(false);
+  const [selectedVarga,setSelectedVarga]=useState("D-1_rasi"); const [chartStyle,setChartStyle]=useState<"south"|"north">("south"); const [showSettings,setShowSettings]=useState(false);
 
   async function searchPlace() {
     if(place.trim().length<3){setPlaceError("Enter at least 3 characters.");return;}
@@ -166,8 +171,8 @@ export default function Home() {
       <nav className="section-tabs" aria-label="Calculation sections">{SECTIONS.map(s=><button key={s.key} className={activeSection===s.key?"active":""} onClick={()=>setActiveSection(s.key)}>{s.label}</button>)}</nav>
 
       {activeSection==="chart"&&<div className="section-content">
-        <div className="subheading"><div><span className="overline">DIVISIONAL CHARTS</span><h3>{pretty(selectedVarga)}</h3></div><select className="varga-select" value={selectedVarga} onChange={e=>setSelectedVarga(e.target.value)}>{divisionKeys.map(k=><option key={k} value={k}>{pretty(k)}</option>)}</select></div>
-        <ChartGrid chart={selectedChart} asc={asc} title={selectedVarga.split("_")[0]}/>
+        <div className="subheading"><div><span className="overline">DIVISIONAL CHARTS</span><h3>{pretty(selectedVarga)}</h3></div><div className="chart-tools"><div className="chart-style-toggle" role="group" aria-label="Chart style"><button type="button" aria-pressed={chartStyle==="north"} className={chartStyle==="north"?"active":""} onClick={()=>setChartStyle("north")}>North Indian</button><button type="button" aria-pressed={chartStyle==="south"} className={chartStyle==="south"?"active":""} onClick={()=>setChartStyle("south")}>South Indian</button></div><select className="varga-select" value={selectedVarga} onChange={e=>setSelectedVarga(e.target.value)}>{divisionKeys.map(k=><option key={k} value={k}>{pretty(k)}</option>)}</select></div></div>
+         <ChartGrid chart={selectedChart} asc={asc} title={selectedVarga.split("_")[0]} style={chartStyle}/>
         <div className="provider-note house-system-note"><strong>House numbering in this chart</strong><span>The number shown in each sign is derived by counting signs from Lagna (Whole Sign). It is not a substitute for the provider’s Bhava output. If you selected Whole Sign, the house system is the same; other Bhava methods may assign houses differently. Inspect the provider’s output in the Bhava tab.</span></div>
         <Table rows={GRAHAS.filter(name=>selectedChart[name]).map(name=>({graha:name==="Ascendant"?"Lagna":name,sign:selectedChart[name].sign,longitude:selectedChart[name].longitude,house:houseFromSign(selectedChart[name].sign,asc)}))} columns={[
           {key:"graha",label:"Graha"},{key:"sign",label:"Rashi"},{key:"longitude",label:"Degree",render:v=>degree(v)},{key:"house",label:"Sign-based house"}
