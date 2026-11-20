@@ -4,6 +4,8 @@
 
 ## A research-first workspace for Bhrigu Chakra Paddhati (BCP) and Bhrigu Saral Paddhati (BSP)
 
+**Live website:** [https://bhrigusetu.vercel.app](https://bhrigusetu.vercel.app)
+
 **Traditional Jyotish research, implemented with transparent calculations, traceable sources and explicit limitations.**
 
 [![Research prototype](https://img.shields.io/badge/status-research%20prototype-c49a45?style=flat-square)](https://github.com/beshivaayy/bhrigusetu)
