@@ -7,6 +7,18 @@ BhriguSetu uses a split deployment:
 
 A configuration file describes how to deploy; it does not by itself guarantee a live or healthy deployment.
 
+## Production URLs and Cloudflare API gateway
+
+- **Public website:** https://bhrigusetu.vercel.app (Vercel project: `bhrigusetu-web`).
+- **Backend origin:** https://bhrigusetu-api.onrender.com (Render).
+- **Production API gateway:** https://bhrigusetu-api-gateway.beshivaay07.workers.dev (Cloudflare Worker `bhrigusetu-api-gateway`).
+
+The Vercel production environment uses `BHRIGUSETU_API_BASE_URL` to route the frontend's `/backend-api/*` rewrite through the Cloudflare Worker. The existing `NEXT_PUBLIC_API_BASE_URL` remains the direct Render origin for local/preview configurations unless explicitly changed. Do not put secrets in either public frontend variable.
+
+The Worker currently applies an origin allowlist, CORS/security headers, no-store responses, a 120-request/60-second per-IP general limit, a 20-request/60-second per-IP limit on expensive routes, a 256 KB POST body limit and a 25-second upstream timeout. Its path allowlist covers the health, analysis, rules-status, place-search, chart and BSP utility routes. **`/mcp` is intentionally excluded**; remote MCP continues to use the Render endpoint with its Bearer-token protection.
+
+The Worker uses the Cloudflare Workers development subdomain. No custom domain, Cloudflare DNS zone migration or R2 bucket is configured or required for this current gateway setup. Worker source is deployed but is not yet committed to this repository; keep that source change separate and review it before merging.
+
 ## 1. Deploy the API on Render
 
 1. Create a Blueprint deployment from this GitHub repository.
