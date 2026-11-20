@@ -73,20 +73,32 @@ export default function Home() {
   const [ayanamsha,setAyanamsha]=useState("LAHIRI"); const [customAyanamsha,setCustomAyanamsha]=useState(""); const [gender,setGender]=useState("");
   const [node,setNode]=useState("mean"); const [calcMethod,setCalcMethod]=useState("drik"); const [bhava,setBhava]=useState("5");
   const [timezoneMode,setTimezoneMode]=useState("auto"); const [language,setLanguage]=useState("en");
-  const [loading,setLoading]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
+  const [loading,setLoading]=useState(false); const [placeSearching,setPlaceSearching]=useState(false); const [error,setError]=useState(""); const [placeError,setPlaceError]=useState("");
   const [result,setResult]=useState<RecordValue|null>(null); const [activeSection,setActiveSection]=useState<SectionKey>("chart");
   const [selectedVarga,setSelectedVarga]=useState("D-1_rasi"); const [chartStyle,setChartStyle]=useState<"south"|"north">("south"); const [showSettings,setShowSettings]=useState(false);
 
   async function searchPlace() {
-    if(place.trim().length<3){setPlaceError("Enter at least 3 characters.");return;}
+    const query=place.trim();
+    if(query.length<3){setPlaceError("Enter at least 3 characters.");return;}
     setPlaceError("");
+    setPlaceResults([]);
+    setSelectedPlaceId("");
+    setPlaceSearching(true);
     try {
-      const response=await fetch(`${API_BASE}/api/places/search?q=${encodeURIComponent(place.trim())}`);
-      const payload=await response.json();
-      if(!response.ok) throw new Error("Place search unavailable.");
-      setPlaceResults(payload.results||[]);
-      if(!payload.results?.length) setPlaceError("No matching places found.");
-    } catch { setPlaceError("We couldn’t find that place just now. Please try another search."); }
+      const response=await fetch(`${API_BASE}/api/places/search?q=${encodeURIComponent(query)}`,{headers:{Accept:"application/json"},cache:"no-store"});
+      const payload=await response.json().catch(()=>null);
+      if(!response.ok) {
+        const detail=typeof payload?.detail==="string"?payload.detail:`Location service returned HTTP ${response.status}.`;
+        throw new Error(detail);
+      }
+      if(!Array.isArray(payload?.results)) throw new Error("Location service returned an unexpected response. Please retry.");
+      setPlaceResults(payload.results);
+      if(payload.results.length===0) setPlaceError(`No matching places found for “${query}”. Try adding the district, state and country.`);
+    } catch(e) {
+      setPlaceError(e instanceof Error?e.message:"Location search failed. Please retry.");
+    } finally {
+      setPlaceSearching(false);
+    }
   }
   function choosePlace(id:string) {
     setSelectedPlaceId(id); const p=placeResults.find(x=>String(x.place_id)===id); if(!p)return;
@@ -143,7 +155,7 @@ export default function Home() {
       <form className="birth-form" onSubmit={calculate}>
         <label>Date of birth<input type="date" value={dob} onChange={e=>setDob(e.target.value)} required/></label>
         <label>Time of birth<input type="time" step="1" value={tob} onChange={e=>setTob(e.target.value)} required/></label>
-        <label className="place-field">Birth place<div className="place-row"><input value={place} onChange={e=>{setPlace(e.target.value);setPlaceResults([]);setSelectedPlaceId("");setLat("");setLon("");setTz("");}} placeholder="City, State, Country" required/><button type="button" onClick={searchPlace} className="outline-button">Search</button></div></label>
+        <label className="place-field">Birth place<div className="place-row"><input value={place} onChange={e=>{setPlace(e.target.value);setPlaceResults([]);setSelectedPlaceId("");setLat("");setLon("");setTz("");}} placeholder="City, State, Country" required/><button type="button" onClick={searchPlace} className="outline-button" disabled={placeSearching}>{placeSearching?"Searching…":"Search"}</button></div></label>
         {placeResults.length>0&&<label className="place-field">Select location<select value={selectedPlaceId} onChange={e=>choosePlace(e.target.value)}><option value="">Select a matching place</option>{placeResults.map(p=><option key={p.place_id} value={String(p.place_id)}>{p.display_name} · {p.timezone}</option>)}</select></label>}
         {placeError&&<p className="inline-error place-field">{placeError}</p>}
         <label>Latitude<input type="number" step="any" value={lat} onChange={e=>setLat(e.target.value)} required/></label>
